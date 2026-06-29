@@ -23,16 +23,32 @@
       this.fieldActive = true;       // l'écran de récolte est-il visible ?
       this.session = { harvesting: false, timer: 0, storage: 0, storageValue: 0 };
 
+      // combo (profondeur active) + surge (capacité active) + juice
+      this.combo = { count: 0, mult: 1, timer: 0 };
+      this.surgeState = { active: 0, cd: 0, dur: 3, cdMax: 12, cost: 25 };
+      this.surgeBoost = 1;
+      this.shake = 0;
+      this.surgeRing = 0;
+      this._sndT = 0;
+      this._achT = 0;
+
       this.spawnTimer = 0;
       this.idleRate = 0;
       this.offlineGain = 0;
       this.offlineSeconds = 0;
       this.toasts = [];
 
+      if (!this.state.stats) this.state.stats = { sessions: 0, surges: 0, comboMax: 0 };
+      if (!this.state.achievements) this.state.achievements = {};
+
       this.applyStats();
       this.syncDrones();
       this.computeOffline();
     }
+
+    get stats() { return this.state.stats; }
+    snd(name, a) { if (AFK.audio) AFK.audio[name] && AFK.audio[name](a); }
+    addShake(a) { this.shake = Math.min(22, Math.max(this.shake, a)); }
 
     /* ---------- agrégation des stats (tout est corrélé ici) ---------- */
     applyStats() {
@@ -49,7 +65,8 @@
       this.projectMult = this.computeProjectMult();
       this.prestigeMult = 1 + st.cores * CONST.CORE_MULT + memoryVal;
       this.treeValue = 1 + ts.value;
-      this.incomeMult = this.biomeMult * this.treeValue * this.projectMult * this.prestigeMult;
+      this.achievementMult = AFK.achievements ? 1 + AFK.achievements.unlockedCount(st) * AFK.achievements.BONUS : 1;
+      this.incomeMult = this.biomeMult * this.treeValue * this.projectMult * this.prestigeMult * this.achievementMult;
 
       this.pullRadius = Math.max(60, 130 * (1 + ts.radius));
       this.pullStrength = 0.55 * (1 + ts.strength);
@@ -103,6 +120,7 @@
       this.state.nodes[id] = 1;
       this.applyStats();
       this.syncDrones();
+      this.snd("buy");
       return true;
     }
 
@@ -122,9 +140,34 @@
       const banked = s.storageValue;
       this.addLumens(banked);
       this.pointer.active = false;
+      this.combo.count = 0; this.combo.mult = 1; this.combo.timer = 0;
+      this.surgeState.active = 0;
+      this.state.stats.sessions += 1;
+      this.addShake(6);
+      this.snd("bank", banked > 0 && s.storage >= this.storageMax);
       const why = reason === "energy" ? "Énergie épuisée" : reason === "time" ? "Temps écoulé" : reason === "full" ? "Soute pleine" : "Terminée";
       this.toasts.push({ kind: "bank", title: "📦 Stock encaissé", body: why + " · +" + fmt(banked) + " ✦" });
       s.storage = 0; s.storageValue = 0;
+    }
+    triggerSurge() {
+      const ss = this.surgeState;
+      if (!this.harvestActive() || ss.cd > 0 || this.state.energy < ss.cost) { this.snd("error"); return false; }
+      this.state.energy -= ss.cost;
+      ss.active = ss.dur; ss.cd = ss.cdMax;
+      this.surgeRing = 1;
+      this.state.stats.surges += 1;
+      this.addShake(9);
+      this.snd("surge");
+      return true;
+    }
+    _checkAch() {
+      if (!AFK.achievements) return;
+      const got = AFK.achievements.check(this);
+      if (!got.length) return;
+      for (const a of got)
+        this.toasts.push({ kind: "achiev", title: a.icon + " " + a.name, body: a.desc + " · +" + Math.round(AFK.achievements.BONUS * 100) + "% revenu" });
+      this.applyStats();
+      this.snd("achievement");
     }
     tickSession(dtSec) {
       const s = this.session;
@@ -154,6 +197,7 @@
       if (this.state.lumens < part.cost) return false;
       this.state.lumens -= part.cost;
       ps.building = true;
+      this.snd("buy");
       return true;
     }
     tickProjects(dtSec) {
@@ -168,6 +212,7 @@
       if (ps.pi >= p.parts.length) {
         this.completeProject(p);
       } else {
+        this.addShake(7); this.snd("part");
         this.toasts.push({ kind: "part", title: part.icon + " " + part.name + " réparé",
           body: p.name + " · pièce " + ps.pi + "/" + p.parts.length });
       }
@@ -177,6 +222,7 @@
       this.state.biome = this.state.projectIndex;
       if (this.state.biome > this.state.bestBiome) this.state.bestBiome = this.state.biome;
       this.applyStats();
+      this.addShake(13); this.snd("project");
       this.toasts.push({ kind: "project", title: p.icon + " " + p.name + " achevé !",
         body: "Biome débloqué : " + C.biome(this.state.biome).name + " · revenu ×" + fmt(CONST.BIOME_MULT) + " · bonus ×" + p.mult.toFixed(1) });
     }
@@ -199,6 +245,7 @@
       this.applyStats();
       st.energy = this.energyMax;
       this.syncDrones(true);
+      this.addShake(16); this.snd("prestige");
       this.toasts.push({ kind: "prestige", title: "🌌 Singularité atteinte", body: "+" + gain + " ◆ Cores" });
       return true;
     }
@@ -210,6 +257,7 @@
       if (this.state.cores < cost) return false;
       this.state.cores -= cost; this.state.perks[id] = lvl + 1;
       this.applyStats(); this.syncDrones();
+      this.snd("buy");
       return true;
     }
 
@@ -267,12 +315,14 @@
 
     harvestActive() { return this.session.harvesting && this.fieldActive; }
 
+    effRadius() { return this.pullRadius * this.surgeBoost; }
+    effStrength() { return this.pullStrength * this.surgeBoost; }
     grainSources() {
       const out = [];
-      const gs = this.pullStrength * 0.5;
-      if (this.harvestActive() && this.pointer.active) out.push({ x: this.pointer.x, y: this.pointer.y, r: this.pullRadius * 1.15, strength: gs });
-      if (this.harvestActive()) for (const p of this.poles) out.push({ x: p.x, y: p.y, r: this.pullRadius, strength: gs * (p.life / p.maxLife) });
-      for (const d of this.drones) out.push({ x: d.x, y: d.y, r: this.pullRadius * 0.85, strength: gs * 0.7 });
+      const R = this.effRadius(), gs = this.effStrength() * 0.5;
+      if (this.harvestActive() && this.pointer.active) out.push({ x: this.pointer.x, y: this.pointer.y, r: R * 1.15, strength: gs });
+      if (this.harvestActive()) for (const p of this.poles) out.push({ x: p.x, y: p.y, r: R, strength: gs * (p.life / p.maxLife) });
+      for (const d of this.drones) out.push({ x: d.x, y: d.y, r: this.pullRadius * 0.85, strength: this.pullStrength * 0.35 });
       return out;
     }
     addPole(x, y) {
@@ -296,6 +346,18 @@
       this.tickProjects(dtSec);
       this.tickSession(dtSec);
 
+      // surge / juice / combo / succès
+      const ss = this.surgeState;
+      if (ss.active > 0) ss.active -= dtSec;
+      if (ss.cd > 0) ss.cd -= dtSec;
+      this.surgeBoost = ss.active > 0 ? 2.4 : 1;
+      if (this.surgeRing > 0) this.surgeRing -= dtSec / ss.dur;
+      if (this.shake > 0.05) this.shake *= Math.pow(0.0015, dtSec); else this.shake = 0;
+      if (this.combo.timer > 0) { this.combo.timer -= ddt; if (this.combo.timer <= 0) { this.combo.count = 0; this.combo.mult = 1; } }
+      this._achT += ddt;
+      if (this._achT > 600) { this._achT = 0; this._checkAch(); }
+      if (this._sndT > 0) this._sndT -= ddt;
+
       this.spawnTimer -= ddt;
       if (this.units.length < this.maxUnits && this.spawnTimer <= 0) { this.spawnUnit(); this.spawnTimer = 170; }
 
@@ -304,8 +366,9 @@
       const harvest = this.harvestActive();
       const hcols = [];
       if (harvest) {
-        if (this.pointer.active) hcols.push({ x: this.pointer.x, y: this.pointer.y, r: this.pullRadius });
-        for (const p of this.poles) hcols.push({ x: p.x, y: p.y, r: this.pullRadius });
+        const R = this.effRadius();
+        if (this.pointer.active) hcols.push({ x: this.pointer.x, y: this.pointer.y, r: R });
+        for (const p of this.poles) hcols.push({ x: p.x, y: p.y, r: R });
       }
 
       for (let i = this.poles.length - 1; i >= 0; i--) { this.poles[i].life -= ddt; if (this.poles[i].life <= 0) this.poles.splice(i, 1); }
@@ -343,17 +406,24 @@
         }
         if (done) continue;
 
-        // récolte active -> soute
+        // récolte active -> soute (avec combo)
         for (const c of hcols) {
           const dx = c.x - u.x, dy = c.y - u.y, d = Math.hypot(dx, dy) + 0.001;
           if (d < CONST.COLLECT_DIST) {
-            const amt = u.rar.value * this.incomeMult;
+            this.combo.count += 1;
+            this.combo.timer = 1400;
+            this.combo.mult = 1 + Math.min(this.combo.count, 100) * 0.04;
+            if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
+            const amt = u.rar.value * this.incomeMult * this.combo.mult;
             this.session.storage += 1; this.session.storageValue += amt; this.state.collected += 1; this.spawnFx(u, amt);
+            if (this._sndT <= 0) { this.snd("combo", this.combo.count); this._sndT = 45; }
+            if (u.rar.key === "legendary") this.addShake(4);
             this.units.splice(i, 1); done = true;
             if (this.session.storage >= this.storageMax) this.endHarvest("full");
             break;
           }
-          if (d < c.r) { const f = this.pullStrength * (1 - d / c.r) * 0.012; u.vx += (dx / d) * f * ddt; u.vy += (dy / d) * f * ddt; }
+          const es = this.effStrength();
+          if (d < c.r) { const f = es * (1 - d / c.r) * 0.012; u.vx += (dx / d) * f * ddt; u.vy += (dy / d) * f * ddt; }
         }
         if (done) continue;
 

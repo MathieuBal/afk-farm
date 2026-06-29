@@ -154,6 +154,9 @@
   let hintHidden = false;
   function hideHint() { if (hintHidden) return; hintHidden = true; const h = document.getElementById("hint"); if (h) h.style.opacity = "0"; }
 
+  // initialise l'audio dès la première interaction (politique navigateur)
+  window.addEventListener("pointerdown", () => { if (AFK.audio) AFK.audio.init(); }, { once: true });
+
   /* ---------- rendu de scène ---------- */
   function drawPole(p) {
     const a = p.life / p.maxLife;
@@ -190,20 +193,44 @@
   function drawPointer() {
     if (!game.pointer.active) return;
     const x = game.pointer.x, y = game.pointer.y;
+    const surging = game.surgeBoost > 1;
     ctx.save();
-    ctx.strokeStyle = hexA(curAccent, 0.32); ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.arc(x, y, game.pullRadius, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = surging ? hexA("#fb7185", 0.5) : hexA(curAccent, 0.32);
+    ctx.lineWidth = surging ? 2.5 : 1.5;
+    ctx.beginPath(); ctx.arc(x, y, game.effRadius(), 0, Math.PI * 2); ctx.stroke();
     const g = ctx.createRadialGradient(x, y, 0, x, y, 30);
-    g.addColorStop(0, hexA(curAccent, 0.55)); g.addColorStop(1, hexA(curAccent, 0));
+    g.addColorStop(0, hexA(surging ? "#fb7185" : curAccent, 0.55)); g.addColorStop(1, hexA(curAccent, 0));
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 30, 0, Math.PI * 2); ctx.fill();
+    // combo près du pointeur
+    if (game.session.harvesting && game.combo.count > 1) {
+      ctx.fillStyle = "#fb923c"; ctx.textAlign = "center";
+      ctx.font = "800 " + (16 + Math.min(game.combo.count, 40) * 0.4) + "px 'Segoe UI',sans-serif";
+      ctx.fillText("🔥×" + game.combo.count, x, y - game.effRadius() - 10);
+    }
+    ctx.restore();
+  }
+
+  function drawSurgeRing() {
+    if (game.surgeRing <= 0) return;
+    const x = game.pointer.active ? game.pointer.x : W / 2;
+    const y = game.pointer.active ? game.pointer.y : H * 0.4;
+    const p = 1 - game.surgeRing;            // 0 -> 1
+    const r = 30 + p * Math.max(W, H) * 0.5;
+    ctx.save();
+    ctx.globalAlpha = game.surgeRing * 0.7;
+    ctx.strokeStyle = "#fb7185"; ctx.lineWidth = 6 * game.surgeRing + 1;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
   }
 
   let curAccent = "#22d3ee";
 
   function renderScene(t) {
+    ctx.save();
+    if (game.shake > 0.1) ctx.translate((Math.random() - 0.5) * game.shake, (Math.random() - 0.5) * game.shake);
     drawBackground(t);
     field.render(ctx);
+    drawSurgeRing();
     for (const p of game.poles) drawPole(p);
     for (const d of game.drones) drawDrone(d);
     for (const u of game.units) drawUnit(u);
@@ -216,6 +243,7 @@
     ctx.textAlign = "center"; ctx.font = "700 15px 'Segoe UI', sans-serif";
     for (const f of game.floats) { ctx.globalAlpha = Math.max(0, f.life / f.max); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y); }
     ctx.globalAlpha = 1;
+    ctx.restore();
   }
 
   /* ---------- boucle ---------- */

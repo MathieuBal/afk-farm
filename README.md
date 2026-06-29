@@ -32,6 +32,12 @@ Lance une **session de récolte** puis balaie l'écran pour aimanter les unités
 temporaire (max 6, clin d'œil à Sensoria). Les **drones** récoltent en parallèle,
 même hors session (l'AFK passif).
 
+Deux couches de skill viennent récompenser la récolte active :
+- 🔥 **Combo** : des captures rapides et enchaînées font monter un multiplicateur
+  (jusqu'à ×5) appliqué à la valeur encaissée.
+- 💥 **Surge** : une décharge magnétique (coût en énergie + recharge) qui double
+  la portée et la force pendant quelques secondes.
+
 ### 🌳 Arbre de compétences (façon PoE, quasi-illimité)
 Plus de 600 nœuds générés de façon déterministe sur 6 branches radiales avec
 forks et liens croisés, **pannable et zoomable**. Les nœuds se paient en Lumens
@@ -51,6 +57,11 @@ complet débloque le **biome** suivant et un **multiplicateur permanent**.
 Réinitialise Lumens, projets et arbre pour gagner des **◆ Cores** qui boostent
 **tout** en permanence, plus 4 améliorations permanentes (Mémoire magnétique,
 Flotte permanente, Aimant résiduel, Distorsion temporelle).
+
+### 👤 Profil, succès & son
+22 **succès** à débloquer (chacun **+2 % de revenu global** permanent, donc
+corrélé), des **statistiques** détaillées, et des **effets sonores synthétisés**
+(Web Audio, aucun fichier) avec interrupteur. Accessible via le bouton 👤.
 
 ### 🌠 Biomes & paliers de Lumens
 6 biomes, chacun avec son **fond animé**, sa **couleur** et son **palier de
@@ -73,24 +84,27 @@ revenu = valeur_unité × biome × arbre × projets × (prestige + perks)
 
 ## Lancer / déployer
 - **Local** : sers le dossier (`python3 -m http.server`) puis ouvre la page.
-- **GitHub Pages** : le workflow `.github/workflows/deploy-pages.yml` publie le
-  site automatiquement. Active *Pages → Source : GitHub Actions* dans les
-  réglages du dépôt.
-- **Installer** : depuis le navigateur mobile, « Ajouter à l'écran d'accueil ».
+- **GitHub Pages** : voir le guide pas-à-pas **[DEPLOY.md](DEPLOY.md)**. En bref :
+  *Settings → Pages → Deploy from a branch → `main` / `/(root)`*. L'adresse est
+  toujours `https://mathieubal.github.io/afk-farm/` (le `/` final compte).
+- **Installer (PWA)** : depuis le navigateur mobile, « Ajouter à l'écran
+  d'accueil » — plein écran + hors-ligne.
 
 ## Architecture
 ```
 index.html · manifest.webmanifest · sw.js · icon.svg
 css/style.css
 js/
-  state.js     — sauvegarde, migration, formats, PRNG déterministe
-  config.js    — raretés, biomes, projets, perks de prestige
-  skilltree.js — génération de l'arbre + agrégation des effets
-  field.js     — champ de grains magnétique (physique façon Sensoria)
-  game.js      — moteur : économie corrélée, unités, drones, projets, prestige
-  tree-ui.js   — vue de l'arbre (canvas pan/zoom/tap)
-  ui.js        — HUD, navigation, panneaux Chantier & Prestige, toasts
-  main.js      — canvas, fonds de biome, entrées, boucle, PWA
+  state.js        — sauvegarde, migration, formats, PRNG déterministe
+  config.js       — raretés, biomes, projets multi-pièces, perks de prestige
+  audio.js        — effets sonores synthétisés (Web Audio)
+  achievements.js — succès + bonus corrélé
+  skilltree.js    — génération de l'arbre + agrégation des effets
+  field.js        — champ de grains magnétique (physique façon Sensoria)
+  game.js         — moteur : économie, session, combo, surge, drones, projets, prestige
+  tree-ui.js      — vue de l'arbre (canvas pan/zoom/tap)
+  ui.js           — HUD, navigation, panneaux Chantier / Prestige / Profil
+  main.js         — canvas, fonds de biome, juice, entrées, boucle, PWA
 ```
 
 Physique en *Structure of Arrays* (ressort de rappel, attraction en 1/distance

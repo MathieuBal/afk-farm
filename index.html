@@ -33,6 +33,7 @@
       <span class="cores">◆ <span id="cores-hud">0</span></span>
     </div>
   </header>
+  <button id="profile-btn" aria-label="Profil">👤</button>
 
   <div id="hint"><b>Lance la récolte</b> puis balaie pour aimanter · <b>double-tap</b> = pôle</div>
 
@@ -61,7 +62,10 @@
       <div class="g"><span class="g-ic">⏱️</span><div class="bar"><i id="bar-timer"></i></div></div>
     </div>
     <div class="store-txt" id="store-txt">Prêt</div>
-    <button id="harvest-btn">⚡ Lancer la récolte</button>
+    <div class="harvest-row">
+      <button id="harvest-btn">⚡ Lancer la récolte</button>
+      <button id="surge-btn" aria-label="Surge">💥</button>
+    </div>
   </div>
 
   <!-- Bottom nav -->
@@ -76,6 +80,8 @@
 
   <script src="js/state.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/achievements.js"></script>
   <script src="js/skilltree.js"></script>
   <script src="js/field.js"></script>
   <script src="js/game.js"></script>

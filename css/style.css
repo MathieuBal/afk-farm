@@ -52,6 +52,30 @@ html, body {
 .sub .rate #rate-count { color: var(--gold); font-weight: 700; }
 .sub .cores { color: #cbb5ff; font-weight: 700; }
 
+#profile-btn {
+  position: fixed; z-index: 13;
+  top: max(12px, env(safe-area-inset-top)); right: 14px;
+  width: 40px; height: 40px; border-radius: 12px; cursor: pointer;
+  background: rgba(12,16,32,0.7); border: 1px solid var(--line); color: var(--ink);
+  font-size: 18px; backdrop-filter: blur(8px);
+}
+
+/* Profil : succès + stats */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.stat { background: rgba(20,26,50,0.5); border: 1px solid var(--line); border-radius: 11px; padding: 9px 11px; }
+.stat .k { font-size: 11px; color: var(--muted); }
+.stat .v { font-size: 16px; font-weight: 800; }
+.mute-row { display: flex; align-items: center; justify-content: space-between; background: rgba(20,26,50,0.5); border: 1px solid var(--line); border-radius: 11px; padding: 11px 14px; margin-bottom: 16px; }
+.mute-row button { background: var(--accent); color: #06070f; border: none; border-radius: 8px; padding: 6px 14px; font-weight: 800; cursor: pointer; }
+.ach-grid { display: flex; flex-direction: column; gap: 8px; }
+.ach { display: grid; grid-template-columns: 38px 1fr; gap: 11px; align-items: center; padding: 10px; border-radius: 11px; background: rgba(20,26,50,0.45); border: 1px solid rgba(120,140,220,0.1); }
+.ach.locked { opacity: 0.42; }
+.ach.got { border-color: rgba(110,231,183,0.4); }
+.ach-ic { font-size: 22px; text-align: center; }
+.ach-name { font-weight: 700; font-size: 14px; }
+.ach-name .chk { color: #6ee7b7; }
+.ach-desc { font-size: 11.5px; color: var(--muted); }
+
 #hint {
   position: fixed; left: 50%; transform: translateX(-50%);
   bottom: calc(var(--nav-h) + max(14px, env(safe-area-inset-bottom)) + 150px);
@@ -112,8 +136,18 @@ html, body {
 #bar-storage { background: linear-gradient(90deg, #34d399, #22d3ee); }
 #bar-timer { background: linear-gradient(90deg, var(--c1), var(--c2)); }
 #harvest .store-txt { font-size: 11.5px; color: var(--muted); font-weight: 600; }
+#harvest .harvest-row { display: flex; gap: 8px; width: 100%; align-items: stretch; }
+#surge-btn {
+  flex: 0 0 56px; border: none; border-radius: 14px; cursor: pointer; font-size: 22px;
+  background: linear-gradient(135deg, #fb7185, #f97316); color: #fff;
+  box-shadow: 0 8px 22px rgba(249,115,22,0.35); transition: filter 0.2s ease, transform 0.1s ease;
+  position: relative; overflow: hidden;
+}
+#surge-btn:active { transform: scale(0.96); }
+#surge-btn.cd { filter: grayscale(0.8) brightness(0.55); cursor: default; }
+#surge-btn .cd-fill { position: absolute; left: 0; bottom: 0; width: 100%; background: rgba(0,0,0,0.45); }
 #harvest-btn {
-  width: 100%; padding: 14px; border: none; border-radius: 14px; cursor: pointer;
+  flex: 1; padding: 14px; border: none; border-radius: 14px; cursor: pointer;
   font-size: 16px; font-weight: 800; color: #06070f;
   background: linear-gradient(135deg, var(--c1), var(--c2));
   box-shadow: 0 8px 26px rgba(0,0,0,0.45); transition: transform 0.1s ease, filter 0.2s ease;

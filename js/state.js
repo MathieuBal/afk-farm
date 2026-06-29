@@ -21,6 +21,8 @@
       perks: {},          // perks de prestige (id -> niveau)
       projects: {},       // état des projets : id -> {pi, p, building}
       projectIndex: 0,    // projet courant dans la chaîne
+      achievements: {},   // succès débloqués (id -> 1)
+      stats: { sessions: 0, surges: 0, comboMax: 0 },
       lastSave: Date.now(),
     };
   }

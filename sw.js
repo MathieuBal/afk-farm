@@ -1,5 +1,5 @@
 /* AFK Farm — service worker : cache des ressources pour le jeu hors-ligne. */
-const CACHE = "afk-farm-v3";
+const CACHE = "afk-farm-v4";
 const ASSETS = [
   "./",
   "index.html",
@@ -8,6 +8,8 @@ const ASSETS = [
   "css/style.css",
   "js/state.js",
   "js/config.js",
+  "js/audio.js",
+  "js/achievements.js",
   "js/skilltree.js",
   "js/field.js",
   "js/game.js",

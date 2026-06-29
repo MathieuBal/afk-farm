@@ -22,10 +22,13 @@
       this._lastLumens = -1;
 
       this.harvestBtn = this.$("harvest-btn");
+      this.surgeBtn = this.$("surge-btn");
       this.barEnergy = this.$("bar-energy");
       this.barStorage = this.$("bar-storage");
       this.barTimer = this.$("bar-timer");
       this.storeTxt = this.$("store-txt");
+      this.surgeBtn.innerHTML = '💥<span class="cd-fill"></span>';
+      this.surgeCdFill = this.surgeBtn.querySelector(".cd-fill");
 
       this.bindNav();
       this.bindHarvest();
@@ -36,11 +39,16 @@
     bindHarvest() {
       this.harvestBtn.addEventListener("click", () => {
         const g = this.game;
+        if (AFK.audio) AFK.audio.init();
         if (g.session.harvesting) return;
         if (!g.startHarvest()) {
           this.harvestBtn.classList.add("shake");
           setTimeout(() => this.harvestBtn.classList.remove("shake"), 400);
         }
+      });
+      this.surgeBtn.addEventListener("click", () => {
+        if (AFK.audio) AFK.audio.init();
+        this.game.triggerSurge();
       });
     }
 
@@ -58,6 +66,7 @@
       this.$("nav-tree").addEventListener("click", set("tree"));
       this.$("nav-build").addEventListener("click", set("build"));
       this.$("nav-prestige").addEventListener("click", set("prestige"));
+      this.$("profile-btn").addEventListener("click", () => { if (AFK.audio) AFK.audio.init(); this.setView(this.view === "profile" ? "field" : "profile"); });
       this.$("tree-close").addEventListener("click", set("field"));
       this.$("sheet-close").addEventListener("click", set("field"));
       this.$("reset-btn").addEventListener("click", () => {
@@ -73,10 +82,11 @@
       treeHdr.classList.toggle("hidden", v !== "tree");
       if (v === "tree") this.treeUI.centerOnFrontier();
 
-      const isSheet = v === "build" || v === "prestige";
+      const isSheet = v === "build" || v === "prestige" || v === "profile";
       sheet.classList.toggle("open", isSheet);
       if (v === "build") this.renderBuild();
       if (v === "prestige") this.renderPrestige();
+      if (v === "profile") this.renderProfile();
 
       // la récolte n'est visible/active que sur l'écran terrain
       this.game.fieldActive = v === "field";
@@ -181,6 +191,45 @@
       });
     }
 
+    /* ---------- panneau Profil (succès + stats + son) ---------- */
+    renderProfile() {
+      const g = this.game, st = g.state;
+      const el = this.$("sheet-body");
+      this.$("sheet-title").textContent = "👤 Profil";
+      const A = AFK.achievements;
+      const got = A.unlockedCount(st);
+      const audioOn = AFK.audio && AFK.audio.isEnabled();
+
+      const stat = (k, v) => '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>';
+      let stats =
+        stat("Lumens cumulés", fmt(st.totalEver)) +
+        stat("Unités récoltées", fmt(st.collected)) +
+        stat("Meilleur biome", C.biome(st.bestBiome).name) +
+        stat("Prestiges ◆", fmt(st.cores)) +
+        stat("Sessions", fmt(st.stats.sessions)) +
+        stat("Surges", fmt(st.stats.surges)) +
+        stat("Combo max", "×" + st.stats.comboMax) +
+        stat("Nœuds · drones", g.allocatedCount() + " · " + g.droneCount);
+
+      let achs = "";
+      for (const a of A.LIST) {
+        const ok = !!st.achievements[a.id];
+        achs += '<div class="ach ' + (ok ? "got" : "locked") + '"><span class="ach-ic">' + a.icon + '</span>' +
+          '<div><div class="ach-name">' + a.name + (ok ? ' <span class="chk">✓</span>' : '') + '</div>' +
+          '<div class="ach-desc">' + a.desc + '</div></div></div>';
+      }
+
+      el.innerHTML =
+        '<p class="sheet-intro">Chaque succès débloqué accorde <b>+' + Math.round(A.BONUS * 100) + '% de revenu global</b> permanent. Bonus actuel : <b>×' + g.achievementMult.toFixed(2) + '</b>.</p>' +
+        '<div class="mute-row"><span>🔊 Sons</span><button id="mute-btn">' + (audioOn ? "Activés" : "Coupés") + '</button></div>' +
+        '<div class="stats-grid">' + stats + '</div>' +
+        '<div class="perks-title">Succès (' + got + '/' + A.LIST.length + ')</div>' +
+        '<div class="ach-grid">' + achs + '</div>';
+
+      const mb = this.$("mute-btn");
+      if (mb) mb.addEventListener("click", () => { if (AFK.audio) { const on = AFK.audio.toggle(); mb.textContent = on ? "Activés" : "Coupés"; } });
+    }
+
     /* ---------- toasts ---------- */
     maybeOffline() {
       const g = this.game;
@@ -227,23 +276,27 @@
       this.coresEl.textContent = fmt(g.state.cores);
 
       // jauges de session de récolte
-      const s = g.session;
+      const s = g.session, ss = g.surgeState;
       this.barEnergy.style.width = Math.max(0, (g.state.energy / g.energyMax) * 100) + "%";
       if (s.harvesting) {
         this.barStorage.style.width = Math.min(100, (s.storage / g.storageMax) * 100) + "%";
         this.barTimer.style.width = Math.max(0, (s.timer / g.sessionTime) * 100) + "%";
-        this.storeTxt.textContent = s.storage + "/" + g.storageMax + " · +" + fmt(s.storageValue) + " ✦";
+        const combo = g.combo.count > 1 ? "🔥×" + g.combo.count + " (×" + g.combo.mult.toFixed(1) + ") · " : "";
+        this.storeTxt.textContent = combo + s.storage + "/" + g.storageMax + " · +" + fmt(s.storageValue) + " ✦";
         this.harvestBtn.classList.add("active");
         this.harvestBtn.textContent = "Récolte… " + Math.ceil(s.timer) + "s";
       } else {
         this.barStorage.style.width = "0%";
         this.barTimer.style.width = "100%";
         const ready = g.state.energy >= 1;
-        this.storeTxt.textContent = ready ? "Prêt · soute " + g.storageMax : "Recharge…";
+        this.storeTxt.textContent = ready ? "Prêt · soute " + g.storageMax + " · énergie " + Math.round(g.state.energy) + "/" + g.energyMax : "Recharge…";
         this.harvestBtn.classList.remove("active");
         this.harvestBtn.classList.toggle("dim", !ready);
         this.harvestBtn.textContent = "⚡ Lancer la récolte";
       }
+      const surgeReady = s.harvesting && ss.cd <= 0 && g.state.energy >= ss.cost;
+      this.surgeBtn.classList.toggle("cd", !surgeReady);
+      this.surgeCdFill.style.height = s.harvesting && ss.cd > 0 ? (ss.cd / ss.cdMax * 100) + "%" : "0%";
 
       // progression de la pièce en cours si le panneau est ouvert
       if (this.view === "build") {
