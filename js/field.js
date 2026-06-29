@@ -15,23 +15,29 @@
   const TAIL = 14;           // longueur de la traînée (lignes de champ)
   const MAX_SPEED = 0.5;     // vitesse de référence pour le binning couleur
 
+  function hex2rgb(h) {
+    h = h.replace("#", "");
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  }
+
   class GrainField {
     constructor() {
       this.spacing = 26;
       this.n = 0;
       this.hx = this.hy = this.px = this.py = this.vx = this.vy = null;
       this.bucketColors = [];
-      this._buildColors();
+      this.setTheme("#22d3ee", "#d946ef");
     }
 
-    _buildColors() {
-      // dégradé cyan -> magenta, alpha croissant avec la vitesse
+    // dégradé c1 -> c2, alpha croissant avec la vitesse (recoloré par biome)
+    setTheme(c1, c2) {
+      const a1 = hex2rgb(c1), a2 = hex2rgb(c2);
       const c = [];
       for (let b = 0; b < BUCKETS; b++) {
         const t = b / (BUCKETS - 1);
-        const r = Math.round(34 + t * (217 - 34));
-        const g = Math.round(211 + t * (70 - 211));
-        const bl = Math.round(238 + t * (239 - 238));
+        const r = Math.round(a1[0] + t * (a2[0] - a1[0]));
+        const g = Math.round(a1[1] + t * (a2[1] - a1[1]));
+        const bl = Math.round(a1[2] + t * (a2[2] - a1[2]));
         const a = (0.16 + t * 0.62).toFixed(3);
         c.push(`rgba(${r},${g},${bl},${a})`);
       }

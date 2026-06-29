@@ -1,65 +1,89 @@
 # 🧲 AFK Farm — Récolte magnétique
 
-Un petit jeu **idle / incrémental** jouable au doigt comme à la souris, inspiré
-de l'effet **Champ magnétique** du projet [Sensoria](https://github.com/MathieuBal/Sensoria) :
-des milliers de grains dessinent les lignes de champ et sont attirés vers les
-pôles. Ici, ce principe devient le cœur d'une boucle de jeu.
+Un jeu **idle / incrémental** mobile-first, jouable au doigt comme à la souris,
+inspiré de l'effet **Champ magnétique** du projet
+[Sensoria](https://github.com/MathieuBal/Sensoria) : des milliers de grains
+dessinent les lignes de champ et sont attirés vers les pôles. Ici, ce principe
+devient le cœur d'une boucle de jeu profonde et entièrement corrélée.
+
+> 100 % vanilla (Canvas 2D), aucun build. **PWA installable**, jouable
+> hors-ligne, déployée sur **GitHub Pages**.
 
 ## Le concept
 
-Ton pointeur (doigt ou souris) est un **pôle magnétique** qui :
+Ton pointeur (doigt / souris) est un **pôle magnétique** qui :
 
 1. **courbe le champ de grains** en arrière-plan — la signature visuelle de Sensoria ;
-2. **aspire et récolte des unités** qui flottent sur le terrain.
+2. **aspire et récolte des unités** flottantes, converties en **Lumens ✦**.
 
-Chaque unité récoltée rapporte des **Lumens ✦**, la monnaie qui sert à acheter
-des améliorations. Plus tu progresses, plus la récolte s'automatise : c'est un
-vrai jeu **AFK**.
+Tout ce que tu gagnes alimente quatre systèmes interconnectés.
 
-## Comment jouer
+## Les systèmes (tout est corrélé)
 
-- **Déplace** ton doigt / ta souris : les unités proches sont aimantées vers toi
-  et récoltées au contact.
-- **Double-tap (ou double-clic)** : pose un **pôle magnétique** temporaire qui
-  récolte tout seul à cet endroit (max 6, clin d'œil à Sensoria).
-- Ouvre **🛠️ Améliorations** pour dépenser tes Lumens.
+### 🧲 Récolte
+Balaie l'écran pour aimanter les unités (4 raretés : Commun → Légendaire).
+**Double-tap** = pose un pôle magnétique temporaire qui récolte tout seul
+(max 6, clin d'œil à Sensoria).
 
-## Améliorations
+### 🌳 Arbre de compétences (façon PoE, quasi-illimité)
+Plus de 600 nœuds générés de façon déterministe sur 6 branches radiales avec
+forks et liens croisés, **pannable et zoomable**. Les nœuds se paient en Lumens
+(coût exponentiel) et fournissent portée, force, densité, polarité (chance),
+ingénierie (vitesse de construction), **baies de drones** (la flotte AFK) et des
+multiplicateurs notables/keystones.
 
-| Amélioration | Effet |
-|---|---|
-| 🧲 **Champ magnétique** | Élargit le rayon d'attraction |
-| ⚡ **Force magnétique** | Aspire les unités plus vite et de plus loin |
-| ✦ **Densité du champ** | Plus d'unités sur le terrain |
-| 💎 **Raffinage** | Chaque unité vaut plus de Lumens |
-| 🛰️ **Drone autonome** | Un pôle qui chasse et récolte tout seul (AFK) |
-| 🎲 **Polarité rare** | Plus d'unités rares et précieuses |
+### 🛠️ Chantier (le cœur AFK profond)
+Répare et construis une flotte de plus en plus grandiose :
+**Vaisseau → Station → Croiseur → Base planétaire → Planète → Système → …**
+Chaque ouvrage a un **temps de construction** (15 s au départ, **améliorable**
+via l'arbre) qui avance **en temps réel, même hors-ligne**. Le terminer débloque
+le **biome** suivant et un **multiplicateur permanent**.
 
-Les unités existent en 4 raretés — Commun, Rare, Épique, Légendaire — de valeur
-croissante.
+### 🌌 Prestige (Singularité)
+Réinitialise Lumens, projets et arbre pour gagner des **◆ Cores** qui boostent
+**tout** en permanence, plus 4 améliorations permanentes (Mémoire magnétique,
+Flotte permanente, Aimant résiduel, Distorsion temporelle).
+
+### 🌠 Biomes & paliers de Lumens
+6 biomes, chacun avec son **fond animé**, sa **couleur** et son **palier de
+monnaie** (Lumens → Photons → Plasma → Quanta → Tachyons → Singulons), pour un
+revenu **×15** par palier :
+
+Ceinture d'astéroïdes · Nébuleuse Pourpre · Amas Stellaire · Horizon du Trou Noir
+· Bras Galactique · Singularité.
+
+### La formule
+```
+revenu = valeur_unité × biome × arbre × projets × (prestige + perks)
+```
 
 ## AFK & sauvegarde
+- Les **drones** récoltent en continu, même fenêtre fermée.
+- Les **projets** se construisent hors-ligne.
+- **Sauvegarde automatique** (localStorage) + **gains hors-ligne** plafonnés
+  (8 h de base, extensible par prestige).
 
-- Les **drones** récoltent en continu, même quand tu ne touches à rien.
-- La progression est **sauvegardée automatiquement** (localStorage).
-- À ton retour, tes drones t'offrent les **gains hors-ligne** accumulés
-  (plafonnés à 8 h).
+## Lancer / déployer
+- **Local** : sers le dossier (`python3 -m http.server`) puis ouvre la page.
+- **GitHub Pages** : le workflow `.github/workflows/deploy-pages.yml` publie le
+  site automatiquement. Active *Pages → Source : GitHub Actions* dans les
+  réglages du dépôt.
+- **Installer** : depuis le navigateur mobile, « Ajouter à l'écran d'accueil ».
 
-## Technique
-
-100 % vanilla, aucun build : ouvre simplement `index.html` (ou sers le dossier).
-
+## Architecture
 ```
-index.html
+index.html · manifest.webmanifest · sw.js · icon.svg
 css/style.css
 js/
-  state.js   — état, sauvegarde, formatage
-  config.js  — raretés + arbre d'améliorations
-  field.js   — champ de grains magnétique (physique façon Sensoria)
-  game.js    — unités, drones, récolte, achats, hors-ligne
-  ui.js      — HUD + boutique
-  main.js    — canvas, entrées, boucle de rendu
+  state.js     — sauvegarde, migration, formats, PRNG déterministe
+  config.js    — raretés, biomes, projets, perks de prestige
+  skilltree.js — génération de l'arbre + agrégation des effets
+  field.js     — champ de grains magnétique (physique façon Sensoria)
+  game.js      — moteur : économie corrélée, unités, drones, projets, prestige
+  tree-ui.js   — vue de l'arbre (canvas pan/zoom/tap)
+  ui.js        — HUD, navigation, panneaux Chantier & Prestige, toasts
+  main.js      — canvas, fonds de biome, entrées, boucle, PWA
 ```
 
-Rendu **Canvas 2D**, physique en *Structure of Arrays* (ressort de rappel,
-attraction en 1/distance plafonnée, amortissement exponentiel), 100 % tactile.
+Physique en *Structure of Arrays* (ressort de rappel, attraction en 1/distance
+plafonnée, amortissement exponentiel), 100 % tactile.

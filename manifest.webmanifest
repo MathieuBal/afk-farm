@@ -1,0 +1,14 @@
+{
+  "name": "AFK Farm — Récolte magnétique",
+  "short_name": "AFK Farm",
+  "description": "Idle de récolte magnétique : aimante des unités, construis une flotte cosmique, déploie un arbre de compétences infini et prestige.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#06070f",
+  "theme_color": "#06070f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

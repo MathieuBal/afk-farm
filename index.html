@@ -4,46 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#06070f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="description" content="AFK Farm — un idle de récolte magnétique : aimante des unités, construis une flotte cosmique, déploie un arbre de compétences infini et prestige." />
   <title>AFK Farm — Récolte magnétique</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <canvas id="stage"></canvas>
+  <canvas id="tree-canvas" style="display:none"></canvas>
 
   <!-- HUD -->
   <header id="hud">
     <div class="lumens">
       <span class="spark">✦</span>
       <span id="lumens-count">0</span>
+      <span id="lumen-name" class="tier">Lumens</span>
     </div>
-    <div class="rate">Récolte auto&nbsp;: <span id="rate-count">0</span>/s</div>
+    <div class="sub">
+      <span class="biome" id="biome-name">Ceinture d'astéroïdes</span>
+      <span class="dot">·</span>
+      <span class="rate">auto <span id="rate-count">0</span>/s</span>
+      <span class="dot">·</span>
+      <span class="cores">◆ <span id="cores-hud">0</span></span>
+    </div>
   </header>
 
-  <div id="hint">Déplace ton doigt / ta souris pour aimanter les unités&nbsp;· <b>double-tap</b> = pôle magnétique</div>
+  <div id="hint">Balaie l'écran pour aimanter les unités · <b>double-tap</b> = pôle</div>
 
-  <!-- Shop toggle -->
-  <button id="shop-toggle" aria-label="Améliorations">🛠️<span class="label">Améliorations</span></button>
+  <!-- Tree header (overlay au-dessus du canvas d'arbre) -->
+  <div id="tree-header" class="hidden">
+    <div class="th-title">🌳 Arbre de compétences</div>
+    <div class="th-lumens">✦ <span id="tree-lumens">0</span></div>
+    <button id="tree-close" aria-label="Fermer">✕</button>
+  </div>
 
-  <!-- Shop drawer -->
-  <aside id="shop" class="closed">
-    <div class="shop-head">
-      <h2>Améliorations</h2>
-      <button id="shop-close" aria-label="Fermer">✕</button>
+  <!-- Bottom sheet (Chantier / Prestige) -->
+  <section id="sheet">
+    <div class="sheet-head">
+      <h2 id="sheet-title">Chantier</h2>
+      <button id="sheet-close" aria-label="Fermer">✕</button>
     </div>
-    <div id="shop-list"></div>
-    <div class="shop-foot">
-      <span id="stat-collected">0 unités récoltées</span>
-      <button id="reset-btn">Réinitialiser</button>
-    </div>
-  </aside>
+    <div id="sheet-body"></div>
+    <div class="sheet-foot"><button id="reset-btn">Réinitialiser la partie</button></div>
+  </section>
 
-  <!-- Welcome back toast -->
-  <div id="toast" class="hidden"></div>
+  <!-- Bottom nav -->
+  <nav id="nav">
+    <button id="nav-field" class="active"><span class="ic">🧲</span><span class="lb">Récolte</span></button>
+    <button id="nav-tree"><span class="ic">🌳</span><span class="lb">Arbre</span></button>
+    <button id="nav-build"><span class="ic">🛠️</span><span class="lb">Chantier</span></button>
+    <button id="nav-prestige"><span class="ic">🌌</span><span class="lb">Prestige</span></button>
+  </nav>
+
+  <div id="toasts"></div>
 
   <script src="js/state.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/skilltree.js"></script>
   <script src="js/field.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/tree-ui.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/main.js"></script>
 </body>
