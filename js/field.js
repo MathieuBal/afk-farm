@@ -26,10 +26,9 @@
       this.n = 0;
       this.hx = this.hy = this.px = this.py = this.vx = this.vy = null;
       this.bucketColors = [];
-      // grains « chargés » = unités récoltables intégrées à la grille
-      this.charged = [];           // [{ i, rar }]
-      this.chargedSet = new Set();
-      this.chargedFlag = null;     // Uint8Array
+      // chaque grain de la grille EST une parcelle de Lumens
+      this.rar = null;   // Int8Array : rareté par grain
+      this.cool = null;  // Float32Array : repousse (ms) après absorption
       this.setTheme("#22d3ee", "#d946ef");
     }
 
@@ -62,9 +61,8 @@
       this.py = new Float32Array(n);
       this.vx = new Float32Array(n);
       this.vy = new Float32Array(n);
-      this.chargedFlag = new Uint8Array(n);
-      this.charged.length = 0;
-      this.chargedSet.clear();
+      this.rar = new Int8Array(n);
+      this.cool = new Float32Array(n);
       let i = 0;
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
@@ -80,29 +78,34 @@
     simulate(dt, sources) {
       dt = Math.min(dt, 40);
       const damp = Math.exp(-dt / DAMP_TAU);
-      const { hx, hy, px, py, vx, vy, n, chargedFlag } = this;
+      const { hx, hy, px, py, vx, vy, n, cool } = this;
       const ns = sources.length;
       for (let i = 0; i < n; i++) {
-        // les grains chargés cherchent activement les collecteurs (ressort plus
-        // souple, attraction plus forte, plafond plus haut) pour être récoltés
-        const ch = chargedFlag[i];
-        const spring = ch ? SPRING * 0.22 : SPRING;
-        const fb = ch ? 2.2 : 1;
-        const cap = ch ? MAX_ACCEL * 2.4 : MAX_ACCEL;
-        let ax = (hx[i] - px[i]) * spring;
-        let ay = (hy[i] - py[i]) * spring;
+        // grain qui vient d'être absorbé : il repousse à sa place (repos)
+        if (cool[i] > 0) {
+          cool[i] -= dt;
+          px[i] += (hx[i] - px[i]) * 0.25;
+          py[i] += (hy[i] - py[i]) * 0.25;
+          vx[i] = 0; vy[i] = 0;
+          continue;
+        }
+        // grain vif : ressort net (lattice de Sensoria) + attraction renforcée
+        // pour qu'il afflue dans l'aimant et soit absorbé
+        let ax = (hx[i] - px[i]) * SPRING;
+        let ay = (hy[i] - py[i]) * SPRING;
         for (let s = 0; s < ns; s++) {
           const src = sources[s];
           const dx = src.x - px[i];
           const dy = src.y - py[i];
           const d = Math.sqrt(dx * dx + dy * dy) + 0.01;
           if (d < src.r) {
-            const f = (src.strength * (1 - d / src.r)) / d * fb;
+            const f = (src.strength * (1 - d / src.r)) / d * 1.8;
             ax += dx * f;
             ay += dy * f;
           }
         }
         const am = Math.hypot(ax, ay);
+        const cap = MAX_ACCEL * 2;
         if (am > cap) { const k = cap / am; ax *= k; ay *= k; }
         vx[i] = (vx[i] + ax * dt) * damp;
         vy[i] = (vy[i] + ay * dt) * damp;
@@ -111,37 +114,12 @@
       }
     }
 
-    /* ---- grains chargés (unités récoltables) ---- */
-    ensureCharged(target, pick) {
-      const c = this.charged;
-      // retire le surplus
-      while (c.length > target) {
-        const e = c.pop();
-        this.chargedSet.delete(e.i);
-        this.chargedFlag[e.i] = 0;
-      }
-      // complète
-      let guard = 0;
-      while (c.length < target && guard < target * 4 + 20) {
-        guard++;
-        const i = (Math.random() * this.n) | 0;
-        if (this.chargedSet.has(i)) continue;
-        this.chargedSet.add(i);
-        this.chargedFlag[i] = 1;
-        c.push({ i, rar: pick() });
-      }
-    }
-    dischargeAt(k) {
-      const e = this.charged[k];
-      if (!e) return;
-      this.chargedSet.delete(e.i);
-      this.chargedFlag[e.i] = 0;
-      this.charged.splice(k, 1);
-    }
-    clearCharged() {
-      for (const e of this.charged) this.chargedFlag[e.i] = 0;
-      this.charged.length = 0;
-      this.chargedSet.clear();
+    // absorption d'un grain : il disparaît un instant puis repousse à sa place
+    respawn(i, coolMs) {
+      this.cool[i] = coolMs;
+      this.px[i] = this.hx[i];
+      this.py[i] = this.hy[i];
+      this.vx[i] = 0; this.vy[i] = 0;
     }
 
     render(ctx) {

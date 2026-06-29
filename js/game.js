@@ -31,6 +31,8 @@
       this.surgeRing = 0;
       this._sndT = 0;
       this._achT = 0;
+      this._absBudget = 0;     // débit de récolte active (grains)
+      this._droneBudget = 0;   // débit de récolte des drones (grains)
 
       this.idleRate = 0;
       this.offlineGain = 0;
@@ -70,6 +72,8 @@
       this.pullRadius = Math.max(60, 130 * (1 + ts.radius));
       this.pullStrength = 0.55 * (1 + ts.strength);
       this.maxUnits = Math.round(26 + ts.density);
+      this.absorbRate = CONST.SESSION.ABSORB + ts.density * 5; // densité = débit de récolte (grains/s)
+      this.respawnCool = 600;
       this.luck = ts.luck;
       this.dronePowerMult = 1 + ts.dronePower;
       this.buildSpeed = 1 + ts.build;
@@ -240,9 +244,9 @@
       st.biome = 0; st.projectIndex = 0; st.projects = {};
       st.nodes = { core: 1 };
       this.poles.length = 0;
-      if (this.field) this.field.clearCharged();
       this.session.harvesting = false; this.session.storage = 0; this.session.storageValue = 0;
       this.applyStats();
+      this.seedGrid();
       st.energy = this.energyMax;
       this.syncDrones(true);
       this.addShake(16); this.snd("prestige");
@@ -307,13 +311,19 @@
       for (let i = 0; i < w.length; i++) { roll -= w[i]; if (roll <= 0) return RARITIES[i]; }
       return RARITIES[0];
     }
-    bindField(field) {
-      this.field = field;
-      field.ensureCharged(this.maxUnits, () => this.pickRarity());
+    bindField(field) { this.field = field; this.seedGrid(); }
+    pickRarityIndex() {
+      const w = this.rarityWeights();
+      let tot = 0; for (let i = 0; i < w.length; i++) tot += w[i];
+      let roll = Math.random() * tot;
+      for (let i = 0; i < w.length; i++) { roll -= w[i]; if (roll <= 0) return i; }
+      return 0;
     }
-    // maintient le bon nombre de grains chargés sur la grille
-    refillCharged() {
-      if (this.field) this.field.ensureCharged(this.maxUnits, () => this.pickRarity());
+    // attribue une rareté à chaque grain de la grille (selon la polarité)
+    seedGrid() {
+      const f = this.field;
+      if (!f || !f.rar) return;
+      for (let i = 0; i < f.n; i++) { f.rar[i] = this.pickRarityIndex(); f.cool[i] = 0; }
     }
 
     harvestActive() { return this.session.harvesting && this.fieldActive; }
@@ -361,14 +371,11 @@
       if (this._achT > 600) { this._achT = 0; this._checkAch(); }
       if (this._sndT > 0) this._sndT -= ddt;
 
-      // maintient les grains chargés sur la grille
-      this.refillCharged();
       const field = this.field;
 
       // collecteurs : drones (toujours -> Lumens) + pointeur/pôles (récolte -> soute)
       const drones = this.drones;
       const harvest = this.harvestActive();
-      const R = this.effRadius();
       const hcols = [];
       if (harvest) {
         if (this.pointer.active) hcols.push({ x: this.pointer.x, y: this.pointer.y });
@@ -377,59 +384,62 @@
 
       for (let i = this.poles.length - 1; i >= 0; i--) { this.poles[i].life -= ddt; if (this.poles[i].life <= 0) this.poles.splice(i, 1); }
 
-      // drones : se dirigent vers le grain chargé le plus proche, sinon errent
+      // drones : errent doucement et aspirent les grains qu'ils croisent
       for (const d of drones) {
-        let bx = null, by = null, bd = Infinity;
-        if (field) for (const e of field.charged) {
-          const x = field.px[e.i], y = field.py[e.i];
-          const dx = x - d.x, dy = y - d.y, dist = dx * dx + dy * dy;
-          if (dist < bd) { bd = dist; bx = x; by = y; }
-        }
-        let tx, ty;
-        if (bx !== null) { tx = bx; ty = by; }
-        else { d.phase += ddt * 0.001; tx = this.w / 2 + Math.cos(d.phase) * this.w * 0.3; ty = this.h / 2 + Math.sin(d.phase * 1.3) * this.h * 0.3; }
-        const dx = tx - d.x, dy = ty - d.y, dl = Math.hypot(dx, dy) + 0.001, acc = 0.0006 * this.dronePowerMult;
+        d.phase += ddt * 0.0006;
+        const tx = this.w / 2 + Math.cos(d.phase) * this.w * 0.34;
+        const ty = this.h / 2 + Math.sin(d.phase * 1.3) * this.h * 0.34;
+        const dx = tx - d.x, dy = ty - d.y, dl = Math.hypot(dx, dy) + 0.001, acc = 0.0005 * this.dronePowerMult;
         d.vx += (dx / dl) * acc * ddt; d.vy += (dy / dl) * acc * ddt;
-        const sp = Math.hypot(d.vx, d.vy), maxv = 0.5 + 0.25 * this.dronePowerMult;
+        const sp = Math.hypot(d.vx, d.vy), maxv = 0.45 + 0.2 * this.dronePowerMult;
         if (sp > maxv) { d.vx = d.vx / sp * maxv; d.vy = d.vy / sp * maxv; }
         d.x += d.vx * ddt; d.y += d.vy * ddt;
       }
 
-      // récolte des grains chargés de la grille
-      if (field) {
-        const dcap = CONST.COLLECT_DIST, dcap2 = dcap * dcap;
-        for (let k = field.charged.length - 1; k >= 0; k--) {
-          const e = field.charged[k];
-          const x = field.px[e.i], y = field.py[e.i];
-          // drones -> Lumens (toujours)
-          let hit = false;
-          for (const d of drones) {
-            const dx = x - d.x, dy = y - d.y;
-            if (dx * dx + dy * dy < dcap2) {
-              const amt = e.rar.value * this.incomeMult;
-              this.addLumens(amt); this.state.collected += 1; this.spawnFx(x, y, e.rar, amt);
-              field.dischargeAt(k); hit = true; break;
-            }
+      // absorption de la grille : les grains affluent vers les collecteurs et
+      // sont aspirés en Lumens (flux continu), à débit contrôlé, puis repoussent.
+      if (field && field.cool) {
+        const dcap2 = CONST.COLLECT_DIST * CONST.COLLECT_DIST;
+        const inc = this.incomeMult;
+        // budgets de débit (grains autorisés cette frame)
+        this._absBudget = Math.min(this._absBudget + dtSec * this.absorbRate, this.absorbRate);
+        this._droneBudget = Math.min(this._droneBudget + dtSec * this.droneCount * CONST.DRONE_RATE, this.droneCount * CONST.DRONE_RATE + 1);
+        let canStore = harvest;
+        let fxBudget = 4;
+        const n = field.n, px = field.px, py = field.py, cool = field.cool, rarA = field.rar;
+        for (let i = 0; i < n; i++) {
+          if (cool[i] > 0) continue;
+          if (this._absBudget < 1 && this._droneBudget < 1) break;
+          const x = px[i], y = py[i];
+          let toStorage = false, byDrone = false;
+          if (this._droneBudget >= 1) {
+            for (const d of drones) { const dx = x - d.x, dy = y - d.y; if (dx * dx + dy * dy < dcap2) { byDrone = true; break; } }
           }
-          if (hit) continue;
-          // récolte active -> soute (avec combo)
-          if (harvest) {
-            for (const c of hcols) {
-              const dx = x - c.x, dy = y - c.y;
-              if (dx * dx + dy * dy < dcap2) {
-                this.combo.count += 1; this.combo.timer = 1400;
-                this.combo.mult = 1 + Math.min(this.combo.count, 100) * 0.04;
-                if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
-                const amt = e.rar.value * this.incomeMult * this.combo.mult;
-                this.session.storage += 1; this.session.storageValue += amt; this.state.collected += 1; this.spawnFx(x, y, e.rar, amt);
-                if (this._sndT <= 0) { this.snd("combo", this.combo.count); this._sndT = 45; }
-                if (e.rar.key === "legendary") this.addShake(4);
-                field.dischargeAt(k);
-                if (this.session.storage >= this.storageMax) this.endHarvest("full");
-                break;
-              }
-            }
+          if (!byDrone && canStore && this._absBudget >= 1) {
+            for (const c of hcols) { const dx = x - c.x, dy = y - c.y; if (dx * dx + dy * dy < dcap2) { toStorage = true; break; } }
           }
+          if (!byDrone && !toStorage) continue;
+          const rar = RARITIES[rarA[i]] || RARITIES[0];
+          let amt = rar.value * inc;
+          if (toStorage) {
+            this._absBudget -= 1;
+            this.combo.count += 1; this.combo.timer = 1400;
+            this.combo.mult = 1 + Math.min(this.combo.count, 100) * 0.04;
+            if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
+            amt *= this.combo.mult;
+            this.session.storage += 1; this.session.storageValue += amt;
+            if (this._sndT <= 0) { this.snd("combo", this.combo.count); this._sndT = 55; }
+          } else {
+            this._droneBudget -= 1;
+            this.addLumens(amt);
+          }
+          this.state.collected += 1;
+          // FX discrets : un éclat marqué seulement pour les grains précieux
+          if ((rar.key === "epic" || rar.key === "legendary") && fxBudget > 0) { this.spawnFx(x, y, rar, amt); fxBudget--; if (rar.key === "legendary") this.addShake(3); }
+          else if (fxBudget > 0 && Math.random() < 0.04) { this.particles.push({ x, y, vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1, life: 280, max: 280, color: rar.glow }); fxBudget--; }
+          rarA[i] = this.pickRarityIndex();
+          field.respawn(i, this.respawnCool);
+          if (toStorage && this.session.storage >= this.storageMax) { this.endHarvest("full"); canStore = false; }
         }
       }
 
@@ -449,9 +459,8 @@
       AFK.state.wipe();
       this.state = AFK.state.defaultState();
       this.poles.length = 0; this.particles.length = 0; this.floats.length = 0;
-      if (this.field) this.field.clearCharged();
       this.session = { harvesting: false, timer: 0, storage: 0, storageValue: 0 };
-      this.applyStats(); this.state.energy = this.energyMax; this.syncDrones(true);
+      this.applyStats(); this.seedGrid(); this.state.energy = this.energyMax; this.syncDrones(true);
     }
   }
 

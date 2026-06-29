@@ -3,9 +3,10 @@
   const AFK = (window.AFK = window.AFK || {});
 
   const CONST = {
-    DRONE_EFF: 0.8,          // captures/s estimées par drone (HUD + offline)
+    DRONE_EFF: 1.5,          // captures/s estimées par drone (HUD + offline)
+    DRONE_RATE: 1.5,         // grains/s absorbés par drone (récolte en ligne)
     OFFLINE_CAP_BASE: 8 * 3600,
-    COLLECT_DIST: 16,
+    COLLECT_DIST: 13,
     BIOME_MULT: 15,          // multiplicateur de revenu par biome
     TREE_BASE_COST: 40,      // coût de base d'un nœud d'arbre
     TREE_GROWTH: 1.135,      // croissance par nœud alloué
@@ -18,7 +19,8 @@
       ENERGY_REGEN: 10,      // régénération /s hors récolte
       ENERGY_DRAIN: 5,       // consommation /s en récolte
       TIME: 15,              // durée de session de base (s)
-      STORAGE: 90,           // capacité de soute de base (unités)
+      STORAGE: 200,          // capacité de soute de base (grains)
+      ABSORB: 16,            // débit de récolte de base (grains/s)
     },
   };
 
