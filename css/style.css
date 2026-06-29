@@ -102,6 +102,25 @@ html, body {
 }
 .hidden { display: none !important; }
 
+/* Info nœud d'arbre */
+#node-info {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 29;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);
+  width: min(440px, calc(100vw - 24px));
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+  padding: 14px 16px; backdrop-filter: blur(12px);
+  box-shadow: 0 12px 34px rgba(0,0,0,0.5);
+}
+#node-info .ni-head { display: flex; align-items: center; gap: 10px; }
+#node-info .ni-icon { font-size: 24px; }
+#node-info .ni-name { font-weight: 800; font-size: 16px; }
+#node-info .ni-desc { font-size: 13px; color: #aeb9ec; margin: 6px 0 12px; }
+.ni-btn { width: 100%; padding: 12px; border: none; border-radius: 11px; font-size: 15px; font-weight: 800; cursor: pointer; }
+.ni-btn.ok { background: linear-gradient(135deg, var(--c1), var(--c2)); color: #06070f; }
+.ni-btn.no { background: rgba(120,130,170,0.25); color: var(--muted); }
+.ni-btn.locked { background: rgba(120,130,170,0.18); color: var(--muted); }
+.ni-btn.done { background: rgba(110,231,183,0.18); color: #6ee7b7; }
+
 /* ---------- Bottom nav ---------- */
 #nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;

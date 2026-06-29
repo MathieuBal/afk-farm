@@ -43,6 +43,36 @@
     perpetual:   { label: "Perpétuel",     icon: "♾️", keystone: true, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
   };
 
+  // descriptions lisibles (affichées avant d'allouer)
+  const DESC = {
+    core: "Point de départ de l'arbre.",
+    value: "+10 % valeur de récolte",
+    radius: "+8 % portée d'attraction",
+    strength: "+10 % force d'attraction",
+    density: "+3 grains chargés sur la grille",
+    luck: "+1 polarité (grains plus rares)",
+    drone_power: "+15 % puissance des drones",
+    build: "+12 % vitesse de construction",
+    energy: "+25 énergie maximale",
+    regen: "+1,5 énergie / s",
+    efficiency: "+15 % efficience (moins d'énergie consommée)",
+    time: "+3 s de durée de session",
+    storage: "+25 capacité de soute",
+    value_n: "+55 % valeur de récolte",
+    dronebay: "+1 drone et +30 % de puissance",
+    magnitude: "+30 % portée et +30 % force",
+    fortune: "+4 polarité",
+    refinery: "+30 % valeur et +30 % construction",
+    battery: "+70 énergie max et +2 régénération",
+    warehouse: "+80 capacité de soute",
+    chrono: "+8 s de durée de session",
+    overload: "+200 % valeur, mais −35 % portée",
+    swarm: "+2 drones et +60 % de puissance",
+    nova: "+120 % valeur et +12 grains chargés",
+    perpetual: "+7 régénération et +50 % efficience",
+  };
+  function effectText(node) { return DESC[node.type] || ""; }
+
   const MINOR = ["value", "radius", "strength", "density", "luck", "drone_power", "build", "energy", "regen", "efficiency", "time", "storage"];
   const NOTABLES = ["value_n", "dronebay", "magnitude", "fortune", "refinery", "battery", "warehouse", "chrono"];
   const KEYSTONES = ["overload", "swarm", "nova", "perpetual"];
@@ -161,5 +191,5 @@
     return false;
   }
 
-  AFK.tree = { build, aggregate, canAllocate, TYPES };
+  AFK.tree = { build, aggregate, canAllocate, effectText, TYPES };
 })();

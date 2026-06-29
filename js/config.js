@@ -11,13 +11,14 @@
     TREE_GROWTH: 1.135,      // croissance par nœud alloué
     PRESTIGE_DIV: 5e3,       // diviseur pour le calcul des Cores
     CORE_MULT: 0.10,         // +10% revenu global par Core
-    // session de récolte active
+    // session de récolte active (réglée pour un rythme fluide : le minuteur
+    // limite la 1re session, l'énergie permet ~2 sessions enchaînées)
     SESSION: {
-      ENERGY_MAX: 120,       // énergie de base
-      ENERGY_REGEN: 7,       // régénération /s hors récolte
-      ENERGY_DRAIN: 6,       // consommation /s en récolte
+      ENERGY_MAX: 140,       // énergie de base
+      ENERGY_REGEN: 10,      // régénération /s hors récolte
+      ENERGY_DRAIN: 5,       // consommation /s en récolte
       TIME: 15,              // durée de session de base (s)
-      STORAGE: 80,           // capacité de soute de base (unités)
+      STORAGE: 90,           // capacité de soute de base (unités)
     },
   };
 
@@ -56,12 +57,12 @@
    * temps réel, même hors-ligne. Le projet terminé débloque le biome (index+1)
    * et un multiplicateur global permanent. */
   const PROJECTS = [
-    { id: "ship", icon: "🚀", name: "Vaisseau de récolte", desc: "Un épave à remettre en état, pièce par pièce.", mult: 1.6, parts: [
-      { name: "Coque",          icon: "🛡️", cost: 400,   time: 300 },
-      { name: "Réacteur",       icon: "⚙️", cost: 1200,  time: 1500 },
-      { name: "Aimant de proue", icon: "🧲", cost: 2500,  time: 2400 },
-      { name: "Cockpit",        icon: "🎛️", cost: 1800,  time: 2100 },
-      { name: "Boucliers",      icon: "✨", cost: 3000,  time: 2700 },
+    { id: "ship", icon: "🚀", name: "Vaisseau de récolte", desc: "Une épave à remettre en état, pièce par pièce.", mult: 1.6, parts: [
+      { name: "Coque",          icon: "🛡️", cost: 350,   time: 180 },
+      { name: "Réacteur",       icon: "⚙️", cost: 1100,  time: 1200 },
+      { name: "Aimant de proue", icon: "🧲", cost: 2400,  time: 2100 },
+      { name: "Cockpit",        icon: "🎛️", cost: 1800,  time: 2400 },
+      { name: "Boucliers",      icon: "✨", cost: 3200,  time: 2700 },
     ]},
     { id: "station", icon: "🛰️", name: "Station orbitale", desc: "Une raffinerie modulaire à assembler.", mult: 1.8, parts: [
       { name: "Anneau central",  icon: "⭕", cost: 2e4,  time: 1800 },

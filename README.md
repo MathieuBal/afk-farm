@@ -11,10 +11,11 @@ devient le cœur d'une boucle de jeu profonde et entièrement corrélée.
 
 ## Le concept
 
-Ton pointeur (doigt / souris) est un **pôle magnétique** qui :
-
-1. **courbe le champ de grains** en arrière-plan — la signature visuelle de Sensoria ;
-2. **aspire et récolte des unités** flottantes, converties en **Lumens ✦**.
+Ton pointeur (doigt / souris) est un **pôle magnétique** qui **courbe la grille
+de grains** — la signature de Sensoria. Mais ici la grille **est** la ressource :
+certains grains se **chargent** (par rareté) et, quand tu les aimantes jusqu'à
+toi, ils sont **récoltés** en **Lumens ✦**. Pas deux systèmes séparés : on
+récolte directement la grille magnétique.
 
 Tout ce que tu gagnes alimente quatre systèmes interconnectés.
 
@@ -40,9 +41,10 @@ Deux couches de skill viennent récompenser la récolte active :
 
 ### 🌳 Arbre de compétences (façon PoE, quasi-illimité)
 Plus de 600 nœuds générés de façon déterministe sur 6 branches radiales avec
-forks et liens croisés, **pannable et zoomable**. Les nœuds se paient en Lumens
-(coût exponentiel) et fournissent portée, force, densité, polarité (chance),
-ingénierie (vitesse de construction), **baies de drones** (la flotte AFK) et des
+forks et liens croisés, **pannable et zoomable**. **Tape un nœud pour voir son
+effet exact et son coût avant de l'allouer.** Les nœuds se paient en Lumens
+(coût exponentiel) et fournissent portée, force, densité, polarité, énergie,
+soute, durée de session, **baies de drones** (la flotte AFK) et des
 multiplicateurs notables/keystones.
 
 ### 🛠️ Chantier (le cœur AFK profond)

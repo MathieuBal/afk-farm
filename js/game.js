@@ -11,9 +11,9 @@
     constructor() {
       this.state = AFK.state.load();
       this.tree = AFK.tree.build();
+      this.field = null;             // grille magnétique (branchée par main)
       this.w = 0; this.h = 0;
 
-      this.units = [];
       this.drones = [];
       this.poles = [];
       this.particles = [];
@@ -32,7 +32,6 @@
       this._sndT = 0;
       this._achT = 0;
 
-      this.spawnTimer = 0;
       this.idleRate = 0;
       this.offlineGain = 0;
       this.offlineSeconds = 0;
@@ -240,7 +239,8 @@
       st.lumens = kept; st.totalRun = 0;
       st.biome = 0; st.projectIndex = 0; st.projects = {};
       st.nodes = { core: 1 };
-      this.units.length = 0; this.poles.length = 0;
+      this.poles.length = 0;
+      if (this.field) this.field.clearCharged();
       this.session.harvesting = false; this.session.storage = 0; this.session.storageValue = 0;
       this.applyStats();
       st.energy = this.energyMax;
@@ -307,10 +307,13 @@
       for (let i = 0; i < w.length; i++) { roll -= w[i]; if (roll <= 0) return RARITIES[i]; }
       return RARITIES[0];
     }
-    spawnUnit() {
-      const rar = this.pickRarity();
-      const m = 34, a = Math.random() * Math.PI * 2, sp = 0.01 + Math.random() * 0.02;
-      this.units.push({ x: m + Math.random() * (this.w - 2 * m), y: m + Math.random() * (this.h - 2 * m), vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, rar, wob: Math.random() * Math.PI * 2 });
+    bindField(field) {
+      this.field = field;
+      field.ensureCharged(this.maxUnits, () => this.pickRarity());
+    }
+    // maintient le bon nombre de grains chargés sur la grille
+    refillCharged() {
+      if (this.field) this.field.ensureCharged(this.maxUnits, () => this.pickRarity());
     }
 
     harvestActive() { return this.session.harvesting && this.fieldActive; }
@@ -331,12 +334,12 @@
       this.poles.push({ x, y, life: 11000, maxLife: 11000 });
     }
 
-    spawnFx(u, amt) {
-      this.floats.push({ x: u.x, y: u.y, vy: -0.04, text: "+" + fmt(amt), color: u.rar.glow, life: 900, max: 900 });
-      const n = u.rar.key === "legendary" ? 16 : u.rar.key === "epic" ? 10 : 6;
+    spawnFx(x, y, rar, amt) {
+      this.floats.push({ x, y, vy: -0.04, text: "+" + fmt(amt), color: rar.glow, life: 900, max: 900 });
+      const n = rar.key === "legendary" ? 16 : rar.key === "epic" ? 10 : 6;
       for (let i = 0; i < n; i++) {
         const a = Math.random() * Math.PI * 2, sp = 0.05 + Math.random() * 0.18;
-        this.particles.push({ x: u.x, y: u.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 520, max: 520, color: u.rar.glow });
+        this.particles.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 520, max: 520, color: rar.glow });
       }
     }
 
@@ -358,27 +361,32 @@
       if (this._achT > 600) { this._achT = 0; this._checkAch(); }
       if (this._sndT > 0) this._sndT -= ddt;
 
-      this.spawnTimer -= ddt;
-      if (this.units.length < this.maxUnits && this.spawnTimer <= 0) { this.spawnUnit(); this.spawnTimer = 170; }
+      // maintient les grains chargés sur la grille
+      this.refillCharged();
+      const field = this.field;
 
       // collecteurs : drones (toujours -> Lumens) + pointeur/pôles (récolte -> soute)
       const drones = this.drones;
       const harvest = this.harvestActive();
+      const R = this.effRadius();
       const hcols = [];
       if (harvest) {
-        const R = this.effRadius();
-        if (this.pointer.active) hcols.push({ x: this.pointer.x, y: this.pointer.y, r: R });
-        for (const p of this.poles) hcols.push({ x: p.x, y: p.y, r: R });
+        if (this.pointer.active) hcols.push({ x: this.pointer.x, y: this.pointer.y });
+        for (const p of this.poles) hcols.push({ x: p.x, y: p.y });
       }
 
       for (let i = this.poles.length - 1; i >= 0; i--) { this.poles[i].life -= ddt; if (this.poles[i].life <= 0) this.poles.splice(i, 1); }
 
-      // drones
+      // drones : se dirigent vers le grain chargé le plus proche, sinon errent
       for (const d of drones) {
-        let best = null, bd = Infinity;
-        for (const u of this.units) { const dx = u.x - d.x, dy = u.y - d.y, dist = dx * dx + dy * dy; if (dist < bd) { bd = dist; best = u; } }
+        let bx = null, by = null, bd = Infinity;
+        if (field) for (const e of field.charged) {
+          const x = field.px[e.i], y = field.py[e.i];
+          const dx = x - d.x, dy = y - d.y, dist = dx * dx + dy * dy;
+          if (dist < bd) { bd = dist; bx = x; by = y; }
+        }
         let tx, ty;
-        if (best) { tx = best.x; ty = best.y; }
+        if (bx !== null) { tx = bx; ty = by; }
         else { d.phase += ddt * 0.001; tx = this.w / 2 + Math.cos(d.phase) * this.w * 0.3; ty = this.h / 2 + Math.sin(d.phase * 1.3) * this.h * 0.3; }
         const dx = tx - d.x, dy = ty - d.y, dl = Math.hypot(dx, dy) + 0.001, acc = 0.0006 * this.dronePowerMult;
         d.vx += (dx / dl) * acc * ddt; d.vy += (dy / dl) * acc * ddt;
@@ -387,52 +395,42 @@
         d.x += d.vx * ddt; d.y += d.vy * ddt;
       }
 
-      // unités : attraction + capture
-      for (let i = this.units.length - 1; i >= 0; i--) {
-        const u = this.units[i];
-        u.wob += ddt * 0.003;
-        let done = false;
-
-        // drones -> Lumens
-        for (const c of drones) {
-          const dx = c.x - u.x, dy = c.y - u.y, d = Math.hypot(dx, dy) + 0.001;
-          if (d < CONST.COLLECT_DIST) {
-            const amt = u.rar.value * this.incomeMult;
-            this.addLumens(amt); this.state.collected += 1; this.spawnFx(u, amt);
-            this.units.splice(i, 1); done = true; break;
+      // récolte des grains chargés de la grille
+      if (field) {
+        const dcap = CONST.COLLECT_DIST, dcap2 = dcap * dcap;
+        for (let k = field.charged.length - 1; k >= 0; k--) {
+          const e = field.charged[k];
+          const x = field.px[e.i], y = field.py[e.i];
+          // drones -> Lumens (toujours)
+          let hit = false;
+          for (const d of drones) {
+            const dx = x - d.x, dy = y - d.y;
+            if (dx * dx + dy * dy < dcap2) {
+              const amt = e.rar.value * this.incomeMult;
+              this.addLumens(amt); this.state.collected += 1; this.spawnFx(x, y, e.rar, amt);
+              field.dischargeAt(k); hit = true; break;
+            }
           }
-          const cr = this.pullRadius * 0.9;
-          if (d < cr) { const f = this.pullStrength * (1 - d / cr) * 0.012; u.vx += (dx / d) * f * ddt; u.vy += (dy / d) * f * ddt; }
-        }
-        if (done) continue;
-
-        // récolte active -> soute (avec combo)
-        for (const c of hcols) {
-          const dx = c.x - u.x, dy = c.y - u.y, d = Math.hypot(dx, dy) + 0.001;
-          if (d < CONST.COLLECT_DIST) {
-            this.combo.count += 1;
-            this.combo.timer = 1400;
-            this.combo.mult = 1 + Math.min(this.combo.count, 100) * 0.04;
-            if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
-            const amt = u.rar.value * this.incomeMult * this.combo.mult;
-            this.session.storage += 1; this.session.storageValue += amt; this.state.collected += 1; this.spawnFx(u, amt);
-            if (this._sndT <= 0) { this.snd("combo", this.combo.count); this._sndT = 45; }
-            if (u.rar.key === "legendary") this.addShake(4);
-            this.units.splice(i, 1); done = true;
-            if (this.session.storage >= this.storageMax) this.endHarvest("full");
-            break;
+          if (hit) continue;
+          // récolte active -> soute (avec combo)
+          if (harvest) {
+            for (const c of hcols) {
+              const dx = x - c.x, dy = y - c.y;
+              if (dx * dx + dy * dy < dcap2) {
+                this.combo.count += 1; this.combo.timer = 1400;
+                this.combo.mult = 1 + Math.min(this.combo.count, 100) * 0.04;
+                if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
+                const amt = e.rar.value * this.incomeMult * this.combo.mult;
+                this.session.storage += 1; this.session.storageValue += amt; this.state.collected += 1; this.spawnFx(x, y, e.rar, amt);
+                if (this._sndT <= 0) { this.snd("combo", this.combo.count); this._sndT = 45; }
+                if (e.rar.key === "legendary") this.addShake(4);
+                field.dischargeAt(k);
+                if (this.session.storage >= this.storageMax) this.endHarvest("full");
+                break;
+              }
+            }
           }
-          const es = this.effStrength();
-          if (d < c.r) { const f = es * (1 - d / c.r) * 0.012; u.vx += (dx / d) * f * ddt; u.vy += (dy / d) * f * ddt; }
         }
-        if (done) continue;
-
-        u.x += u.vx * ddt; u.y += u.vy * ddt; u.vx *= 0.94; u.vy *= 0.94;
-        const m = 14;
-        if (u.x < m) { u.x = m; u.vx = Math.abs(u.vx) + 0.01; }
-        if (u.x > this.w - m) { u.x = this.w - m; u.vx = -Math.abs(u.vx) - 0.01; }
-        if (u.y < m) { u.y = m; u.vy = Math.abs(u.vy) + 0.01; }
-        if (u.y > this.h - m) { u.y = this.h - m; u.vy = -Math.abs(u.vy) - 0.01; }
       }
 
       for (let i = this.particles.length - 1; i >= 0; i--) {
@@ -450,7 +448,8 @@
     reset() {
       AFK.state.wipe();
       this.state = AFK.state.defaultState();
-      this.units.length = 0; this.poles.length = 0; this.particles.length = 0; this.floats.length = 0;
+      this.poles.length = 0; this.particles.length = 0; this.floats.length = 0;
+      if (this.field) this.field.clearCharged();
       this.session = { harvesting: false, timer: 0, storage: 0, storageValue: 0 };
       this.applyStats(); this.state.energy = this.energyMax; this.syncDrones(true);
     }

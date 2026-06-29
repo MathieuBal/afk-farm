@@ -9,6 +9,7 @@
   const game = new AFK.Game();
   const treeUI = new AFK.TreeUI(game);
   const ui = new AFK.UI(game, treeUI);
+  game.field = field;            // la grille magnétique EST la source des Lumens
 
   let dpr = 1, W = 0, H = 0;
   let stars = [], rocks = [];
@@ -32,8 +33,9 @@
     canvas.width = Math.floor(W * dpr); canvas.height = Math.floor(H * dpr);
     canvas.style.width = W + "px"; canvas.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    field.resize(W, H);
+    field.resize(W, H);          // reconstruit la grille (vide les grains chargés)
     game.resize(W, H);
+    game.refillCharged();        // recharge la grille après reconstruction
     genBackground();
     if (treeUI.open) treeUI.resize();
   }
@@ -177,17 +179,24 @@
     ctx.beginPath(); ctx.ellipse(d.x, d.y, 11, 4.5, d.phase || 0, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
   }
-  function drawUnit(u) {
-    const r = u.rar.r + Math.sin(u.wob) * 0.6;
+  let pulseT = 0;
+  function drawCharged() {
+    const f = game.field;
+    if (!f) return;
+    pulseT += 0.05;
     ctx.save();
-    const g = ctx.createRadialGradient(u.x, u.y, 0, u.x, u.y, r * 2.4);
-    g.addColorStop(0, u.rar.glow); g.addColorStop(0.25, u.rar.color); g.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = g; ctx.globalAlpha = 0.9;
-    ctx.beginPath(); ctx.arc(u.x, u.y, r * 2.4, 0, Math.PI * 2); ctx.fill();
-    ctx.globalAlpha = 1; ctx.fillStyle = u.rar.color;
-    ctx.beginPath(); ctx.arc(u.x, u.y, r, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,0.85)";
-    ctx.beginPath(); ctx.arc(u.x - r * 0.3, u.y - r * 0.3, r * 0.32, 0, Math.PI * 2); ctx.fill();
+    for (const e of f.charged) {
+      const x = f.px[e.i], y = f.py[e.i];
+      const r = e.rar.r + Math.sin(pulseT + e.i) * 0.6;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r * 2.6);
+      g.addColorStop(0, e.rar.glow); g.addColorStop(0.25, e.rar.color); g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.globalAlpha = 0.9; ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, r * 2.6, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1; ctx.fillStyle = e.rar.color;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.beginPath(); ctx.arc(x - r * 0.3, y - r * 0.3, r * 0.32, 0, Math.PI * 2); ctx.fill();
+    }
     ctx.restore();
   }
   function drawPointer() {
@@ -233,7 +242,7 @@
     drawSurgeRing();
     for (const p of game.poles) drawPole(p);
     for (const d of game.drones) drawDrone(d);
-    for (const u of game.units) drawUnit(u);
+    drawCharged();
     drawPointer();
     for (const p of game.particles) {
       ctx.globalAlpha = Math.max(0, p.life / p.max); ctx.fillStyle = p.color;

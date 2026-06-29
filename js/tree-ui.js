@@ -18,7 +18,46 @@
       this.pinchDist = 0;
       this.flash = null;       // {id, t, ok}
       this.theme = "#22d3ee";
+      this.selected = null;
+      this.info = document.getElementById("node-info");
       this.bind();
+      this.bindInfo();
+    }
+
+    bindInfo() {
+      const btn = document.getElementById("node-alloc");
+      if (btn) btn.addEventListener("click", () => this.allocSelected());
+    }
+    showInfo() {
+      const n = this.selected;
+      if (!n) { this.hideInfo(); return; }
+      this.info.classList.remove("hidden");
+      this.info.querySelector(".ni-icon").textContent = n.icon;
+      const tag = n.keystone ? " · Keystone" : n.notable ? " · Notable" : "";
+      this.info.querySelector(".ni-name").textContent = n.label + tag;
+      this.info.querySelector(".ni-desc").textContent = AFK.tree.effectText(n);
+      this.updateInfo();
+    }
+    hideInfo() { this.selected = null; if (this.info) this.info.classList.add("hidden"); }
+    updateInfo() {
+      const n = this.selected, g = this.game;
+      if (!n) return;
+      const btn = document.getElementById("node-alloc");
+      if (n.id === "core" || g.state.nodes[n.id]) { btn.textContent = "✓ Déjà alloué"; btn.className = "ni-btn done"; btn.disabled = true; return; }
+      const can = AFK.tree.canAllocate(g.tree, g.state.nodes, n.id);
+      const cost = g.nodeCost(n);
+      const afford = g.state.lumens >= cost;
+      if (!can) { btn.textContent = "🔒 Relie d'abord un nœud voisin"; btn.className = "ni-btn locked"; btn.disabled = true; }
+      else { btn.textContent = "Allouer · ✦ " + AFK.state.fmt(cost); btn.className = "ni-btn " + (afford ? "ok" : "no"); btn.disabled = !afford; }
+    }
+    allocSelected() {
+      const n = this.selected;
+      if (!n) return;
+      const ok = this.game.allocate(n.id);
+      this.flash = { id: n.id, t: 600, ok };
+      if (ok && navigator.vibrate) navigator.vibrate(8);
+      else if (!ok && AFK.audio) AFK.audio.error && AFK.audio.error();
+      this.showInfo();
     }
 
     setTheme(c) { this.theme = c; }
@@ -28,7 +67,7 @@
       this.canvas.style.display = "block";
       this.resize();
     }
-    hide() { this.open = false; this.canvas.style.display = "none"; }
+    hide() { this.open = false; this.canvas.style.display = "none"; this.hideInfo(); }
 
     resize() {
       this.dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -102,18 +141,15 @@
 
     tap(sx, sy) {
       const [wx, wy] = this.s2w(sx, sy);
-      const g = this.game;
       let hit = null, hd = Infinity;
-      for (const n of g.tree.list) {
+      for (const n of this.game.tree.list) {
         const r = n.keystone ? 30 : n.notable ? 22 : 16;
         const dx = n.x - wx, dy = n.y - wy, d = Math.hypot(dx, dy);
-        if (d < r + 6 && d < hd) { hd = d; hit = n; }
+        if (d < r + 9 && d < hd) { hd = d; hit = n; }
       }
-      if (!hit) return;
-      if (g.state.nodes[hit.id]) return;
-      const ok = g.allocate(hit.id);
-      this.flash = { id: hit.id, t: 600, ok };
-      if (ok && navigator.vibrate) navigator.vibrate(8);
+      this.selected = hit;
+      if (hit) { this.showInfo(); if (AFK.audio) AFK.audio.tap && AFK.audio.tap(); }
+      else this.hideInfo();
     }
 
     centerOnFrontier() {
@@ -209,6 +245,15 @@
           ctx.fillStyle = "rgba(220,228,255,0.85)";
           ctx.fillText(n.label, x, y - r - 9 * Math.min(z, 1.3));
         }
+      }
+
+      // surbrillance du nœud sélectionné
+      if (this.selected) {
+        const [x, y] = this.w2s(this.selected.x, this.selected.y);
+        const baseR = (this.selected.keystone ? 28 : this.selected.notable ? 20 : 14) * this.cam.zoom;
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(x, y, baseR + 6, 0, Math.PI * 2); ctx.stroke();
+        this.updateInfo();
       }
 
       if (this.flash) { this.flash.t -= 16; if (this.flash.t <= 0) this.flash = null; }
