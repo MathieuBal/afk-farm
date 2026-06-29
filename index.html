@@ -34,7 +34,7 @@
     </div>
   </header>
 
-  <div id="hint">Balaie l'écran pour aimanter les unités · <b>double-tap</b> = pôle</div>
+  <div id="hint"><b>Lance la récolte</b> puis balaie pour aimanter · <b>double-tap</b> = pôle</div>
 
   <!-- Tree header (overlay au-dessus du canvas d'arbre) -->
   <div id="tree-header" class="hidden">
@@ -52,6 +52,17 @@
     <div id="sheet-body"></div>
     <div class="sheet-foot"><button id="reset-btn">Réinitialiser la partie</button></div>
   </section>
+
+  <!-- Harvest session (énergie / stockage / temps + lancement) -->
+  <div id="harvest">
+    <div class="gauges">
+      <div class="g"><span class="g-ic">⚡</span><div class="bar"><i id="bar-energy"></i></div></div>
+      <div class="g"><span class="g-ic">📦</span><div class="bar"><i id="bar-storage"></i></div></div>
+      <div class="g"><span class="g-ic">⏱️</span><div class="bar"><i id="bar-timer"></i></div></div>
+    </div>
+    <div class="store-txt" id="store-txt">Prêt</div>
+    <button id="harvest-btn">⚡ Lancer la récolte</button>
+  </div>
 
   <!-- Bottom nav -->
   <nav id="nav">

@@ -20,10 +20,17 @@ Tout ce que tu gagnes alimente quatre systèmes interconnectés.
 
 ## Les systèmes (tout est corrélé)
 
-### 🧲 Récolte
-Balaie l'écran pour aimanter les unités (4 raretés : Commun → Légendaire).
-**Double-tap** = pose un pôle magnétique temporaire qui récolte tout seul
-(max 6, clin d'œil à Sensoria).
+### 🧲 Récolte (session active)
+Lance une **session de récolte** puis balaie l'écran pour aimanter les unités
+(4 raretés : Commun → Légendaire) vers ta **soute**. La session est limitée par
+**3 jauges**, toutes améliorables dans l'arbre :
+- ⚡ **Énergie** : se vide pendant la récolte ; à zéro, la récolte s'arrête.
+- 📦 **Stockage** : se remplit des unités ; soute pleine → la récolte s'arrête.
+- ⏱️ **Temps** : minuteur de session ; écoulé → la récolte s'arrête.
+
+À la fin, la soute est **encaissée** en Lumens. **Double-tap** = pôle magnétique
+temporaire (max 6, clin d'œil à Sensoria). Les **drones** récoltent en parallèle,
+même hors session (l'AFK passif).
 
 ### 🌳 Arbre de compétences (façon PoE, quasi-illimité)
 Plus de 600 nœuds générés de façon déterministe sur 6 branches radiales avec
@@ -35,9 +42,10 @@ multiplicateurs notables/keystones.
 ### 🛠️ Chantier (le cœur AFK profond)
 Répare et construis une flotte de plus en plus grandiose :
 **Vaisseau → Station → Croiseur → Base planétaire → Planète → Système → …**
-Chaque ouvrage a un **temps de construction** (15 s au départ, **améliorable**
-via l'arbre) qui avance **en temps réel, même hors-ligne**. Le terminer débloque
-le **biome** suivant et un **multiplicateur permanent**.
+Chaque ouvrage se répare **pièce par pièce** (coque, réacteur, aimant…), et
+chaque pièce prend du temps (**plusieurs heures** de base, réductible via
+l'Ingénierie de l'arbre) qui avance **en temps réel, même hors-ligne**. L'ouvrage
+complet débloque le **biome** suivant et un **multiplicateur permanent**.
 
 ### 🌌 Prestige (Singularité)
 Réinitialise Lumens, projets et arbre pour gagner des **◆ Cores** qui boostent

@@ -11,6 +11,14 @@
     TREE_GROWTH: 1.135,      // croissance par nœud alloué
     PRESTIGE_DIV: 5e3,       // diviseur pour le calcul des Cores
     CORE_MULT: 0.10,         // +10% revenu global par Core
+    // session de récolte active
+    SESSION: {
+      ENERGY_MAX: 120,       // énergie de base
+      ENERGY_REGEN: 7,       // régénération /s hors récolte
+      ENERGY_DRAIN: 6,       // consommation /s en récolte
+      TIME: 15,              // durée de session de base (s)
+      STORAGE: 80,           // capacité de soute de base (unités)
+    },
   };
 
   /* Unités à récolter. La valeur est multipliée par le revenu global. */
@@ -43,33 +51,68 @@
   }
 
   /* Chaîne de réparation / construction (le cœur AFK).
-   * Chaque projet débloque le biome (index+1), accorde un multiplicateur
-   * global permanent, puis révèle le suivant. Le temps avance en temps réel,
-   * même hors-ligne. */
+   * Chaque projet est un ouvrage en PLUSIEURS PIÈCES à réparer une par une.
+   * Chaque pièce a son coût et son temps (en heures de base) qui avance en
+   * temps réel, même hors-ligne. Le projet terminé débloque le biome (index+1)
+   * et un multiplicateur global permanent. */
   const PROJECTS = [
-    { id: "ship",    icon: "🚀", name: "Vaisseau de récolte", desc: "Aimant de proue : double la portée du salvage.", cost: 600,    time: 15,  mult: 1.6 },
-    { id: "station", icon: "🛰️", name: "Station orbitale",     desc: "Raffinerie en orbite : flux de Lumens continu.",  cost: 9e3,    time: 45,  mult: 1.8 },
-    { id: "cruiser", icon: "🛸", name: "Croiseur magnétique",  desc: "Champ de classe lourde : aimante des nappes entières.", cost: 1.5e5, time: 120, mult: 2.2 },
-    { id: "base",    icon: "🏙️", name: "Base planétaire",      desc: "Ancrage gravitationnel : récolte planétaire.",    cost: 2.5e6,  time: 300, mult: 2.6 },
-    { id: "planet",  icon: "🪐", name: "Planète colonisée",    desc: "Noyau magnétique : un monde entier travaille pour toi.", cost: 5e7, time: 720, mult: 3.2 },
-    { id: "system",  icon: "🌌", name: "Système stellaire",    desc: "Réseau d'étoiles : moisson à l'échelle stellaire.", cost: 1e9, time: 1800, mult: 4 },
+    { id: "ship", icon: "🚀", name: "Vaisseau de récolte", desc: "Un épave à remettre en état, pièce par pièce.", mult: 1.6, parts: [
+      { name: "Coque",          icon: "🛡️", cost: 400,   time: 300 },
+      { name: "Réacteur",       icon: "⚙️", cost: 1200,  time: 1500 },
+      { name: "Aimant de proue", icon: "🧲", cost: 2500,  time: 2400 },
+      { name: "Cockpit",        icon: "🎛️", cost: 1800,  time: 2100 },
+      { name: "Boucliers",      icon: "✨", cost: 3000,  time: 2700 },
+    ]},
+    { id: "station", icon: "🛰️", name: "Station orbitale", desc: "Une raffinerie modulaire à assembler.", mult: 1.8, parts: [
+      { name: "Anneau central",  icon: "⭕", cost: 2e4,  time: 1800 },
+      { name: "Panneaux solaires", icon: "🔆", cost: 5e4, time: 3000 },
+      { name: "Raffinerie",      icon: "⚗️", cost: 9e4,  time: 4200 },
+      { name: "Quartiers",       icon: "🏠", cost: 7e4,  time: 3600 },
+      { name: "Tour de contrôle", icon: "📡", cost: 1.4e5, time: 5400 },
+    ]},
+    { id: "cruiser", icon: "🛸", name: "Croiseur magnétique", desc: "Un vaisseau de classe lourde à reconstruire.", mult: 2.2, parts: [
+      { name: "Carlingue",       icon: "🔩", cost: 4e5, time: 3600 },
+      { name: "Propulseurs",     icon: "🚀", cost: 9e5, time: 5400 },
+      { name: "Bobines magnétiques", icon: "🌀", cost: 1.6e6, time: 7200 },
+      { name: "Soute géante",    icon: "📦", cost: 1.2e6, time: 6000 },
+      { name: "Noyau de classe lourde", icon: "💠", cost: 2.5e6, time: 9000 },
+    ]},
+    { id: "base", icon: "🏙️", name: "Base planétaire", desc: "Un avant-poste à bâtir au sol.", mult: 2.6, parts: [
+      { name: "Fondations",      icon: "🧱", cost: 6e6, time: 5400 },
+      { name: "Dôme",            icon: "🛖", cost: 1.4e7, time: 8000 },
+      { name: "Réseau d'extraction", icon: "⛏️", cost: 2.2e7, time: 10800 },
+      { name: "Centrale",        icon: "🏭", cost: 3e7, time: 12600 },
+    ]},
+    { id: "planet", icon: "🪐", name: "Planète colonisée", desc: "Réveiller le noyau magnétique d'un monde.", mult: 3.2, parts: [
+      { name: "Atmosphère",      icon: "🌫️", cost: 1.2e8, time: 9000 },
+      { name: "Océans",          icon: "🌊", cost: 2.6e8, time: 12600 },
+      { name: "Cités",           icon: "🌆", cost: 4e8, time: 16200 },
+      { name: "Noyau magnétique", icon: "🧲", cost: 6e8, time: 21600 },
+    ]},
+    { id: "system", icon: "🌌", name: "Système stellaire", desc: "Tisser un réseau à l'échelle des étoiles.", mult: 4, parts: [
+      { name: "Relais stellaires", icon: "✴️", cost: 2.5e9, time: 14400 },
+      { name: "Sphère de Dyson",  icon: "🔆", cost: 6e9, time: 21600 },
+      { name: "Portail",          icon: "🌀", cost: 1.2e10, time: 28800 },
+    ]},
   ];
 
   function project(i) {
     if (i < PROJECTS.length) return PROJECTS[i];
-    // procédural au-delà : coût ×18, temps ×1.6, mult croissant
+    // procédural au-delà : coût ×16, temps ×1.4 par palier
     const last = PROJECTS[PROJECTS.length - 1];
     const k = i - PROJECTS.length + 1;
+    const cm = Math.pow(16, k), tm = Math.pow(1.4, k);
     return {
-      id: "deep" + i,
-      icon: "✴️",
-      name: "Nexus cosmique " + k,
-      desc: "Extension du réseau magnétique galactique.",
-      cost: last.cost * Math.pow(18, k),
-      time: Math.min(last.time * Math.pow(1.6, k), 6 * 3600),
-      mult: 4 + k * 0.5,
+      id: "deep" + i, icon: "✴️", name: "Nexus cosmique " + k,
+      desc: "Extension du réseau magnétique galactique.", mult: 4 + k * 0.6,
+      parts: last.parts.map((p, j) => ({
+        name: p.name, icon: p.icon, cost: p.cost * cm, time: Math.min(p.time * tm, 6 * 3600),
+      })),
     };
   }
+
+  function projectCost(p) { return p.parts.reduce((a, b) => a + b.cost, 0); }
+  function projectTotalTime(p) { return p.parts.reduce((a, b) => a + b.time, 0); }
 
   /* Perks de prestige, achetés avec des Cores (coût exponentiel). */
   const PERKS = [
@@ -85,6 +128,6 @@
 
   AFK.config = {
     CONST, RARITIES, BIOMES, PROJECTS, PERKS,
-    biome, biomeMult, project, perkCost,
+    biome, biomeMult, project, projectCost, projectTotalTime, perkCost,
   };
 })();

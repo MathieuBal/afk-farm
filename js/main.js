@@ -133,13 +133,14 @@
 
   /* ---------- entrées (vue terrain) ---------- */
   let lastTap = 0, lastTapX = 0, lastTapY = 0;
-  function inField() { return ui.view === "field" || ui.view === "build" || ui.view === "prestige"; }
-  function overUI(target) { return target.closest && (target.closest("#sheet") || target.closest("nav") || target.closest("header")); }
+  // le pointeur n'aimante que pendant une session de récolte active
+  function canHarvest() { return ui.view === "field" && game.session.harvesting; }
+  function overUI(target) { return target.closest && (target.closest("#sheet") || target.closest("#harvest") || target.closest("nav") || target.closest("header")); }
   function setPointer(x, y) { game.pointer.x = x; game.pointer.y = y; game.pointer.active = true; }
 
-  canvas.addEventListener("pointermove", (e) => { if (inField()) setPointer(e.clientX, e.clientY); });
+  canvas.addEventListener("pointermove", (e) => { if (canHarvest()) setPointer(e.clientX, e.clientY); });
   canvas.addEventListener("pointerdown", (e) => {
-    if (!inField() || overUI(e.target)) return;
+    if (!canHarvest() || overUI(e.target)) return;
     setPointer(e.clientX, e.clientY);
     const now = performance.now();
     const near = Math.hypot(e.clientX - lastTapX, e.clientY - lastTapY) < 60;

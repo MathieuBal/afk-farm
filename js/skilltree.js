@@ -17,26 +17,37 @@
   const TYPES = {
     value:       { label: "Affinité",      icon: "✦", apply: (s) => (s.value += 0.10) },
     radius:      { label: "Portée",        icon: "🧲", apply: (s) => (s.radius += 0.08) },
-    strength:    { label: "Force",         icon: "⚡", apply: (s) => (s.strength += 0.10) },
+    strength:    { label: "Force",         icon: "💪", apply: (s) => (s.strength += 0.10) },
     density:     { label: "Densité",       icon: "✺", apply: (s) => (s.density += 3) },
     luck:        { label: "Polarité",      icon: "🎲", apply: (s) => (s.luck += 1) },
     drone_power: { label: "Servomoteur",   icon: "🛰️", apply: (s) => (s.dronePower += 0.15) },
     build:       { label: "Ingénierie",    icon: "🔧", apply: (s) => (s.build += 0.12) },
+    energy:      { label: "Capacité",      icon: "⚡", apply: (s) => (s.energy += 25) },
+    regen:       { label: "Régénération",  icon: "🔋", apply: (s) => (s.regen += 1.5) },
+    efficiency:  { label: "Efficience",    icon: "♻️", apply: (s) => (s.efficiency += 0.15) },
+    time:        { label: "Chronométrie",  icon: "⏱️", apply: (s) => (s.time += 3) },
+    storage:     { label: "Soute",         icon: "📦", apply: (s) => (s.storage += 25) },
     // notables
     value_n:     { label: "Cœur d'ambre",  icon: "💠", notable: true, apply: (s) => (s.value += 0.55) },
     dronebay:    { label: "Baie de drones", icon: "🚀", notable: true, apply: (s) => { s.drones += 1; s.dronePower += 0.3; } },
     magnitude:   { label: "Magnétar",      icon: "🌀", notable: true, apply: (s) => { s.radius += 0.30; s.strength += 0.30; } },
     fortune:     { label: "Étoile chanceuse", icon: "🍀", notable: true, apply: (s) => (s.luck += 4) },
     refinery:    { label: "Raffinerie",    icon: "⚗️", notable: true, apply: (s) => { s.value += 0.30; s.build += 0.30; } },
+    battery:     { label: "Réacteur",      icon: "🔌", notable: true, apply: (s) => { s.energy += 70; s.regen += 2; } },
+    warehouse:   { label: "Entrepôt",      icon: "🏭", notable: true, apply: (s) => (s.storage += 80) },
+    chrono:      { label: "Dilatateur",    icon: "🕰️", notable: true, apply: (s) => (s.time += 8) },
     // keystones
     overload:    { label: "Surcharge",     icon: "💥", keystone: true, apply: (s) => { s.value += 2.0; s.radius -= 0.35; } },
     swarm:       { label: "Essaim",        icon: "🐝", keystone: true, apply: (s) => { s.drones += 2; s.dronePower += 0.6; } },
     nova:        { label: "Nova",          icon: "🌟", keystone: true, apply: (s) => { s.value += 1.2; s.density += 12; } },
+    perpetual:   { label: "Perpétuel",     icon: "♾️", keystone: true, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
   };
 
-  const MINOR = ["value", "radius", "strength", "density", "luck", "drone_power", "build"];
-  const NOTABLES = ["value_n", "dronebay", "magnitude", "fortune", "refinery"];
-  const KEYSTONES = ["overload", "swarm", "nova"];
+  const MINOR = ["value", "radius", "strength", "density", "luck", "drone_power", "build", "energy", "regen", "efficiency", "time", "storage"];
+  const NOTABLES = ["value_n", "dronebay", "magnitude", "fortune", "refinery", "battery", "warehouse", "chrono"];
+  const KEYSTONES = ["overload", "swarm", "nova", "perpetual"];
+  // chaque branche se spécialise (couvre aussi la session : énergie, soute, temps)
+  const ARM_BIAS = ["value", "energy", "storage", "time", "drone_power", "strength"];
 
   function pick(rng, arr) { return arr[(rng() * arr.length) | 0]; }
 
@@ -49,8 +60,8 @@
       type = pick(rng, NOTABLES);
     } else {
       // distribution des mineurs orientée par la branche pour donner une identité
-      const armBias = MINOR[arm % MINOR.length];
-      type = rng() < 0.42 ? armBias : pick(rng, MINOR);
+      const armBias = ARM_BIAS[arm % ARM_BIAS.length];
+      type = rng() < 0.45 ? armBias : pick(rng, MINOR);
     }
     const def = TYPES[type];
     return {
@@ -128,7 +139,8 @@
 
   // Agrège les effets des nœuds alloués vers un objet de stats.
   function aggregate(tree, allocated) {
-    const s = { value: 0, radius: 0, strength: 0, density: 0, luck: 0, dronePower: 0, build: 0, drones: 0 };
+    const s = { value: 0, radius: 0, strength: 0, density: 0, luck: 0, dronePower: 0, build: 0, drones: 0,
+      energy: 0, regen: 0, efficiency: 0, time: 0, storage: 0 };
     for (const id in allocated) {
       if (id === "core") continue;
       const n = tree.byId.get(id);

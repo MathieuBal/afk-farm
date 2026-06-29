@@ -21,9 +21,27 @@
       this.treeLumensEl = this.$("tree-lumens");
       this._lastLumens = -1;
 
+      this.harvestBtn = this.$("harvest-btn");
+      this.barEnergy = this.$("bar-energy");
+      this.barStorage = this.$("bar-storage");
+      this.barTimer = this.$("bar-timer");
+      this.storeTxt = this.$("store-txt");
+
       this.bindNav();
+      this.bindHarvest();
       this.applyTheme();
       this.maybeOffline();
+    }
+
+    bindHarvest() {
+      this.harvestBtn.addEventListener("click", () => {
+        const g = this.game;
+        if (g.session.harvesting) return;
+        if (!g.startHarvest()) {
+          this.harvestBtn.classList.add("shake");
+          setTimeout(() => this.harvestBtn.classList.remove("shake"), 400);
+        }
+      });
     }
 
     applyTheme() {
@@ -51,7 +69,6 @@
       this.view = v;
       const sheet = this.$("sheet");
       const treeHdr = this.$("tree-header");
-      // états
       this.treeUI[v === "tree" ? "show" : "hide"]();
       treeHdr.classList.toggle("hidden", v !== "tree");
       if (v === "tree") this.treeUI.centerOnFrontier();
@@ -60,6 +77,11 @@
       sheet.classList.toggle("open", isSheet);
       if (v === "build") this.renderBuild();
       if (v === "prestige") this.renderPrestige();
+
+      // la récolte n'est visible/active que sur l'écran terrain
+      this.game.fieldActive = v === "field";
+      this.$("harvest").classList.toggle("hidden", v !== "field");
+      this.$("hint").classList.toggle("hidden", v !== "field");
 
       for (const id of ["nav-field", "nav-tree", "nav-build", "nav-prestige"])
         this.$(id).classList.toggle("active", id === "nav-" + v);
@@ -73,27 +95,44 @@
       const el = this.$("sheet-body");
       this.$("sheet-title").textContent = "🛠️ Chantier";
       const done = g.state.projectIndex;
-      const t = g.projectTime(p);
-      const pct = ps.building ? Math.min(100, (ps.p / t) * 100) : 0;
-      const remain = ps.building ? t - ps.p : t;
-      const afford = g.state.lumens >= p.cost;
+      const totalTime = C.projectTotalTime(p) / g.buildSpeed;
+
+      let parts = "";
+      for (let i = 0; i < p.parts.length; i++) {
+        const part = p.parts[i];
+        let cls, right;
+        if (i < ps.pi) { cls = "done"; right = "✓"; }
+        else if (i === ps.pi && ps.building) {
+          const t = g.partTime(part);
+          cls = "building";
+          right = '<div class="part-bar"><i id="part-fill" style="width:' + Math.min(100, (ps.p / t) * 100).toFixed(1) + '%"></i></div>' +
+            '<span class="part-remain" id="part-remain">' + fmtTime(t - ps.p) + '</span>';
+        } else if (i === ps.pi) {
+          const afford = g.state.lumens >= part.cost;
+          cls = "current" + (afford ? " afford" : "");
+          right = '<button class="part-fund ' + (afford ? "ok" : "no") + '" id="fund-btn">✦ ' + fmt(part.cost) + '</button>';
+        } else {
+          cls = "locked";
+          right = '<span class="part-lock">✦ ' + fmt(part.cost) + ' · ' + fmtTime(part.time / g.buildSpeed) + '</span>';
+        }
+        parts += '<div class="part ' + cls + '"><span class="part-icon">' + part.icon + '</span>' +
+          '<span class="part-name">' + part.name + '</span><span class="part-right">' + right + '</span></div>';
+      }
 
       el.innerHTML =
-        '<p class="sheet-intro">Répare et construis ta flotte. Chaque ouvrage débloque un biome plus riche et un bonus permanent. La construction avance en temps réel, <b>même hors-ligne</b>.</p>' +
+        '<p class="sheet-intro">Répare ta flotte <b>pièce par pièce</b>. Chaque pièce prend du temps (plusieurs heures) et avance en temps réel, <b>même hors-ligne</b>. L\'ouvrage complet débloque un biome plus riche et un bonus permanent.</p>' +
         '<div class="project-card">' +
           '<div class="pj-head"><span class="pj-icon">' + p.icon + '</span>' +
             '<div><div class="pj-name">' + p.name + '</div><div class="pj-desc">' + p.desc + '</div></div></div>' +
-          '<div class="pj-stats">Bonus permanent <b>×' + p.mult.toFixed(1) + '</b> · Biome <b>' + C.biome(done + 1).name + '</b> · Durée <b>' + fmtTime(t) + '</b></div>' +
-          (ps.building
-            ? '<div class="pj-bar"><div class="pj-fill" id="pj-fill" style="width:' + pct.toFixed(1) + '%"></div></div>' +
-              '<div class="pj-remain" id="pj-remain">Construction… ' + fmtTime(remain) + ' restant</div>'
-            : '<button class="pj-btn ' + (afford ? "ok" : "no") + '" id="fund-btn">Financer · ✦ ' + fmt(p.cost) + '</button>') +
+          '<div class="pj-stats">Bonus permanent <b>×' + p.mult.toFixed(1) + '</b> · Biome <b>' + C.biome(done + 1).name + '</b> · ' +
+            '<b>' + ps.pi + '/' + p.parts.length + '</b> pièces · Total <b>~' + fmtTime(totalTime) + '</b></div>' +
+          '<div class="parts">' + parts + '</div>' +
         '</div>' +
         '<div class="pj-meta">' + done + ' ouvrage' + (done > 1 ? "s" : "") + ' terminé' + (done > 1 ? "s" : "") +
           ' · Vitesse de construction ×' + g.buildSpeed.toFixed(2) + ' (améliore-la dans l\'arbre 🔧)</div>';
 
       const fund = this.$("fund-btn");
-      if (fund) fund.addEventListener("click", () => { if (g.fundProject()) this.renderBuild(); });
+      if (fund) fund.addEventListener("click", () => { if (g.fundPart()) this.renderBuild(); });
     }
 
     /* ---------- panneau Prestige ---------- */
@@ -152,6 +191,7 @@
     }
     toast(title, body, dur) {
       const wrap = this.$("toasts");
+      while (wrap.children.length >= 3) wrap.removeChild(wrap.firstChild);
       const t = document.createElement("div");
       t.className = "toast";
       t.innerHTML = "<h3>" + title + "</h3><p>" + body + "</p>";
@@ -163,9 +203,12 @@
     /* ---------- tick ---------- */
     tick() {
       const g = this.game;
-      // toasts du moteur
       if (g.toasts.length) {
-        for (const m of g.toasts) { this.toast(m.title, m.body, 5000); if (m.kind === "project") this.applyTheme(); }
+        for (const m of g.toasts) {
+          this.toast(m.title, m.body, 5000);
+          if (m.kind === "project") this.applyTheme();
+          if ((m.kind === "project" || m.kind === "part") && this.view === "build") this.renderBuild();
+        }
         g.toasts.length = 0;
       }
 
@@ -183,19 +226,39 @@
       this.biomeEl.textContent = b.name;
       this.coresEl.textContent = fmt(g.state.cores);
 
-      // progression du projet en cours si le panneau est ouvert
+      // jauges de session de récolte
+      const s = g.session;
+      this.barEnergy.style.width = Math.max(0, (g.state.energy / g.energyMax) * 100) + "%";
+      if (s.harvesting) {
+        this.barStorage.style.width = Math.min(100, (s.storage / g.storageMax) * 100) + "%";
+        this.barTimer.style.width = Math.max(0, (s.timer / g.sessionTime) * 100) + "%";
+        this.storeTxt.textContent = s.storage + "/" + g.storageMax + " · +" + fmt(s.storageValue) + " ✦";
+        this.harvestBtn.classList.add("active");
+        this.harvestBtn.textContent = "Récolte… " + Math.ceil(s.timer) + "s";
+      } else {
+        this.barStorage.style.width = "0%";
+        this.barTimer.style.width = "100%";
+        const ready = g.state.energy >= 1;
+        this.storeTxt.textContent = ready ? "Prêt · soute " + g.storageMax : "Recharge…";
+        this.harvestBtn.classList.remove("active");
+        this.harvestBtn.classList.toggle("dim", !ready);
+        this.harvestBtn.textContent = "⚡ Lancer la récolte";
+      }
+
+      // progression de la pièce en cours si le panneau est ouvert
       if (this.view === "build") {
         const p = g.currentProject(), ps = g.projectState(p);
         if (ps.building) {
-          const t = g.projectTime(p);
-          const fill = this.$("pj-fill"), rem = this.$("pj-remain");
+          const part = p.parts[ps.pi], t = g.partTime(part);
+          const fill = this.$("part-fill"), rem = this.$("part-remain");
           if (fill) fill.style.width = Math.min(100, (ps.p / t) * 100).toFixed(1) + "%";
-          if (rem) rem.textContent = "Construction… " + fmtTime(t - ps.p) + " restant";
+          if (rem) rem.textContent = fmtTime(t - ps.p);
+          else this.renderBuild(); // on vient de lancer une construction
         } else if (this.$("fund-btn")) {
-          // rafraîchit l'état finançable
+          const part = p.parts[ps.pi];
+          const afford = part && g.state.lumens >= part.cost;
           const fund = this.$("fund-btn");
-          fund.classList.toggle("ok", g.state.lumens >= p.cost);
-          fund.classList.toggle("no", g.state.lumens < p.cost);
+          fund.classList.toggle("ok", afford); fund.classList.toggle("no", !afford);
         }
       }
     }

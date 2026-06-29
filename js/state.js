@@ -2,12 +2,12 @@
 (function () {
   const AFK = (window.AFK = window.AFK || {});
 
-  const SAVE_KEY = "afk-farm-save-v2";
-  const OLD_KEYS = ["afk-farm-save-v1"];
+  const SAVE_KEY = "afk-farm-save-v3";
+  const OLD_KEYS = ["afk-farm-save-v1", "afk-farm-save-v2"];
 
   function defaultState() {
     return {
-      v: 2,
+      v: 3,
       lumens: 0,
       totalRun: 0,        // Lumens gagnés depuis le dernier prestige
       totalEver: 0,       // Lumens gagnés depuis toujours
@@ -16,9 +16,10 @@
       cores: 0,           // monnaie de prestige
       prestiges: 0,
       bestBiome: 0,
+      energy: 120,        // énergie de récolte courante
       nodes: { "core": 1 },   // nœuds d'arbre alloués (id -> 1)
       perks: {},          // perks de prestige (id -> niveau)
-      projects: {},       // état des projets : id -> {funded, progress, done}
+      projects: {},       // état des projets : id -> {pi, p, building}
       projectIndex: 0,    // projet courant dans la chaîne
       lastSave: Date.now(),
     };
