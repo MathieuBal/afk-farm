@@ -424,8 +424,8 @@
           const rar = e.rar;
           let amt = rar.value * inc;
           if (toStorage) {
-            this.combo.count += 1; this.combo.timer = 1500;
-            this.combo.mult = 1 + Math.min(this.combo.count, 80) * 0.025; // ×1 -> ×3
+            this.combo.count += 1; this.combo.timer = 1600;
+            this.combo.mult = Math.min(5, 1 + this.combo.count * 0.12); // ×1 -> ×5
             if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
             amt *= this.combo.mult;
             this.session.storage += 1; this.session.storageValue += amt;

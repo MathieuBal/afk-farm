@@ -9,6 +9,11 @@ devient le cœur d'une boucle de jeu profonde et entièrement corrélée.
 > 100 % vanilla (Canvas 2D), aucun build. **PWA installable**, jouable
 > hors-ligne, déployée sur **GitHub Pages**.
 
+**Direction visuelle « cosmique premium »** : glassmorphism, glow maîtrisé du
+champ (lueur des grains **selon la proximité au pôle** pour un retour calme),
+icônes ligne SVG, 3 polices (Space Grotesk / Manrope / JetBrains Mono) et une
+palette d'accent qui **recolore toute l'UI selon le biome**.
+
 ## Le concept
 
 Ton pointeur (doigt / souris) est un **pôle magnétique** qui **courbe la grille

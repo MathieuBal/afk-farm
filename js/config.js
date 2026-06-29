@@ -26,20 +26,20 @@
 
   /* Unités à récolter. La valeur est multipliée par le revenu global. */
   const RARITIES = [
-    { key: "common",    name: "Commun",     value: 1,   color: "#e2e8f0", glow: "#9fb4ff", weight: 70, r: 5 },
-    { key: "rare",      name: "Rare",       value: 4,   color: "#38bdf8", glow: "#38bdf8", weight: 22, r: 6 },
-    { key: "epic",      name: "Épique",     value: 16,  color: "#a855f7", glow: "#c084fc", weight: 6,  r: 7 },
-    { key: "legendary", name: "Légendaire", value: 75,  color: "#fbbf24", glow: "#fde68a", weight: 2,  r: 8.5 },
+    { key: "common",    name: "Commun",     value: 1,   color: "#8aa0c8", glow: "#aab8e0", weight: 70, r: 5 },
+    { key: "rare",      name: "Rare",       value: 5,   color: "#56d6ff", glow: "#8fe3ff", weight: 22, r: 6 },
+    { key: "epic",      name: "Épique",     value: 22,  color: "#b98cff", glow: "#d3b6ff", weight: 6,  r: 7 },
+    { key: "legendary", name: "Légendaire", value: 90,  color: "#ffcf6b", glow: "#ffe19a", weight: 2,  r: 8.5 },
   ];
 
-  /* Biomes : fonds, thème de couleur, palier de Lumens, multiplicateur. */
+  /* Biomes : couleurs d'accent (recolore tout l'UI), fonds, palier, fond animé. */
   const BIOMES = [
-    { name: "Ceinture d'astéroïdes", lumen: "Lumens",    c1: "#22d3ee", c2: "#3b82f6", accent: "#22d3ee", style: "belt" },
-    { name: "Nébuleuse Pourpre",     lumen: "Photons",   c1: "#d946ef", c2: "#8b5cf6", accent: "#d946ef", style: "nebula" },
-    { name: "Amas Stellaire",        lumen: "Plasma",    c1: "#fbbf24", c2: "#f97316", accent: "#fbbf24", style: "cluster" },
-    { name: "Horizon du Trou Noir",  lumen: "Quanta",    c1: "#fb923c", c2: "#7c3aed", accent: "#fb923c", style: "blackhole" },
-    { name: "Bras Galactique",       lumen: "Tachyons",  c1: "#34d399", c2: "#14b8a6", accent: "#34d399", style: "galaxy" },
-    { name: "Singularité",           lumen: "Singulons", c1: "#f8fafc", c2: "#a78bfa", accent: "#c4b5fd", style: "singularity" },
+    { name: "Ceinture d'astéroïdes", lumen: "Lumens",    accent: "#34e0ce", accent2: "#7cf5e4", soft: "rgba(52,224,206,.16)",  bg0: "#070a14", bg1: "#0b0f1e", style: "belt" },
+    { name: "Nébuleuse Pourpre",     lumen: "Photons",   accent: "#c77dff", accent2: "#e6b8ff", soft: "rgba(199,125,255,.16)", bg0: "#0c0814", bg1: "#150b22", style: "nebula" },
+    { name: "Amas Stellaire",        lumen: "Plasma",    accent: "#5b9dff", accent2: "#a8c8ff", soft: "rgba(91,157,255,.16)",  bg0: "#070b18", bg1: "#0a1230", style: "cluster" },
+    { name: "Horizon du Trou Noir",  lumen: "Quanta",    accent: "#ff9e5b", accent2: "#ffce9e", soft: "rgba(255,158,91,.15)",  bg0: "#100a08", bg1: "#1c1109", style: "blackhole" },
+    { name: "Bras Galactique",       lumen: "Tachyons",  accent: "#5be5a0", accent2: "#a8f5cf", soft: "rgba(91,229,160,.15)",  bg0: "#06120e", bg1: "#0a1f17", style: "galaxy" },
+    { name: "Singularité",           lumen: "Singulons", accent: "#d9c7ff", accent2: "#ffffff", soft: "rgba(217,199,255,.18)", bg0: "#0a0a12", bg1: "#12121f", style: "singularity" },
   ];
 
   function biome(i) {

@@ -33,8 +33,9 @@
       if (!n) { this.hideInfo(); return; }
       this.info.classList.remove("hidden");
       this.info.querySelector(".ni-icon").textContent = n.icon;
-      const tag = n.keystone ? " · Keystone" : n.notable ? " · Notable" : "";
-      this.info.querySelector(".ni-name").textContent = n.label + tag;
+      this.info.querySelector(".ni-name").textContent = n.label;
+      const branch = n.id === "core" ? "Origine" : n.keystone ? "Keystone" : n.notable ? "Nœud notable" : "Nœud mineur";
+      this.info.querySelector(".ni-branch").textContent = branch;
       this.info.querySelector(".ni-desc").textContent = AFK.tree.effectText(n);
       this.updateInfo();
     }
@@ -60,7 +61,7 @@
       this.showInfo();
     }
 
-    setTheme(c) { this.theme = c; }
+    setTheme(c, c2) { this.theme = c; this.theme2 = c2 || c; }
 
     show() {
       this.open = true;
@@ -167,7 +168,7 @@
       if (!this.open) return;
       const ctx = this.ctx, g = this.game;
       ctx.clearRect(0, 0, this.W, this.H);
-      ctx.fillStyle = "rgba(4,5,12,0.96)";
+      ctx.fillStyle = "rgba(7,10,20,0.97)";
       ctx.fillRect(0, 0, this.W, this.H);
 
       const nodes = g.state.nodes;
@@ -216,9 +217,9 @@
 
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI * 2);
-        if (alloc) { ctx.fillStyle = "rgba(20,28,52,0.95)"; ctx.fill(); ctx.lineWidth = 2.4 * z; ctx.strokeStyle = this.theme; ctx.stroke(); }
-        else if (can) { ctx.fillStyle = "rgba(16,20,38,0.92)"; ctx.fill(); ctx.lineWidth = 2 * z; ctx.strokeStyle = afford ? "rgba(255,255,255,0.7)" : "rgba(120,130,170,0.5)"; ctx.stroke(); }
-        else { ctx.fillStyle = "rgba(12,15,28,0.85)"; ctx.fill(); ctx.lineWidth = 1.4 * z; ctx.strokeStyle = "rgba(90,100,140,0.4)"; ctx.stroke(); }
+        if (alloc) { ctx.fillStyle = "rgba(20,28,52,0.95)"; ctx.fill(); ctx.lineWidth = 2.4 * z; ctx.strokeStyle = this.theme2 || this.theme; ctx.stroke(); }
+        else if (can) { ctx.fillStyle = "rgba(16,21,38,0.92)"; ctx.fill(); ctx.lineWidth = 2 * z; ctx.strokeStyle = afford ? this.theme : "rgba(120,130,170,0.5)"; ctx.stroke(); }
+        else { ctx.fillStyle = "rgba(12,15,28,0.85)"; ctx.fill(); ctx.lineWidth = 1.4 * z; ctx.strokeStyle = "rgba(120,140,210,0.25)"; ctx.stroke(); }
 
         // flash de feedback
         if (this.flash && this.flash.id === n.id) {
@@ -235,8 +236,8 @@
         }
         // coût sous les nœuds allouables
         if (can && z > 0.6) {
-          ctx.font = "700 " + (11 * Math.min(z, 1.4)) + "px 'Segoe UI',sans-serif";
-          ctx.fillStyle = afford ? "#fbbf24" : "#7a86b0";
+          ctx.font = "700 " + (11 * Math.min(z, 1.4)) + "px 'Space Grotesk',sans-serif";
+          ctx.fillStyle = afford ? "#f6c75e" : "#7a86b0";
           ctx.fillText("✦ " + fmt(cost), x, y + r + 11 * Math.min(z, 1.4));
         }
         // nom des notables/keystones

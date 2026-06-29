@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#06070f" />
+  <meta name="theme-color" content="#070a14" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -12,10 +12,14 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <canvas id="stage"></canvas>
+  <div id="vignette"></div>
   <canvas id="tree-canvas" style="display:none"></canvas>
 
   <!-- HUD -->
@@ -27,60 +31,83 @@
     </div>
     <div class="sub">
       <span class="biome" id="biome-name">Ceinture d'astéroïdes</span>
-      <span class="dot">·</span>
+      <span class="dot">/</span>
       <span class="rate">auto <span id="rate-count">0</span>/s</span>
-      <span class="dot">·</span>
+      <span class="dot">/</span>
       <span class="cores">◆ <span id="cores-hud">0</span></span>
     </div>
   </header>
-  <button id="profile-btn" aria-label="Profil">👤</button>
+  <button id="profile-btn" aria-label="Profil">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>
+  </button>
 
-  <div id="hint"><b>Lance la récolte</b> puis balaie pour aimanter · <b>double-tap</b> = pôle</div>
-
-  <!-- Tree header (overlay au-dessus du canvas d'arbre) -->
-  <div id="tree-header" class="hidden">
-    <div class="th-title">🌳 Arbre de compétences</div>
-    <div class="th-lumens">✦ <span id="tree-lumens">0</span></div>
-    <button id="tree-close" aria-label="Fermer">✕</button>
+  <!-- Combo badge -->
+  <div id="combo">
+    <span class="fire">🔥</span><span id="combo-txt">×1.0</span><span class="lbl">COMBO</span>
   </div>
 
-  <!-- Info d'un nœud d'arbre (avant allocation) -->
+  <div id="hint"><b>Lance la récolte</b> puis balaie le champ · <b>glisse</b> pour aimanter</div>
+
+  <!-- Tree header -->
+  <div id="tree-header" class="hidden">
+    <span class="th-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-7M12 15l-4-3M12 15l4-3"/><circle cx="12" cy="5" r="2.4"/><circle cx="6" cy="11" r="2"/><circle cx="18" cy="11" r="2"/></svg></span>
+    <span class="th-title">Arbre de compétences</span>
+    <span class="th-lumens">✦ <span id="tree-lumens">0</span></span>
+    <button id="tree-close" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+
+  <!-- Node info -->
   <div id="node-info" class="hidden">
-    <div class="ni-head"><span class="ni-icon"></span><span class="ni-name"></span></div>
+    <div class="ni-head"><span class="ni-icon"></span>
+      <div class="ni-meta"><div class="ni-name"></div><div class="ni-branch"></div></div>
+    </div>
     <div class="ni-desc"></div>
     <button id="node-alloc" class="ni-btn">Allouer</button>
   </div>
 
-  <!-- Bottom sheet (Chantier / Prestige) -->
+  <!-- Bottom sheet (Chantier / Prestige / Profil) -->
   <section id="sheet">
     <div class="sheet-head">
       <h2 id="sheet-title">Chantier</h2>
-      <button id="sheet-close" aria-label="Fermer">✕</button>
+      <button id="sheet-close" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <div id="sheet-body"></div>
-    <div class="sheet-foot"><button id="reset-btn">Réinitialiser la partie</button></div>
+    <div id="sheet-body" class="nosb"></div>
+    <div class="sheet-foot" id="sheet-foot"><button id="reset-btn">Réinitialiser la partie</button></div>
   </section>
 
-  <!-- Harvest session (énergie / stockage / temps + lancement) -->
+  <!-- Harvest session -->
   <div id="harvest">
-    <div class="gauges">
-      <div class="g"><span class="g-ic">⚡</span><div class="bar"><i id="bar-energy"></i></div></div>
-      <div class="g"><span class="g-ic">📦</span><div class="bar"><i id="bar-storage"></i></div></div>
-      <div class="g"><span class="g-ic">⏱️</span><div class="bar"><i id="bar-timer"></i></div></div>
-    </div>
-    <div class="store-txt" id="store-txt">Prêt</div>
-    <div class="harvest-row">
-      <button id="harvest-btn">⚡ Lancer la récolte</button>
-      <button id="surge-btn" aria-label="Surge">💥</button>
+    <div class="panel">
+      <div class="gauges">
+        <div class="g"><span class="g-ic" data-c="gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span><div class="bar"><i id="bar-energy"></i></div></div>
+        <div class="g"><span class="g-ic" data-c="accent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M3 8 12 3l9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><div class="bar"><i id="bar-storage"></i></div></div>
+        <div class="g"><span class="g-ic" data-c="violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span><div class="bar"><i id="bar-timer"></i></div></div>
+      </div>
+      <div class="store-txt" id="store-txt">SOUTE · prêt à récolter</div>
+      <div class="harvest-row">
+        <button id="harvest-btn"><span class="lbl">Lancer la récolte</span><span class="sheen"></span></button>
+        <button id="surge-btn" aria-label="Surge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+          <span class="cd-fill"></span>
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- Bottom nav -->
   <nav id="nav">
-    <button id="nav-field" class="active"><span class="ic">🧲</span><span class="lb">Récolte</span></button>
-    <button id="nav-tree"><span class="ic">🌳</span><span class="lb">Arbre</span></button>
-    <button id="nav-build"><span class="ic">🛠️</span><span class="lb">Chantier</span></button>
-    <button id="nav-prestige"><span class="ic">🌌</span><span class="lb">Prestige</span></button>
+    <button id="nav-field" class="active"><span class="pip"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v8a6 6 0 0 0 12 0V3"/><path d="M6 3h4v8M18 3h-4v8"/></svg>
+      <span class="lb">Récolte</span></button>
+    <button id="nav-tree"><span class="pip"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-7M12 15l-4-3M12 15l4-3"/><circle cx="12" cy="5" r="2.4"/><circle cx="6" cy="11" r="2"/><circle cx="18" cy="11" r="2"/></svg>
+      <span class="lb">Arbre</span></button>
+    <button id="nav-build"><span class="pip"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 7v6c0 5 8 9 8 9s8-4 8-9V7z"/></svg>
+      <span class="lb">Chantier</span></button>
+    <button id="nav-prestige"><span class="pip"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="2.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4"/><ellipse cx="12" cy="12" rx="10" ry="4.4" transform="rotate(60 12 12)"/></svg>
+      <span class="lb">Prestige</span></button>
   </nav>
 
   <div id="toasts"></div>

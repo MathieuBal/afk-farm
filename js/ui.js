@@ -22,13 +22,15 @@
       this._lastLumens = -1;
 
       this.harvestBtn = this.$("harvest-btn");
+      this.harvestLabel = this.harvestBtn.querySelector(".lbl");
       this.surgeBtn = this.$("surge-btn");
+      this.surgeCdFill = this.surgeBtn.querySelector(".cd-fill");
       this.barEnergy = this.$("bar-energy");
       this.barStorage = this.$("bar-storage");
       this.barTimer = this.$("bar-timer");
       this.storeTxt = this.$("store-txt");
-      this.surgeBtn.innerHTML = '💥<span class="cd-fill"></span>';
-      this.surgeCdFill = this.surgeBtn.querySelector(".cd-fill");
+      this.comboEl = this.$("combo");
+      this.comboTxt = this.$("combo-txt");
 
       this.bindNav();
       this.bindHarvest();
@@ -54,10 +56,13 @@
 
     applyTheme() {
       const b = C.biome(this.game.state.biome);
-      document.documentElement.style.setProperty("--accent", b.accent);
-      document.documentElement.style.setProperty("--c1", b.c1);
-      document.documentElement.style.setProperty("--c2", b.c2);
-      this.treeUI.setTheme(b.accent);
+      const root = document.documentElement.style;
+      root.setProperty("--accent", b.accent);
+      root.setProperty("--accent2", b.accent2);
+      root.setProperty("--accent-soft", b.soft);
+      root.setProperty("--bg0", b.bg0);
+      root.setProperty("--bg1", b.bg1);
+      this.treeUI.setTheme(b.accent, b.accent2);
     }
 
     bindNav() {
@@ -84,6 +89,7 @@
 
       const isSheet = v === "build" || v === "prestige" || v === "profile";
       sheet.classList.toggle("open", isSheet);
+      this.$("sheet-foot").classList.toggle("hidden", v !== "profile");
       if (v === "build") this.renderBuild();
       if (v === "prestige") this.renderPrestige();
       if (v === "profile") this.renderProfile();
@@ -281,18 +287,23 @@
       if (s.harvesting) {
         this.barStorage.style.width = Math.min(100, (s.storage / g.storageMax) * 100) + "%";
         this.barTimer.style.width = Math.max(0, (s.timer / g.sessionTime) * 100) + "%";
-        const combo = g.combo.count > 1 ? "🔥×" + g.combo.count + " (×" + g.combo.mult.toFixed(1) + ") · " : "";
-        this.storeTxt.textContent = combo + s.storage + "/" + g.storageMax + " · +" + fmt(s.storageValue) + " ✦";
+        this.storeTxt.textContent = "SOUTE · " + s.storage + "/" + g.storageMax + " · ×" + g.combo.mult.toFixed(1) + " combo";
         this.harvestBtn.classList.add("active");
-        this.harvestBtn.textContent = "Récolte… " + Math.ceil(s.timer) + "s";
+        this.harvestLabel.textContent = "Récolte · " + Math.ceil(s.timer) + "s";
       } else {
         this.barStorage.style.width = "0%";
         this.barTimer.style.width = "100%";
         const ready = g.state.energy >= 1;
-        this.storeTxt.textContent = ready ? "Prêt · soute " + g.storageMax + " · énergie " + Math.round(g.state.energy) + "/" + g.energyMax : "Recharge…";
+        this.storeTxt.textContent = ready ? "SOUTE · prêt à récolter" : "SOUTE · recharge en cours…";
         this.harvestBtn.classList.remove("active");
-        this.harvestBtn.classList.toggle("dim", !ready);
-        this.harvestBtn.textContent = "⚡ Lancer la récolte";
+        this.harvestLabel.textContent = "Lancer la récolte";
+      }
+      // badge combo (visible en récolte active & mult > 1.05)
+      if (s.harvesting && g.combo.mult > 1.05) {
+        this.comboEl.classList.add("show");
+        this.comboTxt.textContent = "×" + g.combo.mult.toFixed(1);
+      } else {
+        this.comboEl.classList.remove("show");
       }
       const surgeReady = s.harvesting && ss.cd <= 0 && g.state.energy >= ss.cost;
       this.surgeBtn.classList.toggle("cd", !surgeReady);

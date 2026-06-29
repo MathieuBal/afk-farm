@@ -44,9 +44,10 @@
   /* ---------- fonds de biome ---------- */
   function drawBackground(t) {
     const b = C.biome(game.state.biome);
-    const grd = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.4, Math.max(W, H) * 0.8);
-    grd.addColorStop(0, "rgba(16,20,42,1)");
-    grd.addColorStop(1, "rgba(4,5,12,1)");
+    const grd = ctx.createRadialGradient(W * 0.3, H * 0.1, 0, W * 0.3, H * 0.1, Math.max(W, H));
+    grd.addColorStop(0, b.bg1 || "#0b0f1e");
+    grd.addColorStop(0.55, b.bg0 || "#070a14");
+    grd.addColorStop(1, "#04050a");
     ctx.fillStyle = grd; ctx.fillRect(0, 0, W, H);
 
     // étoiles communes
@@ -70,7 +71,7 @@
       }
       case "nebula": {
         ctx.save(); ctx.globalCompositeOperation = "lighter";
-        const blobs = [[0.3, 0.35, b.c1], [0.7, 0.55, b.c2], [0.5, 0.7, b.c1]];
+        const blobs = [[0.3, 0.35, b.accent], [0.7, 0.55, b.accent2], [0.5, 0.7, b.accent]];
         for (const [bx, by, col] of blobs) {
           const g2 = ctx.createRadialGradient(bx * W, by * H, 0, bx * W, by * H, Math.max(W, H) * 0.35);
           g2.addColorStop(0, hexA(col, 0.18)); g2.addColorStop(1, hexA(col, 0));
@@ -81,7 +82,7 @@
       case "cluster": {
         ctx.save(); ctx.globalCompositeOperation = "lighter";
         const g2 = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.4, Math.max(W, H) * 0.5);
-        g2.addColorStop(0, hexA(b.c1, 0.12)); g2.addColorStop(1, hexA(b.c1, 0));
+        g2.addColorStop(0, hexA(b.accent, 0.12)); g2.addColorStop(1, hexA(b.accent, 0));
         ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
         ctx.restore(); break;
       }
@@ -92,7 +93,7 @@
         for (let i = 0; i < 3; i++) {
           ctx.beginPath();
           ctx.ellipse(0, 0, R * (1.5 + i * 0.5), R * (0.5 + i * 0.2), 0, 0, Math.PI * 2);
-          ctx.strokeStyle = hexA(i % 2 ? b.c1 : b.c2, 0.25 - i * 0.06); ctx.lineWidth = 8; ctx.stroke();
+          ctx.strokeStyle = hexA(i % 2 ? b.accent : b.accent2, 0.25 - i * 0.06); ctx.lineWidth = 8; ctx.stroke();
         }
         ctx.restore();
         const g2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
@@ -108,7 +109,7 @@
             const ang = i * 0.22 + arm * Math.PI;
             const rad = i * (Math.min(W, H) * 0.006);
             const x = Math.cos(ang) * rad, y = Math.sin(ang) * rad * 0.5;
-            ctx.fillStyle = hexA(i % 3 ? b.c1 : b.c2, 0.5 - i * 0.004);
+            ctx.fillStyle = hexA(i % 3 ? b.accent : b.accent2, 0.5 - i * 0.004);
             ctx.fillRect(x, y, 2, 2);
           }
         }
@@ -120,7 +121,7 @@
         for (let i = 0; i < 4; i++) {
           const rr = ((t * 0.04 + i * 80) % 320);
           ctx.beginPath(); ctx.arc(cx, cy, rr, 0, Math.PI * 2);
-          ctx.strokeStyle = hexA(b.c2, 0.18 * (1 - rr / 320)); ctx.lineWidth = 2; ctx.stroke();
+          ctx.strokeStyle = hexA(b.accent2, 0.18 * (1 - rr / 320)); ctx.lineWidth = 2; ctx.stroke();
         }
         ctx.restore(); break;
       }
@@ -206,19 +207,16 @@
     if (!game.pointer.active) return;
     const x = game.pointer.x, y = game.pointer.y;
     const surging = game.surgeBoost > 1;
+    const col = surging ? "#ff7a6b" : curAccent;
+    const R = game.effRadius();
     ctx.save();
-    ctx.strokeStyle = surging ? hexA("#fb7185", 0.5) : hexA(curAccent, 0.32);
-    ctx.lineWidth = surging ? 2.5 : 1.5;
-    ctx.beginPath(); ctx.arc(x, y, game.effRadius(), 0, Math.PI * 2); ctx.stroke();
-    const g = ctx.createRadialGradient(x, y, 0, x, y, 30);
-    g.addColorStop(0, hexA(surging ? "#fb7185" : curAccent, 0.55)); g.addColorStop(1, hexA(curAccent, 0));
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 30, 0, Math.PI * 2); ctx.fill();
-    // combo près du pointeur
-    if (game.session.harvesting && game.combo.count > 1) {
-      ctx.fillStyle = "#fb923c"; ctx.textAlign = "center";
-      ctx.font = "800 " + (16 + Math.min(game.combo.count, 40) * 0.4) + "px 'Segoe UI',sans-serif";
-      ctx.fillText("🔥×" + game.combo.count, x, y - game.effRadius() - 10);
-    }
+    ctx.globalCompositeOperation = "lighter";
+    const g = ctx.createRadialGradient(x, y, 0, x, y, R * 0.62);
+    g.addColorStop(0, hexA(col, 0.5)); g.addColorStop(0.5, hexA(col, 0.12)); g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R * 0.62, 0, 6.283); ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 0.85; ctx.strokeStyle = surging ? "#ffce9e" : curAccent2; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.arc(x, y, 12, 0, 6.283); ctx.stroke();
     ctx.restore();
   }
 
@@ -235,25 +233,33 @@
     ctx.restore();
   }
 
-  let curAccent = "#22d3ee";
+  let curAccent = "#34e0ce", curAccent2 = "#7cf5e4";
+  const GLOW = 0.72;
 
   function renderScene(t) {
     ctx.save();
     if (game.shake > 0.1) ctx.translate((Math.random() - 0.5) * game.shake, (Math.random() - 0.5) * game.shake);
     drawBackground(t);
-    field.render(ctx);
+    field.render(ctx, game.grainSources(), GLOW);
     drawSurgeRing();
     for (const p of game.poles) drawPole(p);
     for (const d of game.drones) drawDrone(d);
     drawLumens();
     drawPointer();
+    ctx.globalCompositeOperation = "lighter";
     for (const p of game.particles) {
       ctx.globalAlpha = Math.max(0, p.life / p.max); ctx.fillStyle = p.color;
-      ctx.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
+      ctx.beginPath(); ctx.arc(p.x, p.y, 1.6 * (p.life / p.max) + 0.6, 0, 6.283); ctx.fill();
     }
+    ctx.globalCompositeOperation = "source-over";
     ctx.globalAlpha = 1;
-    ctx.textAlign = "center"; ctx.font = "700 15px 'Segoe UI', sans-serif";
-    for (const f of game.floats) { ctx.globalAlpha = Math.max(0, f.life / f.max); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y); }
+    ctx.textAlign = "center"; ctx.font = "800 16px 'Space Grotesk', sans-serif";
+    for (const f of game.floats) {
+      ctx.globalAlpha = Math.max(0, f.life / f.max);
+      ctx.fillStyle = f.color; ctx.shadowColor = f.color; ctx.shadowBlur = 10;
+      ctx.fillText(f.text, f.x, f.y);
+    }
+    ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
     ctx.restore();
   }
@@ -266,8 +272,8 @@
     if (game.state.biome !== lastBiome) {
       lastBiome = game.state.biome;
       const b = C.biome(lastBiome);
-      field.setTheme(b.c1, b.c2);
-      curAccent = b.accent;
+      field.setTheme(b.accent, b.accent2);
+      curAccent = b.accent; curAccent2 = b.accent2;
     }
 
     game.update(dt);

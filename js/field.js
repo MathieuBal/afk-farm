@@ -32,18 +32,9 @@
       this.setTheme("#22d3ee", "#d946ef");
     }
 
-    setTheme(c1, c2) {
-      const a1 = hex2rgb(c1), a2 = hex2rgb(c2);
-      const c = [];
-      for (let b = 0; b < BUCKETS; b++) {
-        const t = b / (BUCKETS - 1);
-        const r = Math.round(a1[0] + t * (a2[0] - a1[0]));
-        const g = Math.round(a1[1] + t * (a2[1] - a1[1]));
-        const bl = Math.round(a1[2] + t * (a2[2] - a1[2]));
-        const a = (0.16 + t * 0.62).toFixed(3);
-        c.push(`rgba(${r},${g},${bl},${a})`);
-      }
-      this.bucketColors = c;
+    setTheme(accent, accent2) {
+      const a = hex2rgb(accent);
+      this.accentStr = a[0] + "," + a[1] + "," + a[2];
     }
 
     resize(w, h) {
@@ -146,36 +137,35 @@
       this.lumens.length = 0;
     }
 
-    render(ctx) {
-      const { px, py, vx, vy, n, bucketColors, flag } = this;
-
-      // grains au repos : fines particules du lattice
-      ctx.fillStyle = "rgba(120,140,220,0.16)";
+    // Rendu « glow par proximité au pôle » (retour des grains calme et propre).
+    // sources : pôles actifs {x,y,r} ; glow : intensité lumineuse (0..1).
+    render(ctx, sources, glow) {
+      const { px, py, hx, hy, n, flag } = this;
+      glow = glow == null ? 0.7 : glow;
+      const ns = sources ? sources.length : 0;
+      const acc = this.accentStr || "52,224,206";
+      ctx.globalCompositeOperation = "lighter";
       for (let i = 0; i < n; i++) {
-        if (flag[i] === 2) continue;
-        const sp = vx[i] * vx[i] + vy[i] * vy[i];
-        if (sp < 0.0004) ctx.fillRect(px[i] - 0.7, py[i] - 0.7, 1.4, 1.4);
-      }
-
-      // lignes de champ : traînée groupée par palier de vitesse
-      ctx.lineWidth = 1.1;
-      ctx.lineCap = "round";
-      for (let b = 1; b < BUCKETS; b++) {
-        ctx.strokeStyle = bucketColors[b];
-        ctx.beginPath();
-        let drew = false;
-        for (let i = 0; i < n; i++) {
-          const speed = Math.hypot(vx[i], vy[i]);
-          if (speed < 0.02) continue;
-          let bk = (speed / MAX_SPEED * BUCKETS) | 0;
-          if (bk >= BUCKETS) bk = BUCKETS - 1;
-          if (bk !== b) continue;
-          ctx.moveTo(px[i], py[i]);
-          ctx.lineTo(px[i] - vx[i] * TAIL, py[i] - vy[i] * TAIL);
-          drew = true;
+        if (flag[i] === 2) continue;           // lumen éteint : pas de halo
+        const x = px[i], y = py[i];
+        let prox = 0;
+        for (let s = 0; s < ns; s++) {
+          const src = sources[s];
+          const dx = src.x - x, dy = src.y - y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          const p = src.r > 0 ? 1 - d / (src.r * 1.3) : 0;
+          if (p > prox) prox = p;
         }
-        if (drew) ctx.stroke();
+        if (prox < 0) prox = 0;
+        const disp = Math.min(1, Math.hypot(x - hx[i], y - hy[i]) / 24);
+        const a = 0.10 + prox * 0.6 * glow + disp * 0.15 * glow;
+        const sz = 1 + prox * 1.7 + disp * 0.6;
+        ctx.globalAlpha = a;
+        ctx.fillStyle = prox > 0.04 ? "rgb(" + acc + ")" : "#46517d";
+        ctx.beginPath(); ctx.arc(x, y, sz, 0, 6.283); ctx.fill();
       }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
     }
   }
 
