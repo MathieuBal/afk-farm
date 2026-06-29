@@ -12,10 +12,11 @@ devient le cœur d'une boucle de jeu profonde et entièrement corrélée.
 ## Le concept
 
 Ton pointeur (doigt / souris) est un **pôle magnétique** qui **courbe la grille
-de grains** — la signature de Sensoria. Mais ici la grille **est** la ressource :
-certains grains se **chargent** (par rareté) et, quand tu les aimantes jusqu'à
-toi, ils sont **récoltés** en **Lumens ✦**. Pas deux systèmes séparés : on
-récolte directement la grille magnétique.
+de grains** — la signature de Sensoria. Des **points-Lumens** sont ancrés dans
+cette grille : quand tu les aimantes, ils **affluent dans l'aimant** par la
+physique du champ, sont **récoltés** en **Lumens ✦**, puis s'**éteignent** et se
+**rallument (repop)** après un délai (réductible via la *Conductivité*). La
+**taille de la grille** (nombre de points-Lumens) s'améliore aussi.
 
 Tout ce que tu gagnes alimente quatre systèmes interconnectés.
 

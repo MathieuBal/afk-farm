@@ -3,14 +3,15 @@
   const AFK = (window.AFK = window.AFK || {});
 
   const CONST = {
-    DRONE_EFF: 1.5,          // captures/s estimées par drone (HUD + offline)
-    DRONE_RATE: 1.5,         // grains/s absorbés par drone (récolte en ligne)
+    DRONE_EFF: 0.5,          // lumens/s estimés par drone (récolte auto)
+    LUMEN_COUNT: 40,         // nombre de points-Lumens ancrés dans la grille
+    REPOP_BASE: 2600,        // délai de repop d'un lumen récolté (ms)
     OFFLINE_CAP_BASE: 8 * 3600,
-    COLLECT_DIST: 13,
-    BIOME_MULT: 15,          // multiplicateur de revenu par biome
-    TREE_BASE_COST: 40,      // coût de base d'un nœud d'arbre
-    TREE_GROWTH: 1.135,      // croissance par nœud alloué
-    PRESTIGE_DIV: 5e3,       // diviseur pour le calcul des Cores
+    COLLECT_DIST: 14,
+    BIOME_MULT: 12,          // multiplicateur de revenu par biome
+    TREE_BASE_COST: 25,      // coût de base d'un nœud d'arbre
+    TREE_GROWTH: 1.12,       // croissance par nœud alloué
+    PRESTIGE_DIV: 1e4,       // diviseur pour le calcul des Cores
     CORE_MULT: 0.10,         // +10% revenu global par Core
     // session de récolte active (réglée pour un rythme fluide : le minuteur
     // limite la 1re session, l'énergie permet ~2 sessions enchaînées)
@@ -19,17 +20,16 @@
       ENERGY_REGEN: 10,      // régénération /s hors récolte
       ENERGY_DRAIN: 5,       // consommation /s en récolte
       TIME: 15,              // durée de session de base (s)
-      STORAGE: 200,          // capacité de soute de base (grains)
-      ABSORB: 16,            // débit de récolte de base (grains/s)
+      STORAGE: 120,          // capacité de soute (nombre de lumens récoltés)
     },
   };
 
   /* Unités à récolter. La valeur est multipliée par le revenu global. */
   const RARITIES = [
-    { key: "common",    name: "Commun",     value: 1,    color: "#e2e8f0", glow: "#9fb4ff", weight: 70, r: 5.5 },
-    { key: "rare",      name: "Rare",       value: 9,    color: "#38bdf8", glow: "#38bdf8", weight: 22, r: 6.5 },
-    { key: "epic",      name: "Épique",     value: 60,   color: "#a855f7", glow: "#c084fc", weight: 6,  r: 7.5 },
-    { key: "legendary", name: "Légendaire", value: 520,  color: "#fbbf24", glow: "#fde68a", weight: 2,  r: 9 },
+    { key: "common",    name: "Commun",     value: 1,   color: "#e2e8f0", glow: "#9fb4ff", weight: 70, r: 5 },
+    { key: "rare",      name: "Rare",       value: 4,   color: "#38bdf8", glow: "#38bdf8", weight: 22, r: 6 },
+    { key: "epic",      name: "Épique",     value: 16,  color: "#a855f7", glow: "#c084fc", weight: 6,  r: 7 },
+    { key: "legendary", name: "Légendaire", value: 75,  color: "#fbbf24", glow: "#fde68a", weight: 2,  r: 8.5 },
   ];
 
   /* Biomes : fonds, thème de couleur, palier de Lumens, multiplicateur. */

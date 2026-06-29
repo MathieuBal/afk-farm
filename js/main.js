@@ -179,24 +179,25 @@
     ctx.beginPath(); ctx.ellipse(d.x, d.y, 11, 4.5, d.phase || 0, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
   }
-  // reflets discrets sur les grains précieux (la grille reste unifiée :
-  // pas d'orbes séparées, juste un léger éclat pour les grains de valeur)
-  function drawValuableGrains() {
+  // points-Lumens allumés : nœuds lumineux ancrés dans la grille (intégrés,
+  // pas de grosses orbes — ils streament dans l'aimant via la physique du champ)
+  let lumPulse = 0;
+  function drawLumens() {
     const f = game.field;
-    if (!f || !f.rar) return;
-    const R = C.RARITIES;
+    if (!f || !f.lumens) return;
+    lumPulse += 0.06;
     ctx.save();
-    for (let i = 0; i < f.n; i++) {
-      if (f.cool[i] > 0) continue;
-      const ri = f.rar[i];
-      if (ri < 2) continue;            // seuls épique/légendaire scintillent
-      const rar = R[ri];
-      const x = f.px[i], y = f.py[i];
-      const rad = ri === 3 ? 3.4 : 2.6;
-      ctx.globalAlpha = 0.4; ctx.fillStyle = rar.glow;
-      ctx.beginPath(); ctx.arc(x, y, rad * 2.2, 0, Math.PI * 2); ctx.fill();
+    for (const e of f.lumens) {
+      if (!e.lit) continue;
+      const x = f.px[e.i], y = f.py[e.i];
+      const rar = e.rar;
+      const r = rar.r * 0.7 + Math.sin(lumPulse + e.i) * 0.4;
+      ctx.globalAlpha = 0.5; ctx.fillStyle = rar.glow;
+      ctx.beginPath(); ctx.arc(x, y, r * 2.4, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = 1; ctx.fillStyle = rar.color;
-      ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.beginPath(); ctx.arc(x - r * 0.3, y - r * 0.3, r * 0.34, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
     ctx.restore();
@@ -244,7 +245,7 @@
     drawSurgeRing();
     for (const p of game.poles) drawPole(p);
     for (const d of game.drones) drawDrone(d);
-    drawValuableGrains();
+    drawLumens();
     drawPointer();
     for (const p of game.particles) {
       ctx.globalAlpha = Math.max(0, p.life / p.max); ctx.fillStyle = p.color;
