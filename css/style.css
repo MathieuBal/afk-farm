@@ -127,8 +127,10 @@ html, body {
 #tree-header .th-ic svg { width: 20px; height: 20px; }
 #tree-header .th-title { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 16px; }
 #tree-header .th-lumens { margin-left: auto; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14px; color: var(--gold); }
-#tree-header #tree-close { width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,.06); border: 1px solid var(--line); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-#tree-header #tree-close svg { width: 15px; height: 15px; }
+#tree-header #tree-close, #tree-header #tree-respec { width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,.06); border: 1px solid var(--line); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+#tree-header #tree-close svg, #tree-header #tree-respec svg { width: 16px; height: 16px; }
+#tree-header #tree-respec { margin-left: 6px; }
+#tree-header #tree-respec:hover { color: var(--accent); }
 
 #node-info {
   position: fixed; left: 50%; transform: translateX(-50%); z-index: 29;

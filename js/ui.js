@@ -73,6 +73,11 @@
       this.$("nav-prestige").addEventListener("click", set("prestige"));
       this.$("profile-btn").addEventListener("click", () => { if (AFK.audio) AFK.audio.init(); this.setView(this.view === "profile" ? "field" : "profile"); });
       this.$("tree-close").addEventListener("click", set("field"));
+      this.$("tree-respec").addEventListener("click", () => {
+        const spent = this.game.state.treeSpent || 0;
+        if (spent <= 0) return;
+        if (confirm("Réinitialiser l'arbre et récupérer " + fmt(spent) + " ✦ ?")) this.game.respecTree();
+      });
       this.$("sheet-close").addEventListener("click", set("field"));
       this.$("reset-btn").addEventListener("click", () => {
         if (confirm("Tout réinitialiser (prestige inclus) ?")) { this.game.reset(); this.applyTheme(); this.setView("field"); }

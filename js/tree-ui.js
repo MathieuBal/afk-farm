@@ -34,8 +34,10 @@
       this.info.classList.remove("hidden");
       this.info.querySelector(".ni-icon").textContent = n.icon;
       this.info.querySelector(".ni-name").textContent = n.label;
-      const branch = n.id === "core" ? "Origine" : n.keystone ? "Keystone" : n.notable ? "Nœud notable" : "Nœud mineur";
-      this.info.querySelector(".ni-branch").textContent = branch;
+      const kind = n.id === "core" ? "" : n.keystone ? " · Keystone" : n.notable ? " · Notable" : "";
+      this.info.querySelector(".ni-branch").textContent = (n.branch || "Branche") + kind;
+      const icon = this.info.querySelector(".ni-icon");
+      if (icon) icon.style.color = n.bcol || "var(--accent)";
       this.info.querySelector(".ni-desc").textContent = AFK.tree.effectText(n);
       this.updateInfo();
     }
@@ -62,6 +64,37 @@
     }
 
     setTheme(c, c2) { this.theme = c; this.theme2 = c2 || c; }
+
+    hexA(hex, a) {
+      if (!hex || hex[0] !== "#") return "rgba(120,140,210," + a + ")";
+      const h = hex.slice(1);
+      const v = h.length === 3 ? h.split("").map((x) => x + x).join("") : h;
+      const n = parseInt(v, 16);
+      return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
+    }
+    shapePath(ctx, x, y, r, kind) {
+      ctx.beginPath();
+      if (kind === "hex") {
+        for (let k = 0; k < 6; k++) { const a = Math.PI / 6 + k * Math.PI / 3; const px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; if (k) ctx.lineTo(px, py); else ctx.moveTo(px, py); }
+        ctx.closePath();
+      } else if (kind === "diamond") {
+        ctx.moveTo(x, y - r); ctx.lineTo(x + r, y); ctx.lineTo(x, y + r); ctx.lineTo(x - r, y); ctx.closePath();
+      } else {
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+      }
+    }
+    chip(ctx, text, x, y, col, strong, z) {
+      const fs = (strong ? 12 : 11) * z;
+      ctx.font = (strong ? "700 " : "600 ") + fs + "px 'Space Grotesk', sans-serif";
+      const w = ctx.measureText(text).width + 14 * z, h = fs + 9 * z;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x - w / 2, y - h, w, h, 999); else ctx.rect(x - w / 2, y - h, w, h);
+      ctx.fillStyle = "rgba(8,11,22,0.85)"; ctx.fill();
+      ctx.lineWidth = 1; ctx.strokeStyle = this.hexA(col, strong ? 0.8 : 0.4); ctx.stroke();
+      ctx.fillStyle = strong ? col : "rgba(220,228,255,0.9)";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x, y - h / 2);
+    }
 
     show() {
       this.open = true;
@@ -166,6 +199,7 @@
 
     draw() {
       if (!this.open) return;
+      this.t2 = (this.t2 || 0) + 0.016;
       const ctx = this.ctx, g = this.game;
       ctx.clearRect(0, 0, this.W, this.H);
       ctx.fillStyle = "rgba(7,10,20,0.97)";
@@ -176,19 +210,33 @@
       const margin = 60;
       const vis = (x, y) => x > -margin && x < this.W + margin && y > -margin && y < this.H + margin;
 
-      // liens
-      ctx.lineWidth = Math.max(1, 2.2 * z);
+      // étiquettes de branche (en fond, teintées par couleur de branche)
+      if (g.tree.branchLabels) {
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.font = "700 " + (13 * Math.min(z, 1.2)) + "px 'Space Grotesk', sans-serif";
+        for (const bl of g.tree.branchLabels) {
+          const [lx, ly] = this.w2s(bl.x, bl.y);
+          if (!vis(lx, ly)) continue;
+          ctx.globalAlpha = 0.5; ctx.fillStyle = bl.color;
+          ctx.fillText(bl.name.toUpperCase(), lx, ly);
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      // liens (teintés par branche ; lumineux si le chemin est alloué)
       for (const n of g.tree.list) {
         const [ax, ay] = this.w2s(n.x, n.y);
         for (const lid of n.links) {
-          if (lid < n.id) continue; // une fois par paire
+          if (lid < n.id) continue;
           const m = g.tree.byId.get(lid);
           if (!m) continue;
           const [bx, by] = this.w2s(m.x, m.y);
           if (!vis(ax, ay) && !vis(bx, by)) continue;
           const both = nodes[n.id] && nodes[lid];
-          ctx.strokeStyle = both ? this.theme : "rgba(120,140,200,0.13)";
-          ctx.globalAlpha = both ? 0.9 : 1;
+          const near = both || nodes[n.id] || nodes[lid];
+          ctx.strokeStyle = both ? (n.bcol || this.theme) : near ? this.hexA(n.bcol || this.theme, 0.35) : "rgba(120,140,200,0.1)";
+          ctx.lineWidth = both ? 3 * z : 1.6 * z;
+          ctx.globalAlpha = both ? 0.85 : 1;
           ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
         }
       }
@@ -198,53 +246,53 @@
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
       for (const n of g.tree.list) {
         const [x, y] = this.w2s(n.x, n.y);
-        const baseR = (n.id === "core" ? 24 : n.keystone ? 28 : n.notable ? 20 : 14);
+        const baseR = (n.id === "core" ? 23 : n.keystone ? 30 : n.notable ? 19 : 13);
         const r = baseR * z;
         if (!vis(x, y)) continue;
         const alloc = !!nodes[n.id];
         const can = AFK.tree.canAllocate(g.tree, nodes, n.id);
         const cost = n.id === "core" ? 0 : g.nodeCost(n);
         const afford = g.state.lumens >= cost;
+        const bcol = n.bcol || this.theme;
+        const kind = n.keystone ? "hex" : n.notable ? "diamond" : "circle";
 
-        // halo
+        // halo (teinté branche)
         if (alloc || (can && afford)) {
-          ctx.beginPath();
-          ctx.fillStyle = alloc ? this.theme : "rgba(255,255,255,0.10)";
-          ctx.globalAlpha = alloc ? 0.22 : 0.5;
-          ctx.arc(x, y, r * 1.7, 0, Math.PI * 2); ctx.fill();
-          ctx.globalAlpha = 1;
+          const pulse = can && !alloc ? 0.35 + 0.25 * Math.sin(this.t2 * 3 + (n.ring || 0)) : 0.22;
+          ctx.beginPath(); ctx.fillStyle = this.hexA(bcol, pulse);
+          ctx.arc(x, y, r * 1.8, 0, Math.PI * 2); ctx.fill();
         }
 
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        if (alloc) { ctx.fillStyle = "rgba(20,28,52,0.95)"; ctx.fill(); ctx.lineWidth = 2.4 * z; ctx.strokeStyle = this.theme2 || this.theme; ctx.stroke(); }
-        else if (can) { ctx.fillStyle = "rgba(16,21,38,0.92)"; ctx.fill(); ctx.lineWidth = 2 * z; ctx.strokeStyle = afford ? this.theme : "rgba(120,130,170,0.5)"; ctx.stroke(); }
-        else { ctx.fillStyle = "rgba(12,15,28,0.85)"; ctx.fill(); ctx.lineWidth = 1.4 * z; ctx.strokeStyle = "rgba(120,140,210,0.25)"; ctx.stroke(); }
+        // corps
+        this.shapePath(ctx, x, y, r, kind);
+        if (alloc) { ctx.fillStyle = this.hexA(bcol, 0.9); ctx.shadowColor = bcol; ctx.shadowBlur = 12 * z; ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = 2.2 * z; ctx.strokeStyle = "#fff"; ctx.globalAlpha = 0.85; ctx.stroke(); ctx.globalAlpha = 1; }
+        else if (can) { ctx.fillStyle = "rgba(14,19,34,0.95)"; ctx.fill(); ctx.lineWidth = 2.2 * z; ctx.strokeStyle = afford ? bcol : "rgba(120,130,170,0.5)"; ctx.stroke(); }
+        else { ctx.fillStyle = "rgba(12,15,28,0.85)"; ctx.fill(); ctx.lineWidth = 1.4 * z; ctx.strokeStyle = this.hexA(bcol, 0.3); ctx.stroke(); }
 
-        // flash de feedback
+        // flash
         if (this.flash && this.flash.id === n.id) {
           ctx.beginPath(); ctx.arc(x, y, r * (1 + (1 - this.flash.t / 600)), 0, Math.PI * 2);
           ctx.strokeStyle = this.flash.ok ? "rgba(110,231,183,0.9)" : "rgba(248,113,113,0.9)";
           ctx.lineWidth = 3 * z; ctx.stroke();
         }
 
+        // icône
         if (z > 0.5) {
-          ctx.globalAlpha = alloc || can ? 1 : 0.5;
-          ctx.font = (r * 1.1) + "px sans-serif";
-          ctx.fillText(n.icon, x, y + r * 0.05);
+          ctx.globalAlpha = alloc ? 1 : can ? 0.95 : 0.5;
+          ctx.font = (r * 1.05) + "px sans-serif";
+          ctx.fillText(n.icon, x, y + r * 0.06);
           ctx.globalAlpha = 1;
         }
-        // coût sous les nœuds allouables
-        if (can && z > 0.6) {
-          ctx.font = "700 " + (11 * Math.min(z, 1.4)) + "px 'Space Grotesk',sans-serif";
+        // coût (allouables)
+        if (can && z > 0.55) {
+          const fs = 11 * Math.min(z, 1.4);
+          ctx.font = "700 " + fs + "px 'Space Grotesk',sans-serif";
           ctx.fillStyle = afford ? "#f6c75e" : "#7a86b0";
-          ctx.fillText("✦ " + fmt(cost), x, y + r + 11 * Math.min(z, 1.4));
+          ctx.fillText("✦ " + fmt(cost), x, y + r + fs);
         }
-        // nom des notables/keystones
-        if ((n.notable || n.keystone) && z > 0.9) {
-          ctx.font = "600 " + (11 * Math.min(z, 1.3)) + "px 'Segoe UI',sans-serif";
-          ctx.fillStyle = "rgba(220,228,255,0.85)";
-          ctx.fillText(n.label, x, y - r - 9 * Math.min(z, 1.3));
+        // étiquette nommée (keystones toujours, notables si zoom)
+        if ((n.keystone && z > 0.45) || (n.notable && z > 0.85)) {
+          this.chip(ctx, n.label, x, y - r - 12 * Math.min(z, 1.3), bcol, n.keystone, Math.min(z, 1.3));
         }
       }
 

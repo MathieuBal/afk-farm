@@ -18,6 +18,7 @@
       bestBiome: 0,
       energy: 120,        // énergie de récolte courante
       nodes: { "core": 1 },   // nœuds d'arbre alloués (id -> 1)
+      treeSpent: 0,       // total dépensé dans l'arbre (pour le respec)
       perks: {},          // perks de prestige (id -> niveau)
       projects: {},       // état des projets : id -> {pi, p, building}
       projectIndex: 0,    // projet courant dans la chaîne

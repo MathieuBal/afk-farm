@@ -74,6 +74,7 @@
       this.lumenCount = Math.min(140, CONST.LUMEN_COUNT + Math.round(ts.density * 2));
       this.repopDelay = Math.max(600, CONST.REPOP_BASE - ts.density * 120);
       this.luck = ts.luck;
+      this.comboCap = 5 + (ts.comboCap || 0);   // plafond du multiplicateur de combo
       this.dronePowerMult = 1 + ts.dronePower;
       this.buildSpeed = 1 + ts.build;
       this.droneCount = ts.drones + fleetVal;
@@ -119,11 +120,24 @@
       const cost = this.nodeCost(node);
       if (this.state.lumens < cost) return false;
       this.state.lumens -= cost;
+      this.state.treeSpent = (this.state.treeSpent || 0) + cost;
       this.state.nodes[id] = 1;
       this.applyStats();
       this.syncDrones();
       this.snd("buy");
       return true;
+    }
+    // rembourse intégralement les nœuds alloués (expérimentation libre)
+    respecTree() {
+      const refund = Math.floor(this.state.treeSpent || 0);
+      this.state.lumens += refund;
+      this.state.treeSpent = 0;
+      this.state.nodes = { core: 1 };
+      this.applyStats();
+      this.syncDrones();
+      this.snd("buy");
+      this.toasts.push({ kind: "respec", title: "↺ Arbre réinitialisé", body: "Remboursé · +" + AFK.state.fmt(refund) + " ✦" });
+      return refund;
     }
 
     /* ---------- session de récolte active ---------- */
@@ -241,7 +255,7 @@
       st.cores += gain; st.prestiges += 1;
       st.lumens = kept; st.totalRun = 0;
       st.biome = 0; st.projectIndex = 0; st.projects = {};
-      st.nodes = { core: 1 };
+      st.nodes = { core: 1 }; st.treeSpent = 0;
       this.poles.length = 0;
       this.session.harvesting = false; this.session.storage = 0; this.session.storageValue = 0;
       this.applyStats();
@@ -425,7 +439,7 @@
           let amt = rar.value * inc;
           if (toStorage) {
             this.combo.count += 1; this.combo.timer = 1600;
-            this.combo.mult = Math.min(5, 1 + this.combo.count * 0.12); // ×1 -> ×5
+            this.combo.mult = Math.min(this.comboCap, 1 + this.combo.count * 0.12);
             if (this.combo.count > this.state.stats.comboMax) this.state.stats.comboMax = this.combo.count;
             amt *= this.combo.mult;
             this.session.storage += 1; this.session.storageValue += amt;
