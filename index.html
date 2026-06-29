@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#06070f" />
+  <title>AFK Farm — Récolte magnétique</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <!-- HUD -->
+  <header id="hud">
+    <div class="lumens">
+      <span class="spark">✦</span>
+      <span id="lumens-count">0</span>
+    </div>
+    <div class="rate">Récolte auto&nbsp;: <span id="rate-count">0</span>/s</div>
+  </header>
+
+  <div id="hint">Déplace ton doigt / ta souris pour aimanter les unités&nbsp;· <b>double-tap</b> = pôle magnétique</div>
+
+  <!-- Shop toggle -->
+  <button id="shop-toggle" aria-label="Améliorations">🛠️<span class="label">Améliorations</span></button>
+
+  <!-- Shop drawer -->
+  <aside id="shop" class="closed">
+    <div class="shop-head">
+      <h2>Améliorations</h2>
+      <button id="shop-close" aria-label="Fermer">✕</button>
+    </div>
+    <div id="shop-list"></div>
+    <div class="shop-foot">
+      <span id="stat-collected">0 unités récoltées</span>
+      <button id="reset-btn">Réinitialiser</button>
+    </div>
+  </aside>
+
+  <!-- Welcome back toast -->
+  <div id="toast" class="hidden"></div>
+
+  <script src="js/state.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/field.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
