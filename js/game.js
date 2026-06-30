@@ -75,14 +75,18 @@
 
       this.pullRadius = Math.max(60, 130 * (1 + ts.radius));
       this.pullStrength = 0.55 * (1 + ts.strength);
-      // conductivité (density) = grille plus grande + repop plus rapide
-      this.lumenCount = Math.min(140, CONST.LUMEN_COUNT + Math.round(ts.density * 2));
-      this.repopDelay = Math.max(600, CONST.REPOP_BASE - ts.density * 120);
       this.luck = ts.luck;
       this.comboCap = 5 + (ts.comboCap || 0);   // plafond du multiplicateur de combo
       this.dronePowerMult = 1 + ts.dronePower;
       this.buildSpeed = 1 + ts.build;
       this.droneCount = ts.drones + fleetVal;
+
+      // Grille de Lumens : grandit avec la branche Réseau (gridpoint) ET avec le
+      // nombre de drones (chaque drone amène ses propres points -> pas de famine
+      // qui empêcherait le joueur de faire ses combos).
+      this.lumenCount = Math.min(280,
+        CONST.LUMEN_COUNT + Math.round(ts.density * 2) + (ts.lumenPoints || 0) + Math.round(this.droneCount * 3));
+      this.repopDelay = Math.max(360, CONST.REPOP_BASE - ts.density * 120 - (ts.repop || 0) * 150);
 
       // session active
       this.energyMax = S.ENERGY_MAX + ts.energy;

@@ -38,7 +38,9 @@
     }
 
     resize(w, h) {
-      const sp = this.spacing;
+      // densité plafonnée : ~26px sur mobile, un peu plus large sur grand écran
+      // pour garder le nombre de grains (et donc le coût de rendu) raisonnable.
+      const sp = this.spacing = Math.max(26, Math.round(Math.sqrt(w * h / 1500)));
       const cols = Math.ceil(w / sp) + 1;
       const rows = Math.ceil(h / sp) + 1;
       const n = cols * rows;
@@ -143,26 +145,35 @@
       const { px, py, hx, hy, n, flag } = this;
       glow = glow == null ? 0.7 : glow;
       const ns = sources ? sources.length : 0;
-      const acc = this.accentStr || "52,224,206";
+      const dim = "#46517d", bright = "rgb(" + (this.accentStr || "52,224,206") + ")";
       ctx.globalCompositeOperation = "lighter";
+      // Batché : les grains au repos (la grande majorité) sont des fillRect bon
+      // marché en un seul style/alpha ; seuls les grains « actifs » près d'un
+      // pôle sont dessinés en arcs avec leur lueur propre.
+      let mode = 0;
       for (let i = 0; i < n; i++) {
-        if (flag[i] === 2) continue;           // lumen éteint : pas de halo
+        if (flag[i] === 2) continue;
         const x = px[i], y = py[i];
         let prox = 0;
         for (let s = 0; s < ns; s++) {
           const src = sources[s];
           const dx = src.x - x, dy = src.y - y;
+          const r = src.r * 1.3;
+          if (dx > r || dx < -r || dy > r || dy < -r) continue;   // cull rapide
           const d = Math.sqrt(dx * dx + dy * dy);
-          const p = src.r > 0 ? 1 - d / (src.r * 1.3) : 0;
+          const p = src.r > 0 ? 1 - d / r : 0;
           if (p > prox) prox = p;
         }
-        if (prox < 0) prox = 0;
-        const disp = Math.min(1, Math.hypot(x - hx[i], y - hy[i]) / 24);
-        const a = 0.10 + prox * 0.6 * glow + disp * 0.15 * glow;
-        const sz = 1 + prox * 1.7 + disp * 0.6;
-        ctx.globalAlpha = a;
-        ctx.fillStyle = prox > 0.04 ? "rgb(" + acc + ")" : "#46517d";
-        ctx.beginPath(); ctx.arc(x, y, sz, 0, 6.283); ctx.fill();
+        const dh = x - hx[i], dv = y - hy[i];
+        const disp = Math.min(1, Math.sqrt(dh * dh + dv * dv) / 24);
+        if (prox < 0.04 && disp < 0.05) {
+          if (mode !== 1) { ctx.fillStyle = dim; ctx.globalAlpha = 0.10; mode = 1; }
+          ctx.fillRect(x - 0.75, y - 0.75, 1.5, 1.5);
+        } else {
+          if (mode !== 2) { ctx.fillStyle = bright; mode = 2; }
+          ctx.globalAlpha = 0.10 + prox * 0.6 * glow + disp * 0.15 * glow;
+          ctx.beginPath(); ctx.arc(x, y, 1 + prox * 1.7 + disp * 0.6, 0, 6.283); ctx.fill();
+        }
       }
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = "source-over";

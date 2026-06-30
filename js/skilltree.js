@@ -5,7 +5,7 @@
   const AFK = (window.AFK = window.AFK || {});
   const { mulberry32, hashStr } = AFK.util;
 
-  const ARMS = 6;
+  const ARMS = 7;
   const NODES_PER_ARM = 84;
   const RING_GAP = 78;
   const FORK_EVERY = 3;
@@ -23,6 +23,7 @@
     { name: "Chronologie", color: "#b79cff", key: "overdrive",  pool: ["time", "time", "efficiency"] },
     { name: "Essaim",      color: "#5be5a0", key: "swarm",      pool: ["drone_power", "drone_power", "luck"] },
     { name: "Aimantation", color: "#ff9e5b", key: "overload",   pool: ["strength", "radius", "value"] },
+    { name: "Réseau",      color: "#f472b6", key: "hypergrid",  pool: ["gridpoint", "gridpoint", "repopfast"] },
   ];
   function branch(arm) { return BRANCHES[((arm % ARMS) + ARMS) % ARMS]; }
 
@@ -39,6 +40,8 @@
     efficiency:  { label: "Efficience",     icon: "♻️", apply: (s) => (s.efficiency += 0.15) },
     time:        { label: "Chronométrie",   icon: "⏱️", apply: (s) => (s.time += 3) },
     storage:     { label: "Soute",          icon: "📦", apply: (s) => (s.storage += 20) },
+    gridpoint:   { label: "Maillage",       icon: "🕸️", apply: (s) => (s.lumenPoints += 2) },
+    repopfast:   { label: "Résonateur",     icon: "🔆", apply: (s) => (s.repop += 1) },
     // notables
     value_n:     { label: "Cœur d'ambre",   icon: "💠", notable: true, apply: (s) => (s.value += 0.55) },
     dronebay:    { label: "Baie de drones", icon: "🚀", notable: true, apply: (s) => { s.drones += 1; s.dronePower += 0.3; } },
@@ -57,6 +60,7 @@
     perpetual:   { label: "Perpétuel",      icon: "♾️", keystone: true, gmult: 1.16, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
     stockpile:   { label: "Cale béante",    icon: "🛢️", keystone: true, gmult: 1.16, apply: (s) => { s.storage += 280; s.build += 0.5; } },
     overdrive:   { label: "Surrégime",      icon: "🏁", keystone: true, gmult: 1.16, apply: (s) => { s.time += 12; s.energy += 120; } },
+    hypergrid:   { label: "Hypergrille",    icon: "🌐", keystone: true, gmult: 1.18, apply: (s) => { s.lumenPoints += 24; s.repop += 5; s.density += 3; } },
   };
 
   const DESC = {
@@ -73,6 +77,8 @@
     efficiency: "+15 % efficience (moins d'énergie consommée)",
     time: "+3 s de durée de session",
     storage: "+20 capacité de soute",
+    gridpoint: "+2 points-Lumens sur la grille",
+    repopfast: "−150 ms de délai de repop",
     value_n: "+55 % valeur de récolte",
     dronebay: "+1 drone et +30 % de puissance",
     magnitude: "+30 % portée et +30 % force",
@@ -88,12 +94,13 @@
     perpetual: "KEYSTONE — ×1,16 revenu global, +7 régénération et +50 % efficience",
     stockpile: "KEYSTONE — ×1,16 revenu global, +280 soute et +50 % construction",
     overdrive: "KEYSTONE — ×1,16 revenu global, +12 s de session et +120 énergie max",
+    hypergrid: "KEYSTONE — ×1,18 revenu global, +24 points-Lumens et repop très rapide",
   };
   function effectText(node) { return DESC[node.type] || ""; }
 
-  const MINOR = ["value", "radius", "strength", "density", "luck", "drone_power", "build", "energy", "regen", "efficiency", "time", "storage"];
+  const MINOR = ["value", "radius", "strength", "density", "luck", "drone_power", "build", "energy", "regen", "efficiency", "time", "storage", "gridpoint", "repopfast"];
   const NOTABLES = ["value_n", "dronebay", "magnitude", "fortune", "refinery", "battery", "warehouse", "chrono", "resonance"];
-  const KEYSTONES = ["overload", "swarm", "nova", "perpetual", "stockpile", "overdrive"];
+  const KEYSTONES = ["overload", "swarm", "nova", "perpetual", "stockpile", "overdrive", "hypergrid"];
 
   function pick(rng, arr) { return arr[(rng() * arr.length) | 0]; }
 
@@ -189,7 +196,8 @@
 
   function aggregate(tree, allocated) {
     const s = { value: 0, radius: 0, strength: 0, density: 0, luck: 0, dronePower: 0, build: 0, drones: 0,
-      energy: 0, regen: 0, efficiency: 0, time: 0, storage: 0, comboCap: 0, keyMult: 1, count: 0 };
+      energy: 0, regen: 0, efficiency: 0, time: 0, storage: 0, comboCap: 0, keyMult: 1, count: 0,
+      lumenPoints: 0, repop: 0 };
     for (const id in allocated) {
       if (id === "core") continue;
       const n = tree.byId.get(id);

@@ -60,18 +60,18 @@
    * et un multiplicateur global permanent. */
   const PROJECTS = [
     { id: "ship", icon: "🚀", name: "Vaisseau de récolte", desc: "Une épave à remettre en état, pièce par pièce.", mult: 1.6, parts: [
-      { name: "Coque",          icon: "🛡️", cost: 350,   time: 180 },
-      { name: "Réacteur",       icon: "⚙️", cost: 1100,  time: 1200 },
-      { name: "Aimant de proue", icon: "🧲", cost: 2400,  time: 2100 },
-      { name: "Cockpit",        icon: "🎛️", cost: 1800,  time: 2400 },
-      { name: "Boucliers",      icon: "✨", cost: 3200,  time: 2700 },
+      { name: "Coque",          icon: "🛡️", cost: 300,   time: 90 },
+      { name: "Réacteur",       icon: "⚙️", cost: 900,   time: 360 },
+      { name: "Aimant de proue", icon: "🧲", cost: 2000,  time: 540 },
+      { name: "Cockpit",        icon: "🎛️", cost: 1600,  time: 720 },
+      { name: "Boucliers",      icon: "✨", cost: 2800,  time: 900 },
     ]},
     { id: "station", icon: "🛰️", name: "Station orbitale", desc: "Une raffinerie modulaire à assembler.", mult: 1.8, parts: [
-      { name: "Anneau central",  icon: "⭕", cost: 2e4,  time: 1800 },
-      { name: "Panneaux solaires", icon: "🔆", cost: 5e4, time: 3000 },
-      { name: "Raffinerie",      icon: "⚗️", cost: 9e4,  time: 4200 },
-      { name: "Quartiers",       icon: "🏠", cost: 7e4,  time: 3600 },
-      { name: "Tour de contrôle", icon: "📡", cost: 1.4e5, time: 5400 },
+      { name: "Anneau central",  icon: "⭕", cost: 2e4,  time: 900 },
+      { name: "Panneaux solaires", icon: "🔆", cost: 5e4, time: 1500 },
+      { name: "Raffinerie",      icon: "⚗️", cost: 9e4,  time: 2400 },
+      { name: "Quartiers",       icon: "🏠", cost: 7e4,  time: 2100 },
+      { name: "Tour de contrôle", icon: "📡", cost: 1.4e5, time: 3000 },
     ]},
     { id: "cruiser", icon: "🛸", name: "Croiseur magnétique", desc: "Un vaisseau de classe lourde à reconstruire.", mult: 2.2, parts: [
       { name: "Carlingue",       icon: "🔩", cost: 4e5, time: 3600 },
