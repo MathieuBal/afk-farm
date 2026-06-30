@@ -261,7 +261,12 @@ html, body {
 .part-remain { font-family: "JetBrains Mono", monospace; color: var(--muted); min-width: 40px; text-align: right; }
 .part-fund { border: none; border-radius: 9px; padding: 7px 13px; font-weight: 800; font-size: 12px; cursor: pointer; color: #05070d; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
 .part-fund.no { background: rgba(120,130,170,.25); color: var(--muted); }
+.pj-biomemod { font-size: 12px; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--line); border-radius: 11px; padding: 9px 12px; margin: 10px 0 4px; line-height: 1.4; }
 .pj-meta { font-size: 11.5px; color: var(--muted); margin-top: 12px; text-align: center; }
+.biome-now { display: flex; gap: 10px; align-items: flex-start; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 13px; padding: 12px 14px; margin-bottom: 14px; }
+.biome-now .bn-ic { font-size: 20px; }
+.biome-now .bn-name { font-weight: 800; font-size: 14px; color: var(--accent); }
+.biome-now .bn-tag { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
 
 /* Prestige */
 .prestige-box { border-radius: 20px; background: linear-gradient(150deg, rgba(183,156,255,.12), var(--surface2)); border: 1px solid rgba(183,156,255,.3); padding: 18px; }

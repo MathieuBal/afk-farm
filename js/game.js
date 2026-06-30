@@ -94,8 +94,20 @@
       this.energyDrain = S.ENERGY_DRAIN / (1 + ts.efficiency);
       this.sessionTime = S.TIME + ts.time;
       this.storageMax = Math.round(S.STORAGE + ts.storage); // soute en nombre de lumens
-      if (st.energy > this.energyMax) st.energy = this.energyMax;
 
+      // modificateur de biome : chaque biome a sa propre mécanique (pas qu'un
+      // recolor + ×12). Gentle / net quasi-neutre pour rester mesuré.
+      const mod = C.biome(st.biome).mod || {};
+      if (mod.luckBonus) this.luck += mod.luckBonus;
+      if (mod.pullMult) { this.pullRadius *= mod.pullMult; this.pullStrength *= mod.pullMult; }
+      if (mod.storageMult) this.storageMax = Math.max(20, Math.round(this.storageMax * mod.storageMult));
+      if (mod.lumenBonus) this.lumenCount = Math.min(300, this.lumenCount + mod.lumenBonus);
+      if (mod.repopMult) this.repopDelay = Math.round(this.repopDelay * mod.repopMult);
+      if (mod.dronePowerMult) this.dronePowerMult *= mod.dronePowerMult;
+      if (mod.comboCapBonus) this.comboCap += mod.comboCapBonus;
+      if (mod.energyDrainMult) this.energyDrain *= mod.energyDrainMult;
+
+      if (st.energy > this.energyMax) st.energy = this.energyMax;
       this.idleRate = this.computeIdleRate();
     }
 
@@ -248,8 +260,9 @@
       if (this.state.biome > this.state.bestBiome) this.state.bestBiome = this.state.biome;
       this.applyStats();
       this.addShake(13); this.snd("project");
+      const nb = C.biome(this.state.biome);
       this.toasts.push({ kind: "project", title: p.icon + " " + p.name + " achevé !",
-        body: "Biome débloqué : " + C.biome(this.state.biome).name + " · revenu ×" + fmt(CONST.BIOME_MULT) + " · bonus ×" + p.mult.toFixed(1) });
+        body: "Biome débloqué : " + nb.name + " (×" + fmt(CONST.BIOME_MULT) + ")<br>" + (nb.tag || "") });
     }
 
     /* ---------- prestige ---------- */

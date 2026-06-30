@@ -147,6 +147,7 @@
             '<div><div class="pj-name">' + p.name + '</div><div class="pj-desc">' + p.desc + '</div></div></div>' +
           '<div class="pj-stats">Bonus permanent <b>×' + p.mult.toFixed(1) + '</b> · Biome <b>' + C.biome(done + 1).name + '</b> · ' +
             '<b>' + ps.pi + '/' + p.parts.length + '</b> pièces · Total <b>~' + fmtTime(totalTime) + '</b></div>' +
+          '<div class="pj-biomemod">🌌 ' + (C.biome(done + 1).tag || "") + '</div>' +
           '<div class="parts">' + parts + '</div>' +
         '</div>' +
         '<div class="pj-meta">' + done + ' ouvrage' + (done > 1 ? "s" : "") + ' terminé' + (done > 1 ? "s" : "") +
@@ -230,7 +231,9 @@
           '<div class="ach-desc">' + a.desc + '</div></div></div>';
       }
 
+      const cb = C.biome(st.biome);
       el.innerHTML =
+        '<div class="biome-now"><span class="bn-ic">🌌</span><div><div class="bn-name">' + cb.name + '</div><div class="bn-tag">' + (cb.tag || "") + '</div></div></div>' +
         '<p class="sheet-intro">Chaque succès débloqué accorde <b>+' + Math.round(A.BONUS * 100) + '% de revenu global</b> permanent. Bonus actuel : <b>×' + g.achievementMult.toFixed(2) + '</b>.</p>' +
         '<div class="mute-row"><span>🔊 Sons</span><button id="mute-btn">' + (audioOn ? "Activés" : "Coupés") + '</button></div>' +
         '<div class="stats-grid">' + stats + '</div>' +

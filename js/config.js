@@ -32,14 +32,21 @@
     { key: "legendary", name: "Légendaire", value: 90,  color: "#ffcf6b", glow: "#ffe19a", weight: 2,  r: 8.5 },
   ];
 
-  /* Biomes : couleurs d'accent (recolore tout l'UI), fonds, palier, fond animé. */
+  /* Biomes : couleurs d'accent (recolore tout l'UI), fond animé, palier, et un
+   * MODIFICATEUR de mécanique propre (au-delà du simple recolor + ×12). */
   const BIOMES = [
-    { name: "Ceinture d'astéroïdes", lumen: "Lumens",    accent: "#34e0ce", accent2: "#7cf5e4", soft: "rgba(52,224,206,.16)",  bg0: "#070a14", bg1: "#0b0f1e", style: "belt" },
-    { name: "Nébuleuse Pourpre",     lumen: "Photons",   accent: "#c77dff", accent2: "#e6b8ff", soft: "rgba(199,125,255,.16)", bg0: "#0c0814", bg1: "#150b22", style: "nebula" },
-    { name: "Amas Stellaire",        lumen: "Plasma",    accent: "#5b9dff", accent2: "#a8c8ff", soft: "rgba(91,157,255,.16)",  bg0: "#070b18", bg1: "#0a1230", style: "cluster" },
-    { name: "Horizon du Trou Noir",  lumen: "Quanta",    accent: "#ff9e5b", accent2: "#ffce9e", soft: "rgba(255,158,91,.15)",  bg0: "#100a08", bg1: "#1c1109", style: "blackhole" },
-    { name: "Bras Galactique",       lumen: "Tachyons",  accent: "#5be5a0", accent2: "#a8f5cf", soft: "rgba(91,229,160,.15)",  bg0: "#06120e", bg1: "#0a1f17", style: "galaxy" },
-    { name: "Singularité",           lumen: "Singulons", accent: "#d9c7ff", accent2: "#ffffff", soft: "rgba(217,199,255,.18)", bg0: "#0a0a12", bg1: "#12121f", style: "singularity" },
+    { name: "Ceinture d'astéroïdes", lumen: "Lumens",    accent: "#34e0ce", accent2: "#7cf5e4", soft: "rgba(52,224,206,.16)",  bg0: "#070a14", bg1: "#0b0f1e", style: "belt",
+      tag: "Champ stable — terrain d'apprentissage.", mod: {} },
+    { name: "Nébuleuse Pourpre",     lumen: "Photons",   accent: "#c77dff", accent2: "#e6b8ff", soft: "rgba(199,125,255,.16)", bg0: "#0c0814", bg1: "#150b22", style: "nebula",
+      tag: "Brume dense — grille élargie (+18 points), mais repop plus lent.", mod: { lumenBonus: 18, repopMult: 1.3 } },
+    { name: "Amas Stellaire",        lumen: "Plasma",    accent: "#5b9dff", accent2: "#a8c8ff", soft: "rgba(91,157,255,.16)",  bg0: "#070b18", bg1: "#0a1230", style: "cluster",
+      tag: "Rareté accrue — bien plus de Lumens précieux.", mod: { luckBonus: 4 } },
+    { name: "Horizon du Trou Noir",  lumen: "Quanta",    accent: "#ff9e5b", accent2: "#ffce9e", soft: "rgba(255,158,91,.15)",  bg0: "#100a08", bg1: "#1c1109", style: "blackhole",
+      tag: "Gravité intense — aimant ×1,5, mais soute réduite (−30 %).", mod: { pullMult: 1.5, storageMult: 0.7 } },
+    { name: "Bras Galactique",       lumen: "Tachyons",  accent: "#5be5a0", accent2: "#a8f5cf", soft: "rgba(91,229,160,.15)",  bg0: "#06120e", bg1: "#0a1f17", style: "galaxy",
+      tag: "Royaume des drones — puissance des drones ×1,6.", mod: { dronePowerMult: 1.6 } },
+    { name: "Singularité",           lumen: "Singulons", accent: "#d9c7ff", accent2: "#ffffff", soft: "rgba(217,199,255,.18)", bg0: "#0a0a12", bg1: "#12121f", style: "singularity",
+      tag: "Tout amplifié — plafond de combo +2, mais énergie consommée plus vite.", mod: { comboCapBonus: 2, energyDrainMult: 1.4 } },
   ];
 
   function biome(i) {
