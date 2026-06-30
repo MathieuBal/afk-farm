@@ -66,7 +66,12 @@
       this.prestigeMult = 1 + st.cores * CONST.CORE_MULT + memoryVal;
       this.treeValue = 1 + ts.value;
       this.achievementMult = AFK.achievements ? 1 + AFK.achievements.unlockedCount(st) * AFK.achievements.BONUS : 1;
-      this.incomeMult = this.biomeMult * this.treeValue * this.projectMult * this.prestigeMult * this.achievementMult;
+      // boule de neige mesurée : chaque nœud alloué donne un petit bonus additif
+      // (+0,6 %), chaque keystone un multiplicateur (rare/cher -> contrôlé).
+      this.nodeMult = 1 + (ts.count || 0) * 0.006;
+      this.keyMult = ts.keyMult || 1;
+      this.incomeMult = this.biomeMult * this.treeValue * this.nodeMult * this.keyMult *
+        this.projectMult * this.prestigeMult * this.achievementMult;
 
       this.pullRadius = Math.max(60, 130 * (1 + ts.radius));
       this.pullStrength = 0.55 * (1 + ts.strength);

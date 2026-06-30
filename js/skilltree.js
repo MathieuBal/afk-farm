@@ -14,14 +14,15 @@
   const KEYSTONE_EVERY = 26;    // keystones aléatoires plus profonds
   const CROSS_EVERY = 4;
 
-  // Identité des 6 branches : nom, couleur, biais mineur, keystone de branche.
+  // Identité des 6 branches : nom, couleur, keystone, et pool thématique de
+  // nœuds mineurs (cohérence : une branche a une vraie spécialité).
   const BRANCHES = [
-    { name: "Affinité",    color: "#34e0ce", bias: "value",       key: "nova" },
-    { name: "Réacteur",    color: "#f6c75e", bias: "energy",      key: "perpetual" },
-    { name: "Logistique",  color: "#56d6ff", bias: "storage",     key: "stockpile" },
-    { name: "Chronologie", color: "#b79cff", bias: "time",        key: "overdrive" },
-    { name: "Essaim",      color: "#5be5a0", bias: "drone_power", key: "swarm" },
-    { name: "Aimantation", color: "#ff9e5b", bias: "strength",    key: "overload" },
+    { name: "Affinité",    color: "#34e0ce", key: "nova",       pool: ["value", "value", "luck"] },
+    { name: "Réacteur",    color: "#f6c75e", key: "perpetual",  pool: ["energy", "regen", "efficiency"] },
+    { name: "Logistique",  color: "#56d6ff", key: "stockpile",  pool: ["storage", "build", "density"] },
+    { name: "Chronologie", color: "#b79cff", key: "overdrive",  pool: ["time", "time", "efficiency"] },
+    { name: "Essaim",      color: "#5be5a0", key: "swarm",      pool: ["drone_power", "drone_power", "luck"] },
+    { name: "Aimantation", color: "#ff9e5b", key: "overload",   pool: ["strength", "radius", "value"] },
   ];
   function branch(arm) { return BRANCHES[((arm % ARMS) + ARMS) % ARMS]; }
 
@@ -48,13 +49,14 @@
     warehouse:   { label: "Entrepôt",       icon: "🏭", notable: true, apply: (s) => (s.storage += 80) },
     chrono:      { label: "Dilatateur",     icon: "🕰️", notable: true, apply: (s) => (s.time += 8) },
     resonance:   { label: "Résonance",      icon: "〰️", notable: true, apply: (s) => (s.comboCap += 1) },
-    // keystones (repères de branche + aléatoires)
-    overload:    { label: "Surcharge",      icon: "💥", keystone: true, apply: (s) => { s.value += 2.0; s.radius -= 0.35; } },
-    swarm:       { label: "Essaim",         icon: "🐝", keystone: true, apply: (s) => { s.drones += 2; s.dronePower += 0.6; } },
-    nova:        { label: "Nova",           icon: "🌟", keystone: true, apply: (s) => { s.value += 1.2; s.density += 8; } },
-    perpetual:   { label: "Perpétuel",      icon: "♾️", keystone: true, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
-    stockpile:   { label: "Cale béante",    icon: "🛢️", keystone: true, apply: (s) => { s.storage += 280; s.build += 0.5; } },
-    overdrive:   { label: "Surrégime",      icon: "🏁", keystone: true, apply: (s) => { s.time += 12; s.energy += 120; } },
+    // keystones : effet de spécialité + multiplicateur de revenu global (gmult)
+    // — c'est la source du « snowball mesuré » (rares et chers).
+    overload:    { label: "Surcharge",      icon: "💥", keystone: true, gmult: 1.20, apply: (s) => { s.value += 1.0; s.radius -= 0.35; } },
+    swarm:       { label: "Essaim",         icon: "🐝", keystone: true, gmult: 1.18, apply: (s) => { s.drones += 2; s.dronePower += 0.6; } },
+    nova:        { label: "Nova",           icon: "🌟", keystone: true, gmult: 1.20, apply: (s) => { s.value += 0.6; s.density += 8; } },
+    perpetual:   { label: "Perpétuel",      icon: "♾️", keystone: true, gmult: 1.16, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
+    stockpile:   { label: "Cale béante",    icon: "🛢️", keystone: true, gmult: 1.16, apply: (s) => { s.storage += 280; s.build += 0.5; } },
+    overdrive:   { label: "Surrégime",      icon: "🏁", keystone: true, gmult: 1.16, apply: (s) => { s.time += 12; s.energy += 120; } },
   };
 
   const DESC = {
@@ -80,12 +82,12 @@
     warehouse: "+80 capacité de soute",
     chrono: "+8 s de durée de session",
     resonance: "+1 au plafond de combo (multiplicateur max plus élevé)",
-    overload: "KEYSTONE — +200 % valeur, mais −35 % portée",
-    swarm: "KEYSTONE — +2 drones et +60 % de puissance",
-    nova: "KEYSTONE — +120 % valeur et +16 points-Lumens",
-    perpetual: "KEYSTONE — +7 régénération et +50 % efficience",
-    stockpile: "KEYSTONE — +280 soute et +50 % construction",
-    overdrive: "KEYSTONE — +12 s de session et +120 énergie max",
+    overload: "KEYSTONE — ×1,20 revenu global, +100 % valeur, mais −35 % portée",
+    swarm: "KEYSTONE — ×1,18 revenu global, +2 drones et +60 % puissance",
+    nova: "KEYSTONE — ×1,20 revenu global, +60 % valeur et +16 points-Lumens",
+    perpetual: "KEYSTONE — ×1,16 revenu global, +7 régénération et +50 % efficience",
+    stockpile: "KEYSTONE — ×1,16 revenu global, +280 soute et +50 % construction",
+    overdrive: "KEYSTONE — ×1,16 revenu global, +12 s de session et +120 énergie max",
   };
   function effectText(node) { return DESC[node.type] || ""; }
 
@@ -106,7 +108,8 @@
     } else if (ring > 0 && ring % NOTABLE_EVERY === 0) {
       type = pick(rng, NOTABLES);
     } else {
-      type = rng() < 0.5 ? br.bias : pick(rng, MINOR);
+      // cohérence : surtout le pool thématique de la branche, un peu de variété
+      type = rng() < 0.8 ? pick(rng, br.pool) : pick(rng, MINOR);
     }
     const def = TYPES[type];
     return {
@@ -186,13 +189,15 @@
 
   function aggregate(tree, allocated) {
     const s = { value: 0, radius: 0, strength: 0, density: 0, luck: 0, dronePower: 0, build: 0, drones: 0,
-      energy: 0, regen: 0, efficiency: 0, time: 0, storage: 0, comboCap: 0 };
+      energy: 0, regen: 0, efficiency: 0, time: 0, storage: 0, comboCap: 0, keyMult: 1, count: 0 };
     for (const id in allocated) {
       if (id === "core") continue;
       const n = tree.byId.get(id);
       if (!n) continue;
       const def = TYPES[n.type];
       if (def && def.apply) def.apply(s);
+      if (def && def.gmult) s.keyMult *= def.gmult;   // keystones = snowball multiplicatif
+      s.count += 1;
     }
     return s;
   }
