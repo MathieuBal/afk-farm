@@ -73,12 +73,10 @@
     if (!isFinite(n)) return "∞";
     if (n < 0) return "-" + fmt(-n);
     if (n < 1000) return n < 10 && n % 1 !== 0 ? n.toFixed(1) : Math.floor(n).toString();
+    // au-delà des suffixes : notation scientifique sur la valeur D'ORIGINE
+    if (n >= Math.pow(1000, SUFFIX.length)) return n.toExponential(2).replace("e+", "e");
     let i = 0;
     while (n >= 1000 && i < SUFFIX.length - 1) { n /= 1000; i++; }
-    if (i >= SUFFIX.length - 1 && n >= 1000) {
-      // au-delà : notation scientifique compacte
-      return n.toExponential(2).replace("e+", "e");
-    }
     const dec = n < 10 ? 2 : n < 100 ? 1 : 0;
     return n.toFixed(dec) + SUFFIX[i];
   }
