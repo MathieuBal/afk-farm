@@ -1,11 +1,24 @@
 /* AFK Farm — service worker : cache des ressources pour le jeu hors-ligne. */
-const CACHE = "afk-farm-v12";
+const CACHE = "afk-farm-v13";
 const ASSETS = [
   "./",
   "index.html",
   "manifest.webmanifest",
   "icon.svg",
   "css/style.css",
+  "css/fonts.css",
+  "fonts/spacegrotesk-700-latin.woff2",
+  "fonts/spacegrotesk-700-latin-ext.woff2",
+  "fonts/manrope-400-latin.woff2",
+  "fonts/manrope-400-latin-ext.woff2",
+  "fonts/manrope-600-latin.woff2",
+  "fonts/manrope-600-latin-ext.woff2",
+  "fonts/manrope-700-latin.woff2",
+  "fonts/manrope-700-latin-ext.woff2",
+  "fonts/manrope-800-latin.woff2",
+  "fonts/manrope-800-latin-ext.woff2",
+  "fonts/jetbrainsmono-600-latin.woff2",
+  "fonts/jetbrainsmono-600-latin-ext.woff2",
   "js/state.js",
   "js/config.js",
   "js/audio.js",

@@ -48,7 +48,7 @@
 
     get stats() { return this.state.stats; }
     snd(name, a) { if (AFK.audio) AFK.audio[name] && AFK.audio[name](a); }
-    addShake(a) { this.shake = Math.min(22, Math.max(this.shake, a)); }
+    addShake(a) { if (this.reducedMotion) return; this.shake = Math.min(22, Math.max(this.shake, a)); }
 
     /* ---------- agrégation des stats (tout est corrélé ici) ---------- */
     applyStats() {
@@ -383,6 +383,7 @@
 
     spawnFx(x, y, rar, amt) {
       this.floats.push({ x, y, vy: -0.04, text: "+" + fmt(amt), color: rar.glow, life: 900, max: 900 });
+      if (this.reducedMotion) return;
       const n = rar.key === "legendary" ? 16 : rar.key === "epic" ? 10 : 6;
       for (let i = 0; i < n; i++) {
         const a = Math.random() * Math.PI * 2, sp = 0.05 + Math.random() * 0.18;

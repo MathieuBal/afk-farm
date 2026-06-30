@@ -11,6 +11,11 @@
   const ui = new AFK.UI(game, treeUI);
   game.field = field;            // la grille magnétique EST la source des Lumens
 
+  // accessibilité : respecte « réduire les animations »
+  const rmq = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  game.reducedMotion = !!(rmq && rmq.matches);
+  if (rmq && rmq.addEventListener) rmq.addEventListener("change", (e) => { game.reducedMotion = e.matches; });
+
   let dpr = 1, W = 0, H = 0;
   let stars = [], rocks = [];
   let lastBiome = -1;
@@ -221,7 +226,7 @@
   }
 
   function drawSurgeRing() {
-    if (game.surgeRing <= 0) return;
+    if (game.surgeRing <= 0 || game.reducedMotion) return;
     const x = game.pointer.active ? game.pointer.x : W / 2;
     const y = game.pointer.active ? game.pointer.y : H * 0.4;
     const p = 1 - game.surgeRing;            // 0 -> 1
