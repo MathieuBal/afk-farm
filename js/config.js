@@ -106,17 +106,31 @@
     ]},
   ];
 
+  // Les coûts de projet suivent la courbe de revenu (qui compounde plus vite
+  // que le ×12 du biome à cause du snowball de l'arbre). Rampe conservatrice :
+  // financer un projet ≈ quelques sessions à chaque biome, jamais un mur.
+  const COST_RAMP = 3.2;     // facteur de coût supplémentaire par biome
+  const COST_BASE = 2.5;     // tension d'épargne de base
+  function costScale(i) { return COST_BASE * Math.pow(COST_RAMP, i); }
+
   function project(i) {
-    if (i < PROJECTS.length) return PROJECTS[i];
-    // procédural au-delà : coût ×16, temps ×1.4 par palier
-    const last = PROJECTS[PROJECTS.length - 1];
-    const k = i - PROJECTS.length + 1;
-    const cm = Math.pow(16, k), tm = Math.pow(1.4, k);
+    let base, name, icon, desc, mult, tm = 1;
+    if (i < PROJECTS.length) {
+      base = PROJECTS[i]; name = base.name; icon = base.icon; desc = base.desc; mult = base.mult;
+    } else {
+      base = PROJECTS[PROJECTS.length - 1];
+      const k = i - PROJECTS.length + 1;
+      name = "Nexus cosmique " + k; icon = "✴️";
+      desc = "Extension du réseau magnétique galactique."; mult = 4 + k * 0.6;
+      tm = Math.pow(1.4, k);
+    }
+    const cs = costScale(i);
     return {
-      id: "deep" + i, icon: "✴️", name: "Nexus cosmique " + k,
-      desc: "Extension du réseau magnétique galactique.", mult: 4 + k * 0.6,
-      parts: last.parts.map((p, j) => ({
-        name: p.name, icon: p.icon, cost: p.cost * cm, time: Math.min(p.time * tm, 6 * 3600),
+      id: i < PROJECTS.length ? PROJECTS[i].id : "deep" + i, icon, name, desc, mult,
+      parts: base.parts.map((p) => ({
+        name: p.name, icon: p.icon,
+        cost: Math.round(p.cost * cs),
+        time: Math.min(Math.round(p.time * tm), 6 * 3600),
       })),
     };
   }
