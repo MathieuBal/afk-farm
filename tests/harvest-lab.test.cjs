@@ -1,0 +1,11 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const { Experiment } = require('../lab/engine.js');
+const off = {active:false,x:0,y:0};
+function separated(e) { for (const n of e.nodes) { assert.ok(n.ax>=14&&n.ax<=e.width-14); assert.ok(n.ay>=14&&n.ay<=e.height-14); for(const m of e.nodes)if(n!==m)assert.ok(Math.hypot(n.ax-m.ax,n.ay-m.ay)>=e.options.spacing-1e-8); } }
+test('deterministic initial placements and rarities across physics/repop choices',()=>{const a=new Experiment(390,460,{seed:18}),b=new Experiment(390,460,{seed:18,physics:'spring',mode:'fixed'});assert.deepEqual(a.nodes,b.nodes);});
+test('minimum separation and bounds on small, landscape and desktop fields',()=>{for(const [w,h] of [[296,260],[366,464],[820,260],[1000,650]])for(let seed=0;seed<50;seed++)for(const spacing of [48,72,120])separated(new Experiment(w,h,{seed,spacing}));});
+test('capture, visible respawn, no duplication before cooldown expires',()=>{const e=new Experiment(390,460,{mode:'fixed',respawn:2.6});const n=e.nodes[0],p={active:true,x:n.x,y:n.y};e.step(1/120,p);assert.equal(e.captures,1);e.step(.2,off);assert.equal(e.captures,1);for(let i=0;i<400;i++)e.step(1/120,off);assert.equal(n.cooldown<=0,true);assert.equal(n.x,n.ax);assert.equal(e.captures,1);});
+test('repositioning respects other anchors for all modes',()=>{for(const mode of ['fixed','mixed','new']){const e=new Experiment(390,460,{mode,respawn:1});for(let i=0;i<20;i++){const n=e.nodes[i%e.nodes.length];n.x=n.ax;n.y=n.ay;n.cooldown=0;n.age=1;e.step(1/120,{active:true,x:n.x,y:n.y});for(let j=0;j<150;j++)e.step(1/120,off);separated(e);}}});
+test('consistent capture counts at 30/60/120 Hz on stationary trajectory',()=>{const counts=[];for(const hz of [30,60,120]){const e=new Experiment(390,460,{seed:11});for(let i=0;i<15*hz;i++)e.step(1/hz,{active:true,x:195,y:230});counts.push(e.captures);}assert.equal(new Set(counts).size,1);});
+test('Surge cooldown and pole lifetime are simulation-time based',()=>{const e=new Experiment(390,460);assert.equal(e.surge(),true);assert.equal(e.surge(),false);for(let i=0;i<8;i++)e.addPole(100,100);assert.equal(e.poles.length,6);for(let i=0;i<1500;i++)e.step(1/120,off);assert.equal(e.poles.length,0);assert.equal(e.surge(),true);});
