@@ -15,7 +15,7 @@ Les modes de réapparition sont fixe, renouvelé, mixte (50 % de relocation tent
 
 La population suit l'aire disponible / (2 × écart²), plafonnée à 160. Sous 360 unités sur le plus petit côté, écart, portée et vitesse sont mis à l'échelle ensemble. Ce sont des hypothèses d'essai, pas un équilibrage validé. La grille décorative a sa physique séparée ; la variante avec ressort n'est pas une reproduction fidèle de la version actuelle.
 
-L'essai utilise un pas de simulation de 1/120 s et un PRNG initialisé. Une interruption de visibilité ou un redimensionnement annule l'essai sans le comptabiliser. Une page très lente peut durer plus de 15 secondes murales : le compteur représente le temps simulé.
+L'essai utilise un pas de simulation de 1/120 s et un PRNG initialisé. Une interruption de visibilité annule l'essai sans le comptabiliser. Pendant l'essai, la hauteur du terrain et les dimensions de simulation restent stables ; les coordonnées tactiles sont ramenées dans ce repère en cas de changement de taille. Les gestes tactiles du terrain annulent explicitement le défilement natif (gestionnaires non passifs). Une page très lente peut durer plus de 15 secondes murales : le compteur représente le temps simulé.
 
 ## Vérification
 

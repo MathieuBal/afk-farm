@@ -7,8 +7,10 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const settingIds = ['spacing','radius','speed','respawn','mode','physics'];
   function settings() { return Object.fromEntries(settingIds.map(id => [id, ['mode','physics'].includes(id) ? $(id).value : +$(id).value])); }
+  let touchId = null;
   function reset() {
-    running = false; debt = 0; keys.clear(); pointer.active = false; previousTap = null; effects = [];
+    touchId = null;
+    running = false; $('arena').style.removeProperty('height'); debt = 0; keys.clear(); pointer.active = false; previousTap = null; effects = [];
     config = settings();
     // Scale all spatial rules together on narrow/short canvases, not population alone.
     scale = Math.min(1, Math.min(width, height) / 360);
@@ -21,25 +23,51 @@
   function metrics() { $('metrics').textContent = `Terrain ${seed} · ${width} × ${height} · ${engine.nodes.length} Lumens · ${engine.captures} captures · ${Math.max(0,15-engine.time).toFixed(1)} s`; }
   function resize() {
     const r = canvas.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
-    if (w === width && h === height) return;
-    const interrupted = running; width = w; height = h;
+    // Keep the simulation stable while Safari changes its browser chrome.
+    if (running || (w === width && h === height)) return;
+    width = w; height = h;
     const dpr = Math.min(devicePixelRatio || 1,2); canvas.width = Math.round(w*dpr); canvas.height = Math.round(h*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
-    reset(); if (interrupted) $('status').textContent = 'Taille modifiée : essai interrompu, non enregistré. Relance sur ce nouveau terrain.';
+    reset();
   }
   new ResizeObserver(resize).observe($('arena'));
   settingIds.forEach(id => $(id).addEventListener('input',reset));
   $('replay').onclick = () => { reset(); $('status').textContent = 'Même terrain, mêmes raretés initiales. Prêt à comparer.'; };
   $('next').onclick = () => { seed++; reset(); $('status').textContent = 'Nouveau terrain prêt.'; };
-  $('start').onclick = () => { reset(); running = true; $('overlay').style.display='none'; $('start').disabled=true; $('surge').disabled=false; settingIds.forEach(id=>$(id).disabled=true); $('status').textContent='Essai en cours'; canvas.focus({preventScroll:true}); $('arena').scrollIntoView({block:'start',behavior:'instant'}); if ($('sound').checked) initAudio(); };
+  $('start').onclick = () => { $('arena').style.removeProperty('height'); resize(); reset(); $('arena').style.height = $('arena').getBoundingClientRect().height + 'px'; running = true; $('overlay').style.display='none'; $('start').disabled=true; $('surge').disabled=false; settingIds.forEach(id=>$(id).disabled=true); $('status').textContent='Essai en cours'; canvas.focus({preventScroll:true}); $('arena').scrollIntoView({block:'start',behavior:'instant'}); if ($('sound').checked) initAudio(); };
   function initAudio() { try { audio ||= new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch {} }
   $('sound').onchange = () => { if ($('sound').checked) initAudio(); };
   function ping(rarity) { if (!audio || !$('sound').checked) return; const o=audio.createOscillator(), g=audio.createGain(); o.type='sine'; o.frequency.value=[600,750,900,1150][rarity]; g.gain.setValueAtTime(.035,audio.currentTime); g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.09); o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.1);o.onended=()=>{o.disconnect();g.disconnect();}; }
   $('surge').onclick = () => { if(running)engine.surge(); };
-  function place(e) { const r=canvas.getBoundingClientRect(); pointer.x=Math.max(0,Math.min(width,e.clientX-r.left)); pointer.y=Math.max(0,Math.min(height,e.clientY-r.top)); pointer.active=running; }
-  canvas.onpointerdown=e=>{if(!running)return;canvas.setPointerCapture(e.pointerId);place(e);const now=performance.now();if(previousTap&&now-previousTap.t<320&&Math.hypot(pointer.x-previousTap.x,pointer.y-previousTap.y)<40){engine.addPole(pointer.x,pointer.y);previousTap=null;}else previousTap={t:now,x:pointer.x,y:pointer.y};};
-  canvas.onpointermove=e=>{if(e.pointerType==='mouse'||e.buttons)place(e);};
+  function place(e) { const r=canvas.getBoundingClientRect(); pointer.x=Math.max(0,Math.min(width,(e.clientX-r.left)*width/r.width)); pointer.y=Math.max(0,Math.min(height,(e.clientY-r.top)*height/r.height)); pointer.active=running; }
+  canvas.onpointerdown=e=>{if(e.pointerType==='touch'||!running)return;canvas.setPointerCapture(e.pointerId);place(e);const now=performance.now();if(previousTap&&now-previousTap.t<320&&Math.hypot(pointer.x-previousTap.x,pointer.y-previousTap.y)<40){engine.addPole(pointer.x,pointer.y);previousTap=null;}else previousTap={t:now,x:pointer.x,y:pointer.y};};
+  canvas.onpointermove=e=>{if(e.pointerType!=='touch'&&(e.pointerType==='mouse'||e.buttons))place(e);};
   canvas.onpointerup=e=>{if(e.pointerType!=='mouse')pointer.active=false;};
   canvas.onpointercancel=canvas.onlostpointercapture=()=>{pointer.active=false;};canvas.onpointerleave=()=>{pointer.active=false;};
+  // Explicit non-passive handlers keep iOS gestures inside the game surface.
+  function stopTouchScroll(e) { if (e.cancelable) e.preventDefault(); }
+  canvas.addEventListener('touchstart', e => {
+    stopTouchScroll(e);
+    if (!running || touchId !== null) return;
+    const t = e.changedTouches[0]; if (!t) return;
+    touchId = t.identifier; place(t);
+    const now = performance.now();
+    if (previousTap && now - previousTap.t < 320 && Math.hypot(pointer.x-previousTap.x,pointer.y-previousTap.y) < 40) {
+      engine.addPole(pointer.x,pointer.y); previousTap = null;
+    } else previousTap = {t:now,x:pointer.x,y:pointer.y};
+  }, {passive:false});
+  canvas.addEventListener('touchmove', e => {
+    stopTouchScroll(e);
+    const t = Array.from(e.touches).find(t => t.identifier === touchId);
+    if (t && running) place(t);
+  }, {passive:false});
+  function endTouch(e) {
+    stopTouchScroll(e);
+    if (Array.from(e.changedTouches).some(t => t.identifier === touchId)) {
+      touchId = null; pointer.active = false;
+    }
+  }
+  canvas.addEventListener('touchend', endTouch, {passive:false});
+  canvas.addEventListener('touchcancel', endTouch, {passive:false});
   canvas.onkeydown=e=>{if(!running)return;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','p','P'].includes(e.key)){e.preventDefault();if(!pointer.active){pointer.x=width/2;pointer.y=height/2;pointer.active=true;}keys.add(e.key);if(!e.repeat&&e.key===' ')engine.surge();if(!e.repeat&&e.key.toLowerCase()==='p')engine.addPole(pointer.x,pointer.y);}};
   window.addEventListener('keyup',e=>keys.delete(e.key));canvas.onblur=()=>{keys.clear();pointer.active=false;};
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&running){reset();$('status').textContent='Essai interrompu pendant ton absence. Relance pour une mesure complète.';}});
