@@ -1,11 +1,11 @@
 /* AFK Farm — service worker : cache des ressources pour le jeu hors-ligne. */
-const CACHE = "afk-farm-v16";
+const CACHE = "afk-farm-v17";
 const ASSETS = [
   "./",
   "index.html",
   "manifest.webmanifest",
   "icon.svg",
-  "css/style.css?v=5",
+  "css/style.css?v=5.1",
   "css/fonts.css",
   "fonts/spacegrotesk-700-latin.woff2",
   "fonts/spacegrotesk-700-latin-ext.woff2",

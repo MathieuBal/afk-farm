@@ -357,3 +357,6 @@ body.harvesting #combo{top:max(12px,env(safe-area-inset-top));pointer-events:non
 @media(prefers-reduced-motion:reduce){.dock-part.assembling{animation:none}}
 
 body.harvesting{padding-top:env(safe-area-inset-top)}
+
+/* Un panneau fermé ne doit ni dépasser ni intercepter les gestes. */
+#sheet:not(.open) { visibility: hidden; pointer-events: none; }
