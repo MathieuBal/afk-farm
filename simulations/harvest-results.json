@@ -1,0 +1,5233 @@
+{
+  "schema": 1,
+  "seedsPerCell": 250,
+  "sessions": 6000,
+  "secondsPerSession": 15,
+  "defaults": {
+    "spacing": 72,
+    "radius": 120,
+    "speed": 210,
+    "respawn": 2.4,
+    "mode": "mixed",
+    "physics": "flow",
+    "seed": 42
+  },
+  "session": {
+    "ENERGY_MAX": 140,
+    "ENERGY_REGEN": 10,
+    "ENERGY_DRAIN": 5,
+    "TIME": 15,
+    "STORAGE": 120
+  },
+  "engineSHA256": "084cf67602664a7401bf146bca6c86522b4c3bc33e550c64e1cac320848ae0d0",
+  "rows": [
+    {
+      "width": 320,
+      "height": 300,
+      "policy": "stationary",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 14.44,
+        "p10": 10,
+        "median": 15,
+        "p90": 18,
+        "min": 4,
+        "max": 24
+      },
+      "first": {
+        "mean": 0.2627333333333335,
+        "p10": 0.08333333333333333,
+        "median": 0.24166666666666664,
+        "p90": 0.4583333333333339,
+        "min": 0.008333333333333333,
+        "max": 0.8999999999999992
+      },
+      "maxGap": {
+        "mean": 2.7321333333332722,
+        "p10": 2.0999999999999925,
+        "median": 2.7166666666665122,
+        "p90": 3.2333333333332925,
+        "min": 1.7999999999998977,
+        "max": 8.233333333333206
+      },
+      "rawValue": {
+        "mean": 71.18,
+        "p10": 22,
+        "median": 51,
+        "p90": 148,
+        "min": 4,
+        "max": 258
+      },
+      "comboValue": {
+        "mean": 93.85039999999998,
+        "p10": 26.88,
+        "median": 67.32000000000001,
+        "p90": 200.56000000000003,
+        "min": 4.6000000000000005,
+        "max": 378.92
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 14.432,
+            "p10": 10,
+            "median": 15,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 320,
+      "height": 300,
+      "policy": "stationary",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 36.968,
+        "p10": 34,
+        "median": 37,
+        "p90": 40,
+        "min": 31,
+        "max": 44
+      },
+      "first": {
+        "mean": 0.12906666666666658,
+        "p10": 0.049999999999999996,
+        "median": 0.12499999999999999,
+        "p90": 0.19999999999999998,
+        "min": 0.008333333333333333,
+        "max": 0.30833333333333346
+      },
+      "maxGap": {
+        "mean": 2.480733333333328,
+        "p10": 2.116666666666659,
+        "median": 2.383333333333452,
+        "p90": 2.9499999999999664,
+        "min": 1.9333333333333267,
+        "max": 4.39999999999975
+      },
+      "rawValue": {
+        "mean": 183.648,
+        "p10": 91,
+        "median": 173,
+        "p90": 310,
+        "min": 59,
+        "max": 442
+      },
+      "comboValue": {
+        "mean": 329.34528,
+        "p10": 167.48000000000002,
+        "median": 299.0000000000001,
+        "p90": 540.16,
+        "min": 97.24,
+        "max": 792.5999999999997
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 36.156,
+            "p10": 33,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 40
+          },
+          "duration": {
+            "mean": 13.98513333333333,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 12.749999999999917,
+            "max": 14
+          },
+          "storageFraction": 0.028,
+          "energyFraction": 0.972
+        },
+        "120/60": {
+          "captures": {
+            "mean": 36.16,
+            "p10": 33,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 41
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/80": {
+          "captures": {
+            "mean": 36.16,
+            "p10": 33,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 41
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 36.16,
+            "p10": 33,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 41
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 36.892,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 31,
+            "max": 40
+          },
+          "duration": {
+            "mean": 14.920266666666645,
+            "p10": 14.933333333333126,
+            "median": 15,
+            "p90": 15,
+            "min": 12.749999999999917,
+            "max": 15
+          },
+          "storageFraction": 0.112,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 36.956,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 31,
+            "max": 44
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 36.956,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 31,
+            "max": 44
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 36.956,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 31,
+            "max": 44
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 320,
+      "height": 300,
+      "policy": "sweep",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 24.216,
+        "p10": 22,
+        "median": 24,
+        "p90": 26,
+        "min": 18,
+        "max": 29
+      },
+      "first": {
+        "mean": 0.39276666666666665,
+        "p10": 0.05833333333333333,
+        "median": 0.30833333333333346,
+        "p90": 0.8833333333333326,
+        "min": 0.008333333333333333,
+        "max": 1.166666666666665
+      },
+      "maxGap": {
+        "mean": 1.8132666666666648,
+        "p10": 1.3166666666667322,
+        "median": 1.783333333333232,
+        "p90": 2.3333333333332007,
+        "min": 1.0000000000000497,
+        "max": 2.8166666666667384
+      },
+      "rawValue": {
+        "mean": 122.72,
+        "p10": 56,
+        "median": 101,
+        "p90": 227,
+        "min": 25,
+        "max": 367
+      },
+      "comboValue": {
+        "mean": 261.1635199999998,
+        "p10": 100.52000000000001,
+        "median": 214.64,
+        "p90": 485.32,
+        "min": 49.120000000000005,
+        "max": 831.6399999999999
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 24.196,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 320,
+      "height": 300,
+      "policy": "sweep",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 58.064,
+        "p10": 56,
+        "median": 58,
+        "p90": 60,
+        "min": 53,
+        "max": 62
+      },
+      "first": {
+        "mean": 0.1375333333333334,
+        "p10": 0.041666666666666664,
+        "median": 0.13333333333333333,
+        "p90": 0.24166666666666664,
+        "min": 0.008333333333333333,
+        "max": 0.3583333333333336
+      },
+      "maxGap": {
+        "mean": 1.5149333333333261,
+        "p10": 1.1499999999999961,
+        "median": 1.5166666666666615,
+        "p90": 1.8833333333332263,
+        "min": 0.816666666666664,
+        "max": 2.216666666666659
+      },
+      "rawValue": {
+        "mean": 296.468,
+        "p10": 172,
+        "median": 275,
+        "p90": 459,
+        "min": 120,
+        "max": 861
+      },
+      "comboValue": {
+        "mean": 1067.3753599999998,
+        "p10": 575.44,
+        "median": 1010.72,
+        "p90": 1608.3600000000001,
+        "min": 417.8,
+        "max": 3323.76
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 10.32766666666673,
+            "p10": 9.81666666666675,
+            "median": 10.28333333333339,
+            "p90": 10.883333333333356,
+            "min": 9.23333333333345,
+            "max": 11.466666666666656
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 53.892,
+            "p10": 52,
+            "median": 54,
+            "p90": 56,
+            "min": 50,
+            "max": 59
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/80": {
+          "captures": {
+            "mean": 53.892,
+            "p10": 52,
+            "median": 54,
+            "p90": 56,
+            "min": 50,
+            "max": 59
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 53.892,
+            "p10": 52,
+            "median": 54,
+            "p90": 56,
+            "min": 50,
+            "max": 59
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 10.32766666666673,
+            "p10": 9.81666666666675,
+            "median": 10.28333333333339,
+            "p90": 10.883333333333356,
+            "min": 9.23333333333345,
+            "max": 11.466666666666656
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 57.888,
+            "p10": 56,
+            "median": 58,
+            "p90": 60,
+            "min": 53,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.94493333333329,
+            "p10": 14.7999999999998,
+            "median": 15,
+            "p90": 15,
+            "min": 14.133333333333171,
+            "max": 15
+          },
+          "storageFraction": 0.212,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 57.976,
+            "p10": 56,
+            "median": 58,
+            "p90": 60,
+            "min": 53,
+            "max": 62
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 57.976,
+            "p10": 56,
+            "median": 58,
+            "p90": 60,
+            "min": 53,
+            "max": 62
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 320,
+      "height": 300,
+      "policy": "nearest",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 61.956,
+        "p10": 60,
+        "median": 62,
+        "p90": 64,
+        "min": 58,
+        "max": 66
+      },
+      "first": {
+        "mean": 0.05319999999999999,
+        "p10": 0.008333333333333333,
+        "median": 0.049999999999999996,
+        "p90": 0.09166666666666666,
+        "min": 0.008333333333333333,
+        "max": 0.15833333333333333
+      },
+      "maxGap": {
+        "mean": 0.7551999999999974,
+        "p10": 0.5833333333333313,
+        "median": 0.7499999999999973,
+        "p90": 0.9499999999999966,
+        "min": 0.5000000000000249,
+        "max": 1.0666666666666629
+      },
+      "rawValue": {
+        "mean": 299.316,
+        "p10": 172,
+        "median": 286,
+        "p90": 446,
+        "min": 117,
+        "max": 565
+      },
+      "comboValue": {
+        "mean": 1172.6744,
+        "p10": 677.1999999999999,
+        "median": 1124.2400000000002,
+        "p90": 1766.6399999999999,
+        "min": 446.4,
+        "max": 2155.56
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 9.321133333333457,
+            "p10": 8.950000000000133,
+            "median": 9.316666666666778,
+            "p90": 9.666666666666758,
+            "min": 8.683333333333481,
+            "max": 10.316666666666721
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 59.936,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 58,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.369733333333173,
+            "p10": 13.933333333333183,
+            "median": 14.349999999999826,
+            "p90": 14.883333333333129,
+            "min": 13.39999999999988,
+            "max": 15
+          },
+          "storageFraction": 0.948,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 61.908,
+            "p10": 60,
+            "median": 62,
+            "p90": 64,
+            "min": 58,
+            "max": 66
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 61.908,
+            "p10": 60,
+            "median": 62,
+            "p90": 64,
+            "min": 58,
+            "max": 66
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 9.321133333333457,
+            "p10": 8.950000000000133,
+            "median": 9.316666666666778,
+            "p90": 9.666666666666758,
+            "min": 8.683333333333481,
+            "max": 10.316666666666721
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 59.936,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 58,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.369733333333173,
+            "p10": 13.933333333333183,
+            "median": 14.349999999999826,
+            "p90": 14.883333333333129,
+            "min": 13.39999999999988,
+            "max": 15
+          },
+          "storageFraction": 0.948,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 61.908,
+            "p10": 60,
+            "median": 62,
+            "p90": 64,
+            "min": 58,
+            "max": 66
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 61.908,
+            "p10": 60,
+            "median": 62,
+            "p90": 64,
+            "min": 58,
+            "max": 66
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 320,
+      "height": 300,
+      "policy": "nearest",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 65.756,
+        "p10": 64,
+        "median": 66,
+        "p90": 67,
+        "min": 62,
+        "max": 70
+      },
+      "first": {
+        "mean": 0.047833333333333394,
+        "p10": 0.008333333333333333,
+        "median": 0.041666666666666664,
+        "p90": 0.08333333333333333,
+        "min": 0.008333333333333333,
+        "max": 0.12499999999999999
+      },
+      "maxGap": {
+        "mean": 1.8177333333333257,
+        "p10": 1.6833333333333276,
+        "median": 1.8166666666666604,
+        "p90": 1.9833333333333265,
+        "min": 1.583333333333328,
+        "max": 2.083333333333326
+      },
+      "rawValue": {
+        "mean": 327.744,
+        "p10": 191,
+        "median": 307,
+        "p90": 496,
+        "min": 122,
+        "max": 676
+      },
+      "comboValue": {
+        "mean": 1121.1569599999998,
+        "p10": 625.68,
+        "median": 1038.6399999999999,
+        "p90": 1726.68,
+        "min": 405.36,
+        "max": 2451.4
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 8.844800000000147,
+            "p10": 8.566666666666821,
+            "median": 8.833333333333472,
+            "p90": 9.150000000000121,
+            "min": 8.133333333333512,
+            "max": 9.483333333333436
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 59.992,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 59,
+            "max": 60
+          },
+          "duration": {
+            "mean": 13.445466666666556,
+            "p10": 13.066666666666565,
+            "median": 13.449999999999877,
+            "p90": 13.799999999999857,
+            "min": 12.866666666666577,
+            "max": 14
+          },
+          "storageFraction": 0.992,
+          "energyFraction": 0.008
+        },
+        "120/80": {
+          "captures": {
+            "mean": 61.972,
+            "p10": 60,
+            "median": 62,
+            "p90": 63,
+            "min": 59,
+            "max": 65
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 61.972,
+            "p10": 60,
+            "median": 62,
+            "p90": 63,
+            "min": 59,
+            "max": 65
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 8.844800000000147,
+            "p10": 8.566666666666821,
+            "median": 8.833333333333472,
+            "p90": 9.150000000000121,
+            "min": 8.133333333333512,
+            "max": 9.483333333333436
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 13.446066666666555,
+            "p10": 13.066666666666565,
+            "median": 13.449999999999877,
+            "p90": 13.799999999999857,
+            "min": 12.866666666666577,
+            "max": 14.083333333333174
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 65.684,
+            "p10": 64,
+            "median": 66,
+            "p90": 67,
+            "min": 62,
+            "max": 70
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 65.684,
+            "p10": 64,
+            "median": 66,
+            "p90": 67,
+            "min": 62,
+            "max": 70
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 364,
+      "height": 347,
+      "policy": "stationary",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 14.116,
+        "p10": 9,
+        "median": 14,
+        "p90": 18,
+        "min": 4,
+        "max": 24
+      },
+      "first": {
+        "mean": 0.27476666666666666,
+        "p10": 0.09999999999999999,
+        "median": 0.2583333333333333,
+        "p90": 0.47500000000000064,
+        "min": 0.008333333333333333,
+        "max": 0.9166666666666659
+      },
+      "maxGap": {
+        "mean": 2.779866666666609,
+        "p10": 2.083333333333215,
+        "median": 2.7499999999998437,
+        "p90": 3.3333333333333064,
+        "min": 1.7666666666665662,
+        "max": 8.183333333333206
+      },
+      "rawValue": {
+        "mean": 71.092,
+        "p10": 20,
+        "median": 52,
+        "p90": 140,
+        "min": 4,
+        "max": 263
+      },
+      "comboValue": {
+        "mean": 93.21711999999994,
+        "p10": 24.919999999999998,
+        "median": 65.80000000000001,
+        "p90": 183.71999999999997,
+        "min": 4.6000000000000005,
+        "max": 416.04
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 14.096,
+            "p10": 9,
+            "median": 14,
+            "p90": 18,
+            "min": 4,
+            "max": 24
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 364,
+      "height": 347,
+      "policy": "stationary",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 36.964,
+        "p10": 34,
+        "median": 37,
+        "p90": 40,
+        "min": 32,
+        "max": 44
+      },
+      "first": {
+        "mean": 0.1344999999999999,
+        "p10": 0.05833333333333333,
+        "median": 0.13333333333333333,
+        "p90": 0.20833333333333331,
+        "min": 0.008333333333333333,
+        "max": 0.3166666666666668
+      },
+      "maxGap": {
+        "mean": 2.4957333333333254,
+        "p10": 2.1333333333333258,
+        "median": 2.416666666666658,
+        "p90": 2.933333333333466,
+        "min": 1.833333333333327,
+        "max": 4.333333333333087
+      },
+      "rawValue": {
+        "mean": 185.76,
+        "p10": 96,
+        "median": 178,
+        "p90": 299,
+        "min": 59,
+        "max": 474
+      },
+      "comboValue": {
+        "mean": 331.5216,
+        "p10": 162.92,
+        "median": 305.91999999999996,
+        "p90": 548.9999999999999,
+        "min": 97.52,
+        "max": 793.0799999999997
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 36.124,
+            "p10": 34,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 40
+          },
+          "duration": {
+            "mean": 13.982066666666661,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 12.799999999999914,
+            "max": 14
+          },
+          "storageFraction": 0.032,
+          "energyFraction": 0.968
+        },
+        "120/60": {
+          "captures": {
+            "mean": 36.136,
+            "p10": 34,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 42
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/80": {
+          "captures": {
+            "mean": 36.136,
+            "p10": 34,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 42
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 36.136,
+            "p10": 34,
+            "median": 36,
+            "p90": 39,
+            "min": 31,
+            "max": 42
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 36.888,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 32,
+            "max": 40
+          },
+          "duration": {
+            "mean": 14.902266666666648,
+            "p10": 14.616666666666477,
+            "median": 15,
+            "p90": 15,
+            "min": 12.799999999999914,
+            "max": 15
+          },
+          "storageFraction": 0.12,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 36.952,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 32,
+            "max": 44
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 36.952,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 32,
+            "max": 44
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 36.952,
+            "p10": 34,
+            "median": 37,
+            "p90": 40,
+            "min": 32,
+            "max": 44
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 364,
+      "height": 347,
+      "policy": "sweep",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 24.208,
+        "p10": 22,
+        "median": 24,
+        "p90": 27,
+        "min": 18,
+        "max": 29
+      },
+      "first": {
+        "mean": 0.4355666666666667,
+        "p10": 0.06666666666666667,
+        "median": 0.3416666666666669,
+        "p90": 0.9499999999999991,
+        "min": 0.008333333333333333,
+        "max": 1.1833333333333316
+      },
+      "maxGap": {
+        "mean": 1.899400000000004,
+        "p10": 1.4500000000000721,
+        "median": 1.8833333333334101,
+        "p90": 2.3333333333332007,
+        "min": 1.1499999999999346,
+        "max": 3.2833333333331467
+      },
+      "rawValue": {
+        "mean": 121.296,
+        "p10": 57,
+        "median": 99,
+        "p90": 213,
+        "min": 26,
+        "max": 385
+      },
+      "comboValue": {
+        "mean": 242.26847999999995,
+        "p10": 98.19999999999999,
+        "median": 190.6,
+        "p90": 485.96,
+        "min": 43.68,
+        "max": 819.4000000000001
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 24.192,
+            "p10": 22,
+            "median": 24,
+            "p90": 26,
+            "min": 18,
+            "max": 29
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 364,
+      "height": 347,
+      "policy": "sweep",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 57.8,
+        "p10": 55,
+        "median": 58,
+        "p90": 60,
+        "min": 52,
+        "max": 62
+      },
+      "first": {
+        "mean": 0.1512000000000001,
+        "p10": 0.041666666666666664,
+        "median": 0.15,
+        "p90": 0.26666666666666666,
+        "min": 0.008333333333333333,
+        "max": 0.366666666666667
+      },
+      "maxGap": {
+        "mean": 1.5258666666666618,
+        "p10": 1.1499999999999961,
+        "median": 1.5333333333333279,
+        "p90": 1.8833333333333269,
+        "min": 0.7999999999999972,
+        "max": 2.1833333333333256
+      },
+      "rawValue": {
+        "mean": 298.068,
+        "p10": 173,
+        "median": 278,
+        "p90": 458,
+        "min": 111,
+        "max": 676
+      },
+      "comboValue": {
+        "mean": 1070.93472,
+        "p10": 573.4,
+        "median": 992.28,
+        "p90": 1644.2000000000003,
+        "min": 365.20000000000005,
+        "max": 2564.68
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 10.358066666666723,
+            "p10": 9.783333333333418,
+            "median": 10.350000000000053,
+            "p90": 10.883333333333356,
+            "min": 9.283333333333447,
+            "max": 11.666666666666645
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 53.74,
+            "p10": 52,
+            "median": 54,
+            "p90": 56,
+            "min": 47,
+            "max": 58
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/80": {
+          "captures": {
+            "mean": 53.74,
+            "p10": 52,
+            "median": 54,
+            "p90": 56,
+            "min": 47,
+            "max": 58
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 53.74,
+            "p10": 52,
+            "median": 54,
+            "p90": 56,
+            "min": 47,
+            "max": 58
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 10.358066666666723,
+            "p10": 9.783333333333418,
+            "median": 10.350000000000053,
+            "p90": 10.883333333333356,
+            "min": 9.283333333333447,
+            "max": 11.666666666666645
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 57.656,
+            "p10": 55,
+            "median": 58,
+            "p90": 60,
+            "min": 52,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.964733333333303,
+            "p10": 14.866666666666463,
+            "median": 15,
+            "p90": 15,
+            "min": 14.149999999999837,
+            "max": 15
+          },
+          "storageFraction": 0.152,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 57.728,
+            "p10": 55,
+            "median": 58,
+            "p90": 60,
+            "min": 52,
+            "max": 62
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 57.728,
+            "p10": 55,
+            "median": 58,
+            "p90": 60,
+            "min": 52,
+            "max": 62
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 364,
+      "height": 347,
+      "policy": "nearest",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 61.472,
+        "p10": 59,
+        "median": 62,
+        "p90": 64,
+        "min": 57,
+        "max": 67
+      },
+      "first": {
+        "mean": 0.056866666666666635,
+        "p10": 0.008333333333333333,
+        "median": 0.05833333333333333,
+        "p90": 0.10833333333333332,
+        "min": 0.008333333333333333,
+        "max": 0.15833333333333333
+      },
+      "maxGap": {
+        "mean": 0.7413999999999981,
+        "p10": 0.5666666666666949,
+        "median": 0.7333333333333307,
+        "p90": 0.9166666666666636,
+        "min": 0.5166666666666684,
+        "max": 1.1166666666666627
+      },
+      "rawValue": {
+        "mean": 309.12,
+        "p10": 188,
+        "median": 289,
+        "p90": 478,
+        "min": 125,
+        "max": 625
+      },
+      "comboValue": {
+        "mean": 1220.2593599999993,
+        "p10": 703.96,
+        "median": 1118.4,
+        "p90": 1873.68,
+        "min": 473.68,
+        "max": 2807.44
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 9.395133333333446,
+            "p10": 9.016666666666795,
+            "median": 9.416666666666773,
+            "p90": 9.750000000000087,
+            "min": 8.700000000000147,
+            "max": 10.483333333333379
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 59.824,
+            "p10": 59,
+            "median": 60,
+            "p90": 60,
+            "min": 57,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.47679999999985,
+            "p10": 13.98333333333318,
+            "median": 14.499999999999817,
+            "p90": 15,
+            "min": 13.51666666666654,
+            "max": 15
+          },
+          "storageFraction": 0.872,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 61.42,
+            "p10": 59,
+            "median": 61,
+            "p90": 63,
+            "min": 57,
+            "max": 67
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 61.42,
+            "p10": 59,
+            "median": 61,
+            "p90": 63,
+            "min": 57,
+            "max": 67
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 9.395133333333446,
+            "p10": 9.016666666666795,
+            "median": 9.416666666666773,
+            "p90": 9.750000000000087,
+            "min": 8.700000000000147,
+            "max": 10.483333333333379
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 59.824,
+            "p10": 59,
+            "median": 60,
+            "p90": 60,
+            "min": 57,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.47679999999985,
+            "p10": 13.98333333333318,
+            "median": 14.499999999999817,
+            "p90": 15,
+            "min": 13.51666666666654,
+            "max": 15
+          },
+          "storageFraction": 0.872,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 61.42,
+            "p10": 59,
+            "median": 61,
+            "p90": 63,
+            "min": 57,
+            "max": 67
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 61.42,
+            "p10": 59,
+            "median": 61,
+            "p90": 63,
+            "min": 57,
+            "max": 67
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 364,
+      "height": 347,
+      "policy": "nearest",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 65.428,
+        "p10": 64,
+        "median": 65,
+        "p90": 67,
+        "min": 62,
+        "max": 69
+      },
+      "first": {
+        "mean": 0.0505666666666667,
+        "p10": 0.008333333333333333,
+        "median": 0.049999999999999996,
+        "p90": 0.09166666666666666,
+        "min": 0.008333333333333333,
+        "max": 0.13333333333333333
+      },
+      "maxGap": {
+        "mean": 1.8088666666666595,
+        "p10": 1.666666666666661,
+        "median": 1.7999999999999938,
+        "p90": 1.96666666666666,
+        "min": 1.4833333333333283,
+        "max": 2.0999999999999925
+      },
+      "rawValue": {
+        "mean": 337.992,
+        "p10": 208,
+        "median": 334,
+        "p90": 485,
+        "min": 143,
+        "max": 731
+      },
+      "comboValue": {
+        "mean": 1157.4624000000003,
+        "p10": 672.4000000000001,
+        "median": 1118.1599999999999,
+        "p90": 1699.7199999999998,
+        "min": 450.4,
+        "max": 2440.12
+      },
+      "population": {
+        "mean": 13,
+        "p10": 13,
+        "median": 13,
+        "p90": 13,
+        "min": 13,
+        "max": 13
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 8.90413333333347,
+            "p10": 8.65000000000015,
+            "median": 8.88333333333347,
+            "p90": 9.216666666666784,
+            "min": 8.150000000000178,
+            "max": 9.516666666666767
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 59.964,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 59,
+            "max": 60
+          },
+          "duration": {
+            "mean": 13.504733333333206,
+            "p10": 13.149999999999894,
+            "median": 13.466666666666542,
+            "p90": 13.86666666666652,
+            "min": 12.899999999999908,
+            "max": 14
+          },
+          "storageFraction": 0.964,
+          "energyFraction": 0.036
+        },
+        "120/80": {
+          "captures": {
+            "mean": 61.568,
+            "p10": 60,
+            "median": 62,
+            "p90": 63,
+            "min": 59,
+            "max": 65
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 61.568,
+            "p10": 60,
+            "median": 62,
+            "p90": 63,
+            "min": 59,
+            "max": 65
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 8.90413333333347,
+            "p10": 8.65000000000015,
+            "median": 8.88333333333347,
+            "p90": 9.216666666666784,
+            "min": 8.150000000000178,
+            "max": 9.516666666666767
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 13.508999999999867,
+            "p10": 13.149999999999894,
+            "median": 13.466666666666542,
+            "p90": 13.86666666666652,
+            "min": 12.899999999999908,
+            "max": 14.366666666666491
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 65.352,
+            "p10": 64,
+            "median": 65,
+            "p90": 67,
+            "min": 62,
+            "max": 69
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 65.352,
+            "p10": 64,
+            "median": 65,
+            "p90": 67,
+            "min": 62,
+            "max": 69
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 768,
+      "height": 500,
+      "policy": "stationary",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 12,
+        "p10": 7,
+        "median": 12,
+        "p90": 16,
+        "min": 3,
+        "max": 23
+      },
+      "first": {
+        "mean": 0.2744333333333335,
+        "p10": 0.075,
+        "median": 0.2583333333333333,
+        "p90": 0.47500000000000064,
+        "min": 0.008333333333333333,
+        "max": 0.8499999999999994
+      },
+      "maxGap": {
+        "mean": 3.5875333333332806,
+        "p10": 2.3833333333334448,
+        "median": 3.0666666666666105,
+        "p90": 5.033333333333259,
+        "min": 1.7833333333333272,
+        "max": 14.316666666666666
+      },
+      "rawValue": {
+        "mean": 55.912,
+        "p10": 16,
+        "median": 39,
+        "p90": 127,
+        "min": 3,
+        "max": 308
+      },
+      "comboValue": {
+        "mean": 70.65471999999997,
+        "p10": 19.880000000000003,
+        "median": 49.96,
+        "p90": 159.52,
+        "min": 3.72,
+        "max": 389.3600000000001
+      },
+      "population": {
+        "mean": 37,
+        "p10": 37,
+        "median": 37,
+        "p90": 37,
+        "min": 37,
+        "max": 37
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 11.996,
+            "p10": 7,
+            "median": 12,
+            "p90": 16,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 768,
+      "height": 500,
+      "policy": "stationary",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 54.196,
+        "p10": 50,
+        "median": 54,
+        "p90": 59,
+        "min": 45,
+        "max": 63
+      },
+      "first": {
+        "mean": 0.13469999999999993,
+        "p10": 0.049999999999999996,
+        "median": 0.13333333333333333,
+        "p90": 0.20833333333333331,
+        "min": 0.008333333333333333,
+        "max": 0.3000000000000001
+      },
+      "maxGap": {
+        "mean": 2.8040666666666243,
+        "p10": 1.9333333333332234,
+        "median": 2.7166666666666055,
+        "p90": 3.4999999999999067,
+        "min": 1.5333333333332462,
+        "max": 8.016666666666595
+      },
+      "rawValue": {
+        "mean": 271.576,
+        "p10": 155,
+        "median": 251,
+        "p90": 417,
+        "min": 107,
+        "max": 624
+      },
+      "comboValue": {
+        "mean": 638.02016,
+        "p10": 353.1599999999999,
+        "median": 580.1600000000002,
+        "p90": 991,
+        "min": 235.04000000000002,
+        "max": 1741.5600000000002
+      },
+      "population": {
+        "mean": 37,
+        "p10": 37,
+        "median": 37,
+        "p90": 37,
+        "min": 37,
+        "max": 37
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 12.63133333333327,
+            "p10": 12.49999999999993,
+            "median": 12.633333333333256,
+            "p90": 12.799999999999914,
+            "min": 11.616666666666648,
+            "max": 12.916666666666574
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 53.548,
+            "p10": 49,
+            "median": 54,
+            "p90": 58,
+            "min": 45,
+            "max": 60
+          },
+          "duration": {
+            "mean": 13.976066666666663,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 13.216666666666557,
+            "max": 14
+          },
+          "storageFraction": 0.044,
+          "energyFraction": 0.956
+        },
+        "120/80": {
+          "captures": {
+            "mean": 53.58,
+            "p10": 49,
+            "median": 54,
+            "p90": 58,
+            "min": 45,
+            "max": 62
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 53.58,
+            "p10": 49,
+            "median": 54,
+            "p90": 58,
+            "min": 45,
+            "max": 62
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 12.63133333333327,
+            "p10": 12.49999999999993,
+            "median": 12.633333333333256,
+            "p90": 12.799999999999914,
+            "min": 11.616666666666648,
+            "max": 12.916666666666574
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 54.128,
+            "p10": 50,
+            "median": 54,
+            "p90": 59,
+            "min": 45,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.923666666666657,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 13.216666666666557,
+            "max": 15
+          },
+          "storageFraction": 0.068,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 54.188,
+            "p10": 50,
+            "median": 54,
+            "p90": 59,
+            "min": 45,
+            "max": 63
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 54.188,
+            "p10": 50,
+            "median": 54,
+            "p90": 59,
+            "min": 45,
+            "max": 63
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 768,
+      "height": 500,
+      "policy": "sweep",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 22.6,
+        "p10": 19,
+        "median": 23,
+        "p90": 27,
+        "min": 13,
+        "max": 35
+      },
+      "first": {
+        "mean": 0.5141333333333334,
+        "p10": 0.075,
+        "median": 0.37500000000000033,
+        "p90": 1.2166666666666648,
+        "min": 0.008333333333333333,
+        "max": 2.1916666666666615
+      },
+      "maxGap": {
+        "mean": 2.013399999999988,
+        "p10": 1.4333333333333282,
+        "median": 1.9333333333333267,
+        "p90": 2.6333333333331836,
+        "min": 1.1166666666666956,
+        "max": 4.383333333333231
+      },
+      "rawValue": {
+        "mean": 113.416,
+        "p10": 51,
+        "median": 98,
+        "p90": 188,
+        "min": 20,
+        "max": 348
+      },
+      "comboValue": {
+        "mean": 223.21871999999996,
+        "p10": 86.99999999999999,
+        "median": 195.24,
+        "p90": 410.03999999999996,
+        "min": 28.32,
+        "max": 782
+      },
+      "population": {
+        "mean": 37,
+        "p10": 37,
+        "median": 37,
+        "p90": 37,
+        "min": 37,
+        "max": 37
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 22.584,
+            "p10": 19,
+            "median": 23,
+            "p90": 27,
+            "min": 13,
+            "max": 35
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 768,
+      "height": 500,
+      "policy": "sweep",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 101.76,
+        "p10": 97,
+        "median": 102,
+        "p90": 106,
+        "min": 89,
+        "max": 113
+      },
+      "first": {
+        "mean": 0.16680000000000006,
+        "p10": 0.041666666666666664,
+        "median": 0.15,
+        "p90": 0.30833333333333346,
+        "min": 0.008333333333333333,
+        "max": 0.6916666666666667
+      },
+      "maxGap": {
+        "mean": 0.8700000000000043,
+        "p10": 0.6500000000000323,
+        "median": 0.833333333333286,
+        "p90": 1.1166666666667222,
+        "min": 0.5166666666666648,
+        "max": 1.7666666666666606
+      },
+      "rawValue": {
+        "mean": 497.164,
+        "p10": 334,
+        "median": 485,
+        "p90": 663,
+        "min": 249,
+        "max": 997
+      },
+      "comboValue": {
+        "mean": 2160.4500799999996,
+        "p10": 1402.92,
+        "median": 2127.64,
+        "p90": 2870.52,
+        "min": 1112.76,
+        "max": 4718.88
+      },
+      "population": {
+        "mean": 37,
+        "p10": 37,
+        "median": 37,
+        "p90": 37,
+        "min": 37,
+        "max": 37
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 5.76000000000008,
+            "p10": 5.000000000000038,
+            "median": 5.8833333333334155,
+            "p90": 6.31666666666677,
+            "min": 4.516666666666681,
+            "max": 7.100000000000143
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 9.187666666666779,
+            "p10": 8.583333333333487,
+            "median": 9.200000000000118,
+            "p90": 9.716666666666756,
+            "min": 7.91666666666685,
+            "max": 11.050000000000013
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 12.488333333333275,
+            "p10": 11.899999999999965,
+            "median": 12.566666666666594,
+            "p90": 12.93333333333324,
+            "min": 10.933333333333353,
+            "max": 13.566666666666537
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 92.988,
+            "p10": 89,
+            "median": 93,
+            "p90": 97,
+            "min": 83,
+            "max": 103
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 5.76000000000008,
+            "p10": 5.000000000000038,
+            "median": 5.8833333333334155,
+            "p90": 6.31666666666677,
+            "min": 4.516666666666681,
+            "max": 7.100000000000143
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 9.187666666666779,
+            "p10": 8.583333333333487,
+            "median": 9.200000000000118,
+            "p90": 9.716666666666756,
+            "min": 7.91666666666685,
+            "max": 11.050000000000013
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 12.488333333333275,
+            "p10": 11.899999999999965,
+            "median": 12.566666666666594,
+            "p90": 12.93333333333324,
+            "min": 10.933333333333353,
+            "max": 13.566666666666537
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 101.64,
+            "p10": 97,
+            "median": 102,
+            "p90": 106,
+            "min": 89,
+            "max": 113
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 768,
+      "height": 500,
+      "policy": "nearest",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 86.1,
+        "p10": 83,
+        "median": 86,
+        "p90": 89,
+        "min": 77,
+        "max": 93
+      },
+      "first": {
+        "mean": 0.056666666666666636,
+        "p10": 0.008333333333333333,
+        "median": 0.05833333333333333,
+        "p90": 0.09999999999999999,
+        "min": 0.008333333333333333,
+        "max": 0.15833333333333333
+      },
+      "maxGap": {
+        "mean": 0.47359999999999247,
+        "p10": 0.3499999999999801,
+        "median": 0.4666666666666899,
+        "p90": 0.5999999999999659,
+        "min": 0.2666666666666515,
+        "max": 0.80000000000003
+      },
+      "rawValue": {
+        "mean": 420.78,
+        "p10": 266,
+        "median": 413,
+        "p90": 587,
+        "min": 175,
+        "max": 772
+      },
+      "comboValue": {
+        "mean": 1779.599359999999,
+        "p10": 1106.88,
+        "median": 1722.76,
+        "p90": 2539.56,
+        "min": 734.32,
+        "max": 3373.92
+      },
+      "population": {
+        "mean": 37,
+        "p10": 37,
+        "median": 37,
+        "p90": 37,
+        "min": 37,
+        "max": 37
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 6.741266666666784,
+            "p10": 6.38333333333344,
+            "median": 6.71666666666679,
+            "p90": 7.166666666666813,
+            "min": 5.900000000000083,
+            "max": 7.900000000000182
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 10.305200000000058,
+            "p10": 9.900000000000079,
+            "median": 10.233333333333393,
+            "p90": 10.766666666666696,
+            "min": 9.316666666666778,
+            "max": 11.883333333333299
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 79.972,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 77,
+            "max": 80
+          },
+          "duration": {
+            "mean": 13.833066666666527,
+            "p10": 13.316666666666551,
+            "median": 13.816666666666523,
+            "p90": 14.399999999999823,
+            "min": 12.783333333333248,
+            "max": 15
+          },
+          "storageFraction": 0.984,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 85.984,
+            "p10": 82,
+            "median": 86,
+            "p90": 89,
+            "min": 77,
+            "max": 93
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 6.741266666666784,
+            "p10": 6.38333333333344,
+            "median": 6.71666666666679,
+            "p90": 7.166666666666813,
+            "min": 5.900000000000083,
+            "max": 7.900000000000182
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 10.305200000000058,
+            "p10": 9.900000000000079,
+            "median": 10.233333333333393,
+            "p90": 10.766666666666696,
+            "min": 9.316666666666778,
+            "max": 11.883333333333299
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 79.972,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 77,
+            "max": 80
+          },
+          "duration": {
+            "mean": 13.833066666666527,
+            "p10": 13.316666666666551,
+            "median": 13.816666666666523,
+            "p90": 14.399999999999823,
+            "min": 12.783333333333248,
+            "max": 15
+          },
+          "storageFraction": 0.984,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 85.984,
+            "p10": 82,
+            "median": 86,
+            "p90": 89,
+            "min": 77,
+            "max": 93
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 768,
+      "height": 500,
+      "policy": "nearest",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 129.656,
+        "p10": 124,
+        "median": 130,
+        "p90": 136,
+        "min": 111,
+        "max": 142
+      },
+      "first": {
+        "mean": 0.05096666666666671,
+        "p10": 0.008333333333333333,
+        "median": 0.049999999999999996,
+        "p90": 0.09166666666666666,
+        "min": 0.008333333333333333,
+        "max": 0.12499999999999999
+      },
+      "maxGap": {
+        "mean": 0.4643333333333282,
+        "p10": 0.3666666666666458,
+        "median": 0.4499999999999984,
+        "p90": 0.5833333333333313,
+        "min": 0.2833333333333323,
+        "max": 0.8333333333333306
+      },
+      "rawValue": {
+        "mean": 636.396,
+        "p10": 428,
+        "median": 628,
+        "p90": 861,
+        "min": 303,
+        "max": 1129
+      },
+      "comboValue": {
+        "mean": 2861.192159999999,
+        "p10": 1887.92,
+        "median": 2818.88,
+        "p90": 3929.96,
+        "min": 1400.56,
+        "max": 5072.92
+      },
+      "population": {
+        "mean": 37,
+        "p10": 37,
+        "median": 37,
+        "p90": 37,
+        "min": 37,
+        "max": 37
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 4.200266666666666,
+            "p10": 3.8333333333333224,
+            "median": 4.199999999999998,
+            "p90": 4.550000000000016,
+            "min": 3.4999999999999902,
+            "max": 5.016666666666706
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 7.0093333333334735,
+            "p10": 6.51666666666678,
+            "median": 7.016666666666805,
+            "p90": 7.51666666666683,
+            "min": 5.7833333333334105,
+            "max": 8.450000000000161
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 9.50626666666677,
+            "p10": 8.900000000000135,
+            "median": 9.516666666666767,
+            "p90": 10.133333333333399,
+            "min": 8.350000000000167,
+            "max": 12.049999999999956
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 118.196,
+            "p10": 114,
+            "median": 120,
+            "p90": 120,
+            "min": 104,
+            "max": 120
+          },
+          "duration": {
+            "mean": 13.758066666666593,
+            "p10": 13.299999999999885,
+            "median": 13.899999999999851,
+            "p90": 14,
+            "min": 12.533333333333262,
+            "max": 14
+          },
+          "storageFraction": 0.584,
+          "energyFraction": 0.416
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 4.200266666666666,
+            "p10": 3.8333333333333224,
+            "median": 4.199999999999998,
+            "p90": 4.550000000000016,
+            "min": 3.4999999999999902,
+            "max": 5.016666666666706
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 7.0093333333334735,
+            "p10": 6.51666666666678,
+            "median": 7.016666666666805,
+            "p90": 7.51666666666683,
+            "min": 5.7833333333334105,
+            "max": 8.450000000000161
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 9.50626666666677,
+            "p10": 8.900000000000135,
+            "median": 9.516666666666767,
+            "p90": 10.133333333333399,
+            "min": 8.350000000000167,
+            "max": 12.049999999999956
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 119.872,
+            "p10": 120,
+            "median": 120,
+            "p90": 120,
+            "min": 111,
+            "max": 120
+          },
+          "duration": {
+            "mean": 13.908866666666535,
+            "p10": 13.299999999999885,
+            "median": 13.899999999999851,
+            "p90": 14.583333333333146,
+            "min": 12.533333333333262,
+            "max": 15
+          },
+          "storageFraction": 0.972,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 1200,
+      "height": 700,
+      "policy": "stationary",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 10.664,
+        "p10": 6,
+        "median": 11,
+        "p90": 15,
+        "min": 3,
+        "max": 23
+      },
+      "first": {
+        "mean": 0.2748,
+        "p10": 0.09166666666666666,
+        "median": 0.26666666666666666,
+        "p90": 0.4416666666666672,
+        "min": 0.008333333333333333,
+        "max": 0.8249999999999995
+      },
+      "maxGap": {
+        "mean": 4.726999999999938,
+        "p10": 2.616666666666518,
+        "median": 3.4166666666668366,
+        "p90": 9.166666666666586,
+        "min": 1.833333333333327,
+        "max": 14.433333333333334
+      },
+      "rawValue": {
+        "mean": 50.54,
+        "p10": 13,
+        "median": 37,
+        "p90": 116,
+        "min": 3,
+        "max": 226
+      },
+      "comboValue": {
+        "mean": 64.90735999999998,
+        "p10": 15.760000000000002,
+        "median": 46.440000000000005,
+        "p90": 155.36,
+        "min": 3.72,
+        "max": 275.80000000000007
+      },
+      "population": {
+        "mean": 81,
+        "p10": 81,
+        "median": 81,
+        "p90": 81,
+        "min": 81,
+        "max": 81
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 10.664,
+            "p10": 6,
+            "median": 11,
+            "p90": 15,
+            "min": 3,
+            "max": 23
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 1200,
+      "height": 700,
+      "policy": "stationary",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 51.924,
+        "p10": 47,
+        "median": 52,
+        "p90": 57,
+        "min": 40,
+        "max": 64
+      },
+      "first": {
+        "mean": 0.1350999999999999,
+        "p10": 0.05833333333333333,
+        "median": 0.14166666666666666,
+        "p90": 0.19999999999999998,
+        "min": 0.008333333333333333,
+        "max": 0.3000000000000001
+      },
+      "maxGap": {
+        "mean": 3.155666666666598,
+        "p10": 2.0166666666666435,
+        "median": 2.933333333333467,
+        "p90": 4.533333333333087,
+        "min": 1.6333333333332405,
+        "max": 8.949999999999946
+      },
+      "rawValue": {
+        "mean": 246.524,
+        "p10": 144,
+        "median": 233,
+        "p90": 366,
+        "min": 83,
+        "max": 550
+      },
+      "comboValue": {
+        "mean": 589.9199999999998,
+        "p10": 323.84000000000003,
+        "median": 543.4000000000001,
+        "p90": 884.04,
+        "min": 192.08,
+        "max": 1528.6000000000001
+      },
+      "population": {
+        "mean": 81,
+        "p10": 81,
+        "median": 81,
+        "p90": 81,
+        "min": 81,
+        "max": 81
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 12.622466666666588,
+            "p10": 12.49999999999993,
+            "median": 12.666666666666588,
+            "p90": 12.866666666666577,
+            "min": 8.616666666666818,
+            "max": 13.249999999999888
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 51.528,
+            "p10": 47,
+            "median": 52,
+            "p90": 57,
+            "min": 40,
+            "max": 60
+          },
+          "duration": {
+            "mean": 13.98713333333333,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 13.249999999999888,
+            "max": 14
+          },
+          "storageFraction": 0.02,
+          "energyFraction": 0.98
+        },
+        "120/80": {
+          "captures": {
+            "mean": 51.552,
+            "p10": 47,
+            "median": 52,
+            "p90": 57,
+            "min": 40,
+            "max": 63
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "120/120": {
+          "captures": {
+            "mean": 51.552,
+            "p10": 47,
+            "median": 52,
+            "p90": 57,
+            "min": 40,
+            "max": 63
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 12.622466666666588,
+            "p10": 12.49999999999993,
+            "median": 12.666666666666588,
+            "p90": 12.866666666666577,
+            "min": 8.616666666666818,
+            "max": 13.249999999999888
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 51.868,
+            "p10": 47,
+            "median": 52,
+            "p90": 57,
+            "min": 40,
+            "max": 60
+          },
+          "duration": {
+            "mean": 14.959799999999992,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 13.249999999999888,
+            "max": 15
+          },
+          "storageFraction": 0.044,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 51.916,
+            "p10": 47,
+            "median": 52,
+            "p90": 57,
+            "min": 40,
+            "max": 64
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 51.916,
+            "p10": 47,
+            "median": 52,
+            "p90": 57,
+            "min": 40,
+            "max": 64
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 1200,
+      "height": 700,
+      "policy": "sweep",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 21.676,
+        "p10": 18,
+        "median": 21,
+        "p90": 26,
+        "min": 13,
+        "max": 33
+      },
+      "first": {
+        "mean": 0.506233333333333,
+        "p10": 0.075,
+        "median": 0.33333333333333354,
+        "p90": 1.2083333333333315,
+        "min": 0.008333333333333333,
+        "max": 3.108333333333325
+      },
+      "maxGap": {
+        "mean": 2.1846666666666517,
+        "p10": 1.499999999999995,
+        "median": 2.050000000000071,
+        "p90": 3.016666666666495,
+        "min": 1.1999999999999753,
+        "max": 4.716666666666735
+      },
+      "rawValue": {
+        "mean": 104.832,
+        "p10": 41,
+        "median": 86,
+        "p90": 181,
+        "min": 19,
+        "max": 367
+      },
+      "comboValue": {
+        "mean": 199.93872000000013,
+        "p10": 71.36000000000001,
+        "median": 155.32,
+        "p90": 373.28,
+        "min": 26.32,
+        "max": 702.3599999999999
+      },
+      "population": {
+        "mean": 81,
+        "p10": 81,
+        "median": 81,
+        "p90": 81,
+        "min": 81,
+        "max": 81
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 21.636,
+            "p10": 18,
+            "median": 21,
+            "p90": 26,
+            "min": 13,
+            "max": 33
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 1200,
+      "height": 700,
+      "policy": "sweep",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 125.908,
+        "p10": 120,
+        "median": 126,
+        "p90": 132,
+        "min": 113,
+        "max": 137
+      },
+      "first": {
+        "mean": 0.16963333333333352,
+        "p10": 0.041666666666666664,
+        "median": 0.15,
+        "p90": 0.30833333333333346,
+        "min": 0.008333333333333333,
+        "max": 0.5333333333333339
+      },
+      "maxGap": {
+        "mean": 0.792,
+        "p10": 0.5833333333333002,
+        "median": 0.7500000000000169,
+        "p90": 1.066666666666606,
+        "min": 0.48333333333330586,
+        "max": 1.7500000000000018
+      },
+      "rawValue": {
+        "mean": 612.852,
+        "p10": 442,
+        "median": 595,
+        "p90": 808,
+        "min": 274,
+        "max": 1104
+      },
+      "comboValue": {
+        "mean": 2740.310239999999,
+        "p10": 1982.6,
+        "median": 2668.48,
+        "p90": 3628.6800000000003,
+        "min": 1265.6399999999999,
+        "max": 4743.92
+      },
+      "population": {
+        "mean": 81,
+        "p10": 81,
+        "median": 81,
+        "p90": 81,
+        "min": 81,
+        "max": 81
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 4.523466666666683,
+            "p10": 3.899999999999989,
+            "median": 4.500000000000013,
+            "p90": 5.100000000000043,
+            "min": 3.1499999999999915,
+            "max": 6.083333333333425
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 7.949600000000162,
+            "p10": 7.200000000000148,
+            "median": 7.966666666666852,
+            "p90": 8.666666666666815,
+            "min": 6.550000000000115,
+            "max": 9.70000000000009
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 10.8952666666667,
+            "p10": 10.200000000000061,
+            "median": 10.86666666666669,
+            "p90": 11.599999999999982,
+            "min": 8.88333333333347,
+            "max": 13.266666666666554
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 105.496,
+            "p10": 99,
+            "median": 106,
+            "p90": 112,
+            "min": 90,
+            "max": 118
+          },
+          "duration": {
+            "mean": 14,
+            "p10": 14,
+            "median": 14,
+            "p90": 14,
+            "min": 14,
+            "max": 14
+          },
+          "storageFraction": 0,
+          "energyFraction": 1
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 4.523466666666683,
+            "p10": 3.899999999999989,
+            "median": 4.500000000000013,
+            "p90": 5.100000000000043,
+            "min": 3.1499999999999915,
+            "max": 6.083333333333425
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 7.949600000000162,
+            "p10": 7.200000000000148,
+            "median": 7.966666666666852,
+            "p90": 8.666666666666815,
+            "min": 6.550000000000115,
+            "max": 9.70000000000009
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 10.8952666666667,
+            "p10": 10.200000000000061,
+            "median": 10.86666666666669,
+            "p90": 11.599999999999982,
+            "min": 8.88333333333347,
+            "max": 13.266666666666554
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 119.692,
+            "p10": 119,
+            "median": 120,
+            "p90": 120,
+            "min": 113,
+            "max": 120
+          },
+          "duration": {
+            "mean": 14.587066666666512,
+            "p10": 14.283333333333163,
+            "median": 14.549999999999814,
+            "p90": 14.999999999999789,
+            "min": 14.149999999999837,
+            "max": 15
+          },
+          "storageFraction": 0.896,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 1200,
+      "height": 700,
+      "policy": "nearest",
+      "ability": "pointer",
+      "seeds": 250,
+      "captures": {
+        "mean": 90.548,
+        "p10": 87,
+        "median": 91,
+        "p90": 94,
+        "min": 81,
+        "max": 99
+      },
+      "first": {
+        "mean": 0.05706666666666665,
+        "p10": 0.008333333333333333,
+        "median": 0.05833333333333333,
+        "p90": 0.09166666666666666,
+        "min": 0.008333333333333333,
+        "max": 0.15833333333333333
+      },
+      "maxGap": {
+        "mean": 0.41133333333332717,
+        "p10": 0.2833333333333474,
+        "median": 0.39999999999997726,
+        "p90": 0.5500000000000274,
+        "min": 0.23333333333332007,
+        "max": 0.7666666666666231
+      },
+      "rawValue": {
+        "mean": 451.424,
+        "p10": 296,
+        "median": 436,
+        "p90": 611,
+        "min": 226,
+        "max": 902
+      },
+      "comboValue": {
+        "mean": 1939.6923199999997,
+        "p10": 1233.6,
+        "median": 1870.8400000000001,
+        "p90": 2700.96,
+        "min": 999.24,
+        "max": 3982.12
+      },
+      "population": {
+        "mean": 81,
+        "p10": 81,
+        "median": 81,
+        "p90": 81,
+        "min": 81,
+        "max": 81
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 6.461533333333442,
+            "p10": 6.133333333333428,
+            "median": 6.416666666666775,
+            "p90": 6.833333333333463,
+            "min": 5.7166666666667405,
+            "max": 7.366666666666823
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 9.818200000000079,
+            "p10": 9.400000000000107,
+            "median": 9.783333333333418,
+            "p90": 10.300000000000056,
+            "min": 8.800000000000141,
+            "max": 11.133333333333342
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 13.175399999999899,
+            "p10": 12.666666666666588,
+            "median": 13.133333333333228,
+            "p90": 13.733333333333194,
+            "min": 11.749999999999973,
+            "max": 14.849999999999797
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 90.448,
+            "p10": 87,
+            "median": 91,
+            "p90": 94,
+            "min": 80,
+            "max": 99
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 6.461533333333442,
+            "p10": 6.133333333333428,
+            "median": 6.416666666666775,
+            "p90": 6.833333333333463,
+            "min": 5.7166666666667405,
+            "max": 7.366666666666823
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 9.818200000000079,
+            "p10": 9.400000000000107,
+            "median": 9.783333333333418,
+            "p90": 10.300000000000056,
+            "min": 8.800000000000141,
+            "max": 11.133333333333342
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 13.175399999999899,
+            "p10": 12.666666666666588,
+            "median": 13.133333333333228,
+            "p90": 13.733333333333194,
+            "min": 11.749999999999973,
+            "max": 14.849999999999797
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 90.448,
+            "p10": 87,
+            "median": 91,
+            "p90": 94,
+            "min": 80,
+            "max": 99
+          },
+          "duration": {
+            "mean": 15,
+            "p10": 15,
+            "median": 15,
+            "p90": 15,
+            "min": 15,
+            "max": 15
+          },
+          "storageFraction": 0,
+          "energyFraction": 0
+        }
+      }
+    },
+    {
+      "width": 1200,
+      "height": 700,
+      "policy": "nearest",
+      "ability": "support",
+      "seeds": 250,
+      "captures": {
+        "mean": 152.908,
+        "p10": 141,
+        "median": 153,
+        "p90": 163,
+        "min": 129,
+        "max": 177
+      },
+      "first": {
+        "mean": 0.05106666666666668,
+        "p10": 0.008333333333333333,
+        "median": 0.05833333333333333,
+        "p90": 0.08333333333333333,
+        "min": 0.008333333333333333,
+        "max": 0.12499999999999999
+      },
+      "maxGap": {
+        "mean": 0.3684000000000006,
+        "p10": 0.26666666666667993,
+        "median": 0.3500000000000174,
+        "p90": 0.48333333333330586,
+        "min": 0.2333333333333325,
+        "max": 0.733333333333503
+      },
+      "rawValue": {
+        "mean": 752.42,
+        "p10": 526,
+        "median": 745,
+        "p90": 961,
+        "min": 377,
+        "max": 1373
+      },
+      "comboValue": {
+        "mean": 3445.5769600000003,
+        "p10": 2423.08,
+        "median": 3415,
+        "p90": 4385.84,
+        "min": 1670.4,
+        "max": 6321.88
+      },
+      "population": {
+        "mean": 81,
+        "p10": 81,
+        "median": 81,
+        "p90": 81,
+        "min": 81,
+        "max": 81
+      },
+      "overlays": {
+        "120/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 3.4325333333333248,
+            "p10": 2.8999999999999924,
+            "median": 3.433333333333324,
+            "p90": 3.883333333333322,
+            "min": 2.533333333333327,
+            "max": 4.466666666666678
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 6.032066666666756,
+            "p10": 5.383333333333391,
+            "median": 5.98333333333342,
+            "p90": 6.666666666666788,
+            "min": 4.700000000000023,
+            "max": 7.5000000000001625
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 8.43946666666683,
+            "p10": 7.7000000000001725,
+            "median": 8.450000000000161,
+            "p90": 9.066666666666793,
+            "min": 6.98333333333347,
+            "max": 10.000000000000073
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "120/120": {
+          "captures": {
+            "mean": 120,
+            "p10": 120,
+            "median": 120,
+            "p90": 120,
+            "min": 120,
+            "max": 120
+          },
+          "duration": {
+            "mean": 12.440533333333265,
+            "p10": 11.716666666666642,
+            "median": 12.483333333333265,
+            "p90": 13.0499999999999,
+            "min": 10.816666666666693,
+            "max": 13.949999999999848
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/40": {
+          "captures": {
+            "mean": 40,
+            "p10": 40,
+            "median": 40,
+            "p90": 40,
+            "min": 40,
+            "max": 40
+          },
+          "duration": {
+            "mean": 3.4325333333333248,
+            "p10": 2.8999999999999924,
+            "median": 3.433333333333324,
+            "p90": 3.883333333333322,
+            "min": 2.533333333333327,
+            "max": 4.466666666666678
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/60": {
+          "captures": {
+            "mean": 60,
+            "p10": 60,
+            "median": 60,
+            "p90": 60,
+            "min": 60,
+            "max": 60
+          },
+          "duration": {
+            "mean": 6.032066666666756,
+            "p10": 5.383333333333391,
+            "median": 5.98333333333342,
+            "p90": 6.666666666666788,
+            "min": 4.700000000000023,
+            "max": 7.5000000000001625
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/80": {
+          "captures": {
+            "mean": 80,
+            "p10": 80,
+            "median": 80,
+            "p90": 80,
+            "min": 80,
+            "max": 80
+          },
+          "duration": {
+            "mean": 8.43946666666683,
+            "p10": 7.7000000000001725,
+            "median": 8.450000000000161,
+            "p90": 9.066666666666793,
+            "min": 6.98333333333347,
+            "max": 10.000000000000073
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        },
+        "140/120": {
+          "captures": {
+            "mean": 120,
+            "p10": 120,
+            "median": 120,
+            "p90": 120,
+            "min": 120,
+            "max": 120
+          },
+          "duration": {
+            "mean": 12.440533333333265,
+            "p10": 11.716666666666642,
+            "median": 12.483333333333265,
+            "p90": 13.0499999999999,
+            "min": 10.816666666666693,
+            "max": 13.949999999999848
+          },
+          "storageFraction": 1,
+          "energyFraction": 0
+        }
+      }
+    }
+  ]
+}
