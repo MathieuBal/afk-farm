@@ -39,8 +39,7 @@
     canvas.width = Math.floor(W * dpr); canvas.height = Math.floor(H * dpr);
     canvas.style.width = W + "px"; canvas.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    field.resize(C.CONST.FIELD_WIDTH, C.CONST.FIELD_HEIGHT);
-    game.resize(C.CONST.FIELD_WIDTH, C.CONST.FIELD_HEIGHT);
+
     if (!field.lumens.length) field.ensureLumens(game.lumenCount, () => game.pickRar());
     layoutArena();
     genBackground();
@@ -48,10 +47,14 @@
   }
   function layoutArena() {
     if (ui.view !== 'field') return;
-    const top = Math.max(document.getElementById('hud').getBoundingClientRect().bottom,
-      document.getElementById('profile-btn').getBoundingClientRect().bottom) + 16;
-    const bottom = document.getElementById('harvest').getBoundingClientRect().top - 12;
-    arena = HarvestArena.fit(W || window.innerWidth, top, bottom);
+    const immersive=game.session.harvesting;
+    const top=immersive?Math.max(8,(parseFloat(getComputedStyle(document.body).paddingTop)||0)+8):Math.max(document.getElementById('hud').getBoundingClientRect().bottom,
+      document.getElementById('profile-btn').getBoundingClientRect().bottom)+16;
+    const bottom=document.getElementById('harvest').getBoundingClientRect().top-8;
+    const next=HarvestArena.fit(W||window.innerWidth,top,bottom,immersive);
+    const sx=next.width/(game.w||next.width),sy=next.height/(game.h||next.height);
+    for(const p of [...game.poles,...game.drones]){p.x*=sx;p.y*=sy;}
+    arena=next;field.resize(arena.width,arena.height);game.resize(arena.width,arena.height);
     game.pointer.active = false;
   }
   window.addEventListener("resize", resize);
@@ -270,7 +273,7 @@
     drawBackground(t);
     ctx.translate(arena.x,arena.y);ctx.scale(arena.scale,arena.scale);
     ctx.strokeStyle='rgba(132,150,220,.25)';ctx.lineWidth=1/arena.scale;
-    ctx.strokeRect(0,0,game.w,game.h);
+    if(!game.session.harvesting)ctx.strokeRect(0,0,game.w,game.h);
     ctx.beginPath();ctx.rect(0,0,game.w,game.h);ctx.clip();
     field.render(ctx, game.grainSources(), GLOW);
     drawSurgeRing();
@@ -297,9 +300,12 @@
   }
 
   /* ---------- boucle ---------- */
-  let last = performance.now(), simulationDebt = 0;
+  let last = performance.now(), simulationDebt = 0, wasHarvesting = false;
   function frame(now) {
     const dt = now - last; last = now;
+    if(wasHarvesting!==game.session.harvesting){
+      wasHarvesting=game.session.harvesting;document.body.classList.toggle('harvesting',wasHarvesting);layoutArena();
+    }
 
     if (game.state.biome !== lastBiome) {
       lastBiome = game.state.biome;

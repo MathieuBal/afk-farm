@@ -39,6 +39,7 @@
     }
 
     bindHarvest() {
+      this.$('harvest-exit').addEventListener('click',()=>this.game.endHarvest('manual'));
       this.harvestBtn.addEventListener("click", () => {
         const g = this.game;
         if (AFK.audio) AFK.audio.init();
@@ -137,14 +138,15 @@
           right = '<span class="part-lock">✦ ' + fmt(part.cost) + ' · ' + fmtTime(part.time / g.buildSpeed) + '</span>';
         }
         parts += '<div class="part ' + cls + '"><span class="part-icon">' + part.icon + '</span>' +
-          '<span class="part-name">' + part.name + '</span><span class="part-right">' + right + '</span></div>';
+          '<span class="part-name">' + part.name + '<small class="part-benefit">' + part.benefit + '</small></span><span class="part-right">' + right + '</span></div>';
       }
 
       el.innerHTML =
-        '<p class="sheet-intro">Répare ta flotte <b>pièce par pièce</b>. Chaque pièce prend du temps (plusieurs heures) et avance en temps réel, <b>même hors-ligne</b>. L\'ouvrage complet débloque un biome plus riche et un bonus permanent.</p>' +
+        '<p class="sheet-intro">Répare ta flotte <b>pièce par pièce</b>. Chaque module installé améliore ta flotte. L’assemblage avance en temps réel, <b>même hors-ligne</b>. L\'ouvrage complet débloque un biome plus riche et un bonus permanent.</p>' +
         '<div class="project-card">' +
           '<div class="pj-head"><span class="pj-icon">' + p.icon + '</span>' +
             '<div><div class="pj-name">' + p.name + '</div><div class="pj-desc">' + p.desc + '</div></div></div>' +
+          AFK.shipyard.render(p,ps.pi,ps.building,done) +
           '<div class="pj-stats">Bonus permanent <b>×' + p.mult.toFixed(1) + '</b> · Biome <b>' + C.biome(done + 1).name + '</b> · ' +
             '<b>' + ps.pi + '/' + p.parts.length + '</b> pièces · Total <b>~' + fmtTime(totalTime) + '</b></div>' +
           '<div class="pj-biomemod">🌌 ' + (C.biome(done + 1).tag || "") + '</div>' +
@@ -182,7 +184,7 @@
       }
 
       el.innerHTML =
-        '<p class="sheet-intro">Réinitialise Lumens, projets et arbre pour gagner des <b>◆ Cores</b> qui boostent <b>tout</b> en permanence (+' + (C.CONST.CORE_MULT * 100) + '% revenu / Core). Mémoire actuelle : +' + memVal + '%.</p>' +
+        '<p class="sheet-intro">Réinitialise Lumens, projets et arbre pour gagner des <b>◆ Cores</b> qui boostent <b>tout</b> en permanence (+' + (C.CONST.CORE_MULT * 100) + '% revenu / Core gagné, même investi). Mémoire actuelle : +' + memVal + '%.</p>' +
         '<div class="prestige-box">' +
           '<div class="pb-row"><span>◆ Cores</span><b>' + fmt(g.state.cores) + '</b></div>' +
           '<div class="pb-row"><span>Gain au prestige</span><b class="gain">+' + fmt(gain) + ' ◆</b></div>' +
@@ -295,7 +297,7 @@
       if (s.harvesting) {
         this.barStorage.style.width = Math.min(100, (s.storage / g.storageMax) * 100) + "%";
         this.barTimer.style.width = Math.max(0, (s.timer / g.sessionTime) * 100) + "%";
-        this.storeTxt.textContent = "SOUTE · " + s.storage + "/" + g.storageMax + " · ×" + g.combo.mult.toFixed(1) + " combo";
+        this.storeTxt.textContent = "SOUTE · " + s.storage + "/" + g.storageMax + " · ×" + g.combo.mult.toFixed(1) + " · ✦ " + fmt(s.storageValue);
         this.harvestBtn.classList.add("active");
         this.harvestLabel.textContent = "Récolte · " + Math.ceil(s.timer) + "s";
       } else {

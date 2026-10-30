@@ -331,3 +331,29 @@ html, body {
   }
   #harvest-btn .sheen { display: none; }
 }
+
+/* Immersive harvest: one uniformly scaled field, compact session instruments. */
+#harvest-exit{display:none;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink)}
+body.harvesting #hud,body.harvesting #profile-btn,body.harvesting #nav,body.harvesting #hint{display:none}
+body.harvesting #harvest{bottom:max(8px,env(safe-area-inset-bottom));width:min(600px,calc(100vw - 16px))}
+body.harvesting #harvest .panel{padding:8px 10px;gap:5px;border-radius:14px}
+body.harvesting #harvest .gauges{flex-direction:row;gap:8px}
+body.harvesting #harvest .g{flex:1;min-width:0;gap:4px}
+body.harvesting #harvest .store-txt{font-size:10px}
+body.harvesting #harvest-btn{min-height:40px;padding:8px}
+body.harvesting #harvest-exit{display:block}
+body.harvesting #combo{top:max(12px,env(safe-area-inset-top));pointer-events:none}
+#tree-tools{position:fixed;z-index:30;top:calc(max(16px,env(safe-area-inset-top)) + 60px);left:12px;right:12px;display:flex;gap:6px}
+#tree-tools button,#tree-tools select{min-height:44px;background:#11182c;color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit;font-size:16px;padding:8px}
+#tree-tools button{min-width:44px}#tree-tools select{flex:1;min-width:0}
+#tree-canvas{touch-action:none;overscroll-behavior:none}
+
+.dock{margin:14px 0;padding:8px;border:1px solid var(--line);border-radius:16px;background:radial-gradient(ellipse,#172b3d,#080e1c)}
+.dock svg{display:block;width:100%;height:200px}.dock figcaption{text-align:center;color:var(--muted);font-size:12px;padding:6px}
+.dock-guides{stroke:#384964;stroke-width:1;fill:none;stroke-dasharray:4 8}
+.dock-part{stroke-width:2;stroke-linejoin:round}.dock-part.planned{fill:#101827;stroke:#415065;stroke-dasharray:4 5;opacity:.5}
+.dock-part.installed{fill:#23535a;stroke:var(--accent)}.dock-part.assembling{fill:#443a27;stroke:var(--gold);stroke-dasharray:8 6;animation:dock-assembly 3s linear infinite}
+@keyframes dock-assembly{to{stroke-dashoffset:-56}}.part-benefit{display:block;font-size:11px;color:var(--accent);margin-top:4px}
+@media(prefers-reduced-motion:reduce){.dock-part.assembling{animation:none}}
+
+body.harvesting{padding-top:env(safe-area-inset-top)}

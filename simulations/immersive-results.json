@@ -1,0 +1,77 @@
+{
+  "note": "Synthetic sinusoidal gesture, scaled to arena extents, equal logical area; not a human fairness proof.",
+  "rows": [
+    {
+      "width": 390,
+      "height": 844,
+      "support": false,
+      "seeds": 20,
+      "mean": 24.8,
+      "min": 22,
+      "max": 27
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "support": true,
+      "seeds": 20,
+      "mean": 57.3,
+      "min": 53,
+      "max": 60
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "support": false,
+      "seeds": 20,
+      "mean": 21.75,
+      "min": 18,
+      "max": 26
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "support": true,
+      "seeds": 20,
+      "mean": 56.15,
+      "min": 54,
+      "max": 59
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "support": false,
+      "seeds": 20,
+      "mean": 24.4,
+      "min": 22,
+      "max": 27
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "support": true,
+      "seeds": 20,
+      "mean": 57.25,
+      "min": 55,
+      "max": 62
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "support": false,
+      "seeds": 20,
+      "mean": 22.65,
+      "min": 18,
+      "max": 27
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "support": true,
+      "seeds": 20,
+      "mean": 57.65,
+      "min": 55,
+      "max": 60
+    }
+  ]
+}

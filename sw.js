@@ -1,11 +1,11 @@
 /* AFK Farm — service worker : cache des ressources pour le jeu hors-ligne. */
-const CACHE = "afk-farm-v15";
+const CACHE = "afk-farm-v16";
 const ASSETS = [
   "./",
   "index.html",
   "manifest.webmanifest",
   "icon.svg",
-  "css/style.css",
+  "css/style.css?v=5",
   "css/fonts.css",
   "fonts/spacegrotesk-700-latin.woff2",
   "fonts/spacegrotesk-700-latin-ext.woff2",
@@ -21,17 +21,18 @@ const ASSETS = [
   "fonts/jetbrainsmono-600-latin-ext.woff2",
   "lab/engine.js?v=4",
   "lab/grid.js?v=4",
-  "js/arena.js?v=4",
+  "js/arena.js?v=5",
+  "js/shipyard.js?v=5",
   "js/state.js",
-  "js/config.js?v=4",
+  "js/config.js?v=5",
   "js/audio.js",
   "js/achievements.js",
-  "js/skilltree.js",
-  "js/field.js?v=4",
-  "js/game.js?v=4",
-  "js/tree-ui.js",
-  "js/ui.js",
-  "js/main.js?v=4",
+  "js/skilltree.js?v=5",
+  "js/field.js?v=5",
+  "js/game.js?v=5",
+  "js/tree-ui.js?v=5",
+  "js/ui.js?v=5",
+  "js/main.js?v=5",
 ];
 
 self.addEventListener("install", (e) => {

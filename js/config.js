@@ -113,7 +113,7 @@
   // que le ×12 du biome à cause du snowball de l'arbre). Rampe conservatrice :
   // financer un projet ≈ quelques sessions à chaque biome, jamais un mur.
   const COST_RAMP = 3.2;     // facteur de coût supplémentaire par biome
-  const COST_BASE = 2.5;     // tension d'épargne de base
+  const COST_BASE = 1.4;     // tension d'épargne de base
   function costScale(i) { return COST_BASE * Math.pow(COST_RAMP, i); }
 
   function project(i) {
@@ -130,10 +130,12 @@
     const cs = costScale(i);
     return {
       id: i < PROJECTS.length ? PROJECTS[i].id : "deep" + i, icon, name, desc, mult,
-      parts: base.parts.map((p) => ({
+      parts: base.parts.map((p, index) => ({
         name: p.name, icon: p.icon,
         cost: Math.round(p.cost * cs),
         time: Math.min(Math.round(p.time * tm), 6 * 3600),
+        bonus: [{storage:10},{energy:10},{value:.04},{build:.04},{storage:10}][index % 5],
+        benefit: ['+10 soute','+10 énergie max','+4 % valeur de récolte','+4 % vitesse du chantier','+10 soute'][index % 5],
       })),
     };
   }
