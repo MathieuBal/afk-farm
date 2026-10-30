@@ -29,3 +29,7 @@ Tests de déterminisme, placement (600 combinaisons taille/graine/écart), réap
 - Vérifier la préférence sur plusieurs tailles et graines.
 - Retenir la physique avant d'intégrer énergie, combos, soute et drones.
 - Simuler ensuite ces systèmes séparément puis ensemble, avec distributions et cas extrêmes.
+
+## Étape 2 — grille visuelle
+
+Référence validée par Mathieu : écart 72, portée 120, vitesse 210, réapparition mixte 2,4 s, aspiration libre. Trois rendus : discret, élastique, onde de capture. Le module visuel ne modifie pas le moteur de récolte. Ondes limitées à 12 simultanément ; déplacement cible limité à 32 unités. Le mode de réduction des animations désactive la déformation et les ondes. L’export v2 indique le rendu, la visibilité de grille et le son ; ces options sont figées pendant chaque essai. Les essais existants ne sont pas des mesures d’équilibrage.

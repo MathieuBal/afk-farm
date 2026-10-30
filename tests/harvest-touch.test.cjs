@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const { Experiment } = require('../lab/engine.js');
 function boot() {
   const elements = new Map(), listeners = new Map(); let onResize;
-  const defaults = {spacing:72,radius:120,speed:210,respawn:2.6,mode:'mixed',physics:'flow'};
+  const defaults = {spacing:72,radius:120,speed:210,respawn:2.6,mode:'mixed',physics:'flow',gridStyle:'elastic'};
   const rect = {left:0,top:0,width:360,height:460};
   const context2d = new Proxy({}, {get:()=>()=>{}});
   function element(id) {
@@ -17,7 +17,7 @@ function boot() {
   const window = {addEventListener(){}};
   vm.runInNewContext(fs.readFileSync(require.resolve('../lab/lab.js'),'utf8'), {
     document:{getElementById:element,addEventListener(){}},window,
-    HarvestLab:{Experiment},matchMedia:()=>({matches:false}),
+    HarvestLab:{Experiment},HarvestGrid:require('../lab/grid.js'),matchMedia:()=>({matches:false}),
     ResizeObserver:class {constructor(fn){onResize=fn;}observe(){}},
     devicePixelRatio:2,requestAnimationFrame(){},performance:{now:()=>1000}
   });
