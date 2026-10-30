@@ -17,6 +17,7 @@
   if (rmq && rmq.addEventListener) rmq.addEventListener("change", (e) => { game.reducedMotion = e.matches; });
 
   let dpr = 1, W = 0, H = 0;
+  let arena = HarvestArena.fit(window.innerWidth, 100, window.innerHeight - 260);
   let stars = [], rocks = [];
   let lastBiome = -1;
 
@@ -38,13 +39,24 @@
     canvas.width = Math.floor(W * dpr); canvas.height = Math.floor(H * dpr);
     canvas.style.width = W + "px"; canvas.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    field.resize(W, H);          // reconstruit la grille
-    game.resize(W, H);
-    game.seedGrid();             // (ré)attribue les raretés des grains
+    field.resize(C.CONST.FIELD_WIDTH, C.CONST.FIELD_HEIGHT);
+    game.resize(C.CONST.FIELD_WIDTH, C.CONST.FIELD_HEIGHT);
+    if (!field.lumens.length) field.ensureLumens(game.lumenCount, () => game.pickRar());
+    layoutArena();
     genBackground();
     if (treeUI.open) treeUI.resize();
   }
+  function layoutArena() {
+    if (ui.view !== 'field') return;
+    const top = Math.max(document.getElementById('hud').getBoundingClientRect().bottom,
+      document.getElementById('profile-btn').getBoundingClientRect().bottom) + 16;
+    const bottom = document.getElementById('harvest').getBoundingClientRect().top - 12;
+    arena = HarvestArena.fit(W || window.innerWidth, top, bottom);
+    game.pointer.active = false;
+  }
   window.addEventListener("resize", resize);
+  const layoutObserver = new ResizeObserver(layoutArena);
+  for (const id of ['hud','harvest']) layoutObserver.observe(document.getElementById(id));
 
   /* ---------- fonds de biome ---------- */
   function drawBackground(t) {
@@ -144,20 +156,31 @@
   // le pointeur n'aimante que pendant une session de récolte active
   function canHarvest() { return ui.view === "field" && game.session.harvesting; }
   function overUI(target) { return target.closest && (target.closest("#sheet") || target.closest("#harvest") || target.closest("nav") || target.closest("header")); }
-  function setPointer(x, y) { game.pointer.x = x; game.pointer.y = y; game.pointer.active = true; }
+  function setPointer(x, y) {
+    const p = HarvestArena.point(arena,x,y);
+    game.pointer.x=p.x;game.pointer.y=p.y;
+    game.pointer.active=p.x>=0&&p.y>=0&&p.x<=game.w&&p.y<=game.h;
+    return game.pointer.active;
+  }
 
   canvas.addEventListener("pointermove", (e) => { if (canHarvest()) setPointer(e.clientX, e.clientY); });
   canvas.addEventListener("pointerdown", (e) => {
     if (!canHarvest() || overUI(e.target)) return;
-    setPointer(e.clientX, e.clientY);
+    if (!setPointer(e.clientX, e.clientY)) return;
+    canvas.setPointerCapture(e.pointerId);
     const now = performance.now();
     const near = Math.hypot(e.clientX - lastTapX, e.clientY - lastTapY) < 60;
-    if (now - lastTap < 320 && near) { game.addPole(e.clientX, e.clientY); lastTap = 0; }
+    if (now - lastTap < 320 && near) { game.addPole(game.pointer.x, game.pointer.y); lastTap = 0; }
     else { lastTap = now; lastTapX = e.clientX; lastTapY = e.clientY; }
     hideHint();
   });
   window.addEventListener("pointerup", (e) => { if (e.pointerType === "touch") game.pointer.active = false; });
   canvas.addEventListener("pointerleave", () => { game.pointer.active = false; });
+  canvas.addEventListener("pointercancel", () => { game.pointer.active = false; });
+  canvas.addEventListener("lostpointercapture", () => { game.pointer.active = false; });
+  for (const name of ['touchstart','touchmove']) canvas.addEventListener(name, e => {
+    if (e.cancelable) e.preventDefault();
+  }, {passive:false});
 
   let hintHidden = false;
   function hideHint() { if (hintHidden) return; hintHidden = true; const h = document.getElementById("hint"); if (h) h.style.opacity = "0"; }
@@ -197,7 +220,7 @@
       if (!e.lit) continue;
       const x = f.px[e.i], y = f.py[e.i];
       const rar = e.rar;
-      const r = rar.r * 0.7 + Math.sin(lumPulse + e.i) * 0.4;
+      const r = Math.max(0.1, (rar.r * 0.7 + (game.reducedMotion ? 0 : Math.sin(lumPulse + e.i) * 0.4)) * Math.min(1,e.age/.3));
       ctx.globalAlpha = 0.5; ctx.fillStyle = rar.glow;
       ctx.beginPath(); ctx.arc(x, y, r * 2.4, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = 1; ctx.fillStyle = rar.color;
@@ -245,6 +268,10 @@
     ctx.save();
     if (game.shake > 0.1) ctx.translate((Math.random() - 0.5) * game.shake, (Math.random() - 0.5) * game.shake);
     drawBackground(t);
+    ctx.translate(arena.x,arena.y);ctx.scale(arena.scale,arena.scale);
+    ctx.strokeStyle='rgba(132,150,220,.25)';ctx.lineWidth=1/arena.scale;
+    ctx.strokeRect(0,0,game.w,game.h);
+    ctx.beginPath();ctx.rect(0,0,game.w,game.h);ctx.clip();
     field.render(ctx, game.grainSources(), GLOW);
     drawSurgeRing();
     for (const p of game.poles) drawPole(p);
@@ -270,7 +297,7 @@
   }
 
   /* ---------- boucle ---------- */
-  let last = performance.now();
+  let last = performance.now(), simulationDebt = 0;
   function frame(now) {
     const dt = now - last; last = now;
 
@@ -281,11 +308,13 @@
       curAccent = b.accent; curAccent2 = b.accent2;
     }
 
-    game.update(dt);
+    simulationDebt += Math.min(Math.max(dt,0),50);
+    while (simulationDebt >= 1000/120) {
+      game.update(1000/120);simulationDebt -= 1000/120;
+    }
     if (ui.view === "tree") {
       treeUI.draw();
     } else {
-      field.simulate(dt, game.grainSources());
       renderScene(now);
     }
     ui.tick();

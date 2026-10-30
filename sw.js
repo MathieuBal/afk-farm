@@ -1,5 +1,5 @@
 /* AFK Farm — service worker : cache des ressources pour le jeu hors-ligne. */
-const CACHE = "afk-farm-v14";
+const CACHE = "afk-farm-v15";
 const ASSETS = [
   "./",
   "index.html",
@@ -19,16 +19,19 @@ const ASSETS = [
   "fonts/manrope-800-latin-ext.woff2",
   "fonts/jetbrainsmono-600-latin.woff2",
   "fonts/jetbrainsmono-600-latin-ext.woff2",
+  "lab/engine.js?v=4",
+  "lab/grid.js?v=4",
+  "js/arena.js?v=4",
   "js/state.js",
-  "js/config.js",
+  "js/config.js?v=4",
   "js/audio.js",
   "js/achievements.js",
   "js/skilltree.js",
-  "js/field.js",
-  "js/game.js",
+  "js/field.js?v=4",
+  "js/game.js?v=4",
   "js/tree-ui.js",
   "js/ui.js",
-  "js/main.js",
+  "js/main.js?v=4",
 ];
 
 self.addEventListener("install", (e) => {
@@ -38,7 +41,7 @@ self.addEventListener("install", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.startsWith("afk-farm-") && k !== CACHE).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });

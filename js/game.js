@@ -73,7 +73,7 @@
       this.incomeMult = this.biomeMult * this.treeValue * this.nodeMult * this.keyMult *
         this.projectMult * this.prestigeMult * this.achievementMult;
 
-      this.pullRadius = Math.max(60, 130 * (1 + ts.radius));
+      this.pullRadius = Math.max(60, 120 * CONST.FIELD_SCALE * (1 + ts.radius));
       this.pullStrength = 0.55 * (1 + ts.strength);
       this.luck = ts.luck;
       this.comboCap = 5 + (ts.comboCap || 0);   // plafond du multiplicateur de combo
@@ -369,10 +369,10 @@
     effStrength() { return this.pullStrength * this.surgeBoost; }
     grainSources() {
       const out = [];
-      const R = this.effRadius(), gs = this.effStrength() * 0.5;
-      if (this.harvestActive() && this.pointer.active) out.push({ x: this.pointer.x, y: this.pointer.y, r: R * 1.15, strength: gs });
-      if (this.harvestActive()) for (const p of this.poles) out.push({ x: p.x, y: p.y, r: R, strength: gs * (p.life / p.maxLife) });
-      for (const d of this.drones) out.push({ x: d.x, y: d.y, r: this.pullRadius * 0.85, strength: this.pullStrength * 0.35 });
+      const R = this.effRadius();
+      if (this.harvestActive() && this.pointer.active) out.push({ x: this.pointer.x, y: this.pointer.y, r: R, strength: this.effStrength() });
+      if (this.harvestActive()) for (const p of this.poles) out.push({ x: p.x, y: p.y, r: this.pullRadius, strength: this.pullStrength * 0.8 });
+      for (const d of this.drones) out.push({ x: d.x, y: d.y, r: this.pullRadius * 0.85, strength: this.pullStrength * 0.8 * this.dronePowerMult });
       return out;
     }
     addPole(x, y) {
@@ -439,6 +439,8 @@
       if (field && field.flag) {
         field.ensureLumens(this.lumenCount, () => this.pickRar());
         field.tickLumens(ddt, () => this.pickRar());
+        field.reducedMotion = this.reducedMotion;
+        field.simulate(ddt, this.grainSources());
 
         const dcap2 = CONST.COLLECT_DIST * CONST.COLLECT_DIST;
         const inc = this.incomeMult;
@@ -448,14 +450,14 @@
         this._droneBudget = Math.min(this._droneBudget + dtSec * this.droneCount * CONST.DRONE_EFF, this.droneCount + 1);
         for (let k = 0; k < L.length; k++) {
           const e = L[k];
-          if (!e.lit) continue;
+          if (!e.lit || e.age < 0.3) continue;
           const x = field.px[e.i], y = field.py[e.i];
           let toStorage = false, byDrone = false;
           if (this._droneBudget >= 1) {
-            for (const d of drones) { const dx = x - d.x, dy = y - d.y; if (dx * dx + dy * dy < dcap2) { byDrone = true; break; } }
+            for (const d of drones) { const dx = x - d.x, dy = y - d.y; if (dx * dx + dy * dy <= dcap2) { byDrone = true; break; } }
           }
           if (!byDrone && canStore) {
-            for (const c of hcols) { const dx = x - c.x, dy = y - c.y; if (dx * dx + dy * dy < dcap2) { toStorage = true; break; } }
+            for (const c of hcols) { const dx = x - c.x, dy = y - c.y; if (dx * dx + dy * dy <= dcap2) { toStorage = true; break; } }
           }
           if (!byDrone && !toStorage) continue;
           const rar = e.rar;
