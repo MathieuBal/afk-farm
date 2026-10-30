@@ -63,7 +63,9 @@
 
       this.biomeMult = C.biomeMult(st.biome);
       this.projectMult = this.computeProjectMult();
-      this.prestigeMult = 1 + st.cores * CONST.CORE_MULT + memoryVal;
+      let investedCores=0;
+      for(const p of C.PERKS)for(let level=0;level<(st.perks[p.id]||0);level++)investedCores+=C.perkCost(p,level);
+      this.prestigeMult = 1 + (st.cores + investedCores) * CONST.CORE_MULT + memoryVal;
       this.treeValue = 1 + ts.value;
       this.achievementMult = AFK.achievements ? 1 + AFK.achievements.unlockedCount(st) * AFK.achievements.BONUS : 1;
       // boule de neige mesurée : chaque nœud alloué donne un petit bonus additif
@@ -73,12 +75,14 @@
       this.incomeMult = this.biomeMult * this.treeValue * this.nodeMult * this.keyMult *
         this.projectMult * this.prestigeMult * this.achievementMult;
 
+      const fitted=this.fittedParts();
+      this.incomeMult *= 1 + fitted.value;
       this.pullRadius = Math.max(60, 120 * CONST.FIELD_SCALE * (1 + ts.radius));
       this.pullStrength = 0.55 * (1 + ts.strength);
       this.luck = ts.luck;
       this.comboCap = 5 + (ts.comboCap || 0);   // plafond du multiplicateur de combo
       this.dronePowerMult = 1 + ts.dronePower;
-      this.buildSpeed = 1 + ts.build;
+      this.buildSpeed = 1 + ts.build + fitted.build;
       this.droneCount = ts.drones + fleetVal;
 
       // Grille de Lumens : grandit avec la branche Réseau (gridpoint) ET avec le
@@ -86,14 +90,14 @@
       // qui empêcherait le joueur de faire ses combos).
       this.lumenCount = Math.min(280,
         CONST.LUMEN_COUNT + Math.round(ts.density * 2) + (ts.lumenPoints || 0) + Math.round(this.droneCount * 3));
-      this.repopDelay = Math.max(360, CONST.REPOP_BASE - ts.density * 120 - (ts.repop || 0) * 150);
+      this.repopDelay = Math.max(600, CONST.REPOP_BASE / (1 + (ts.repop || 0) * 0.06));
 
       // session active
-      this.energyMax = S.ENERGY_MAX + ts.energy;
+      this.energyMax = S.ENERGY_MAX + ts.energy + fitted.energy;
       this.energyRegen = S.ENERGY_REGEN + ts.regen;
       this.energyDrain = S.ENERGY_DRAIN / (1 + ts.efficiency);
       this.sessionTime = S.TIME + ts.time;
-      this.storageMax = Math.round(S.STORAGE + ts.storage); // soute en nombre de lumens
+      this.storageMax = Math.round(S.STORAGE + ts.storage + fitted.storage); // soute en nombre de lumens
 
       // modificateur de biome : chaque biome a sa propre mécanique (pas qu'un
       // recolor + ×12). Gentle / net quasi-neutre pour rester mesuré.
@@ -111,6 +115,15 @@
       this.idleRate = this.computeIdleRate();
     }
 
+    fittedParts() {
+      const bonus={value:0,build:0,energy:0,storage:0};
+      for(let i=0;i<=this.state.projectIndex;i++){
+        const p=C.project(i),ps=this.state.projects[p.id];
+        const completed=i<this.state.projectIndex?p.parts.length:(ps?ps.pi:0);
+        for(let j=0;j<completed;j++){const b=p.parts[j].bonus||{};for(const key in b)bonus[key]+=b[key];}
+      }
+      return bonus;
+    }
     computeProjectMult() {
       let m = 1;
       for (let i = 0; i < this.state.projectIndex; i++) m *= C.project(i).mult;
@@ -134,7 +147,7 @@
 
     /* ---------- arbre ---------- */
     allocatedCount() { return Object.keys(this.state.nodes).length - 1; }
-    nodeCost(node) { return Math.ceil(CONST.TREE_BASE_COST * Math.pow(CONST.TREE_GROWTH, this.allocatedCount()) * node.costMult); }
+    nodeCost(node) { return Math.ceil(50 * Math.pow(1.16, Math.max(0,node.ring - 1)) * node.costMult * (1 + this.allocatedCount() / 80)); }
     allocate(id) {
       if (!AFK.tree.canAllocate(this.tree, this.state.nodes, id)) return false;
       const node = this.tree.byId.get(id);
@@ -246,6 +259,7 @@
     }
     completePart(p, ps, part) {
       ps.building = false; ps.p = 0; ps.pi += 1;
+      this.applyStats();
       if (ps.pi >= p.parts.length) {
         this.completeProject(p);
       } else {

@@ -13,7 +13,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
 </head>
 <body>
   <canvas id="stage"></canvas>
@@ -55,6 +55,12 @@
     <button id="tree-close" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
 
+  <div id="tree-tools" class="hidden" aria-label="Navigation dans l’arbre">
+    <select id="tree-branch" aria-label="Rejoindre une branche"><option value="">Choisir une branche</option></select>
+    <button id="tree-home" aria-label="Recentrer l’arbre">⌂</button>
+    <button id="tree-minus" aria-label="Dézoomer">−</button>
+    <button id="tree-plus" aria-label="Zoomer">+</button>
+  </div>
   <!-- Node info -->
   <div id="node-info" class="hidden">
     <div class="ni-head"><span class="ni-icon"></span>
@@ -85,6 +91,7 @@
       <div class="store-txt" id="store-txt">SOUTE · prêt à récolter</div>
       <div class="harvest-row">
         <button id="harvest-btn"><span class="lbl">Lancer la récolte</span><span class="sheen"></span></button>
+        <button id="harvest-exit" aria-label="Terminer et encaisser">Encaisser</button>
         <button id="surge-btn" aria-label="Surge">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
           <span class="cd-fill"></span>
@@ -112,17 +119,18 @@
   <div id="toasts"></div>
 
   <script src="js/state.js"></script>
-  <script src="js/config.js?v=4"></script>
+  <script src="js/config.js?v=5"></script>
   <script src="js/audio.js"></script>
   <script src="js/achievements.js"></script>
-  <script src="js/skilltree.js"></script>
+  <script src="js/skilltree.js?v=5"></script>
   <script src="lab/engine.js?v=4"></script>
   <script src="lab/grid.js?v=4"></script>
-  <script src="js/arena.js?v=4"></script>
-  <script src="js/field.js?v=4"></script>
-  <script src="js/game.js?v=4"></script>
-  <script src="js/tree-ui.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/main.js?v=4"></script>
+  <script src="js/arena.js?v=5"></script>
+  <script src="js/field.js?v=5"></script>
+  <script src="js/game.js?v=5"></script>
+  <script src="js/tree-ui.js?v=5"></script>
+  <script src="js/shipyard.js?v=5"></script>
+  <script src="js/ui.js?v=5"></script>
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>

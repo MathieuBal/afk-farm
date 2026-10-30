@@ -31,8 +31,10 @@ test('new physics captures, banks, charges Surge and does not change save schema
  assert.equal(env.g.repopDelay,2400);assert.equal(env.f.lumens.length,13);
 });
 test('resize preserves lumens, rarity, anchor and respawn cooldown',()=>{
- const {f}=boot();f.harvest(0,2400);const before=JSON.stringify(f.model.nodes),rar=f.lumens[0].rar;
- f.resize(1440,900);assert.equal(JSON.stringify(f.model.nodes),before);assert.equal(f.lumens[0].rar,rar);
+ const {f}=boot();f.harvest(0,2400);const rarity=f.lumens[0].rar;
+ f.resize(280,451.1);assert.equal(f.lumens.length,13);assert.equal(f.lumens[0].rar,rarity);assert.equal(f.model.nodes[0].cooldown,2.4);
+ for(const n of f.model.nodes){assert.ok(n.x>=0&&n.x<=280);assert.ok(n.y>=0&&n.y<=451.1);}
+
 });
 test('density improvements add population; respawn has a visible grace period',()=>{
  const {f,g}=boot();f.ensureLumens(60,()=>g.pickRar());assert.equal(f.lumens.length,60);

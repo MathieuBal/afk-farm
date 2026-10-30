@@ -1,0 +1,285 @@
+{
+  "seeds": 20,
+  "policy": "sweep; no poles or Surge; full battery; one isolated perk; baseline biome; no achievements; rendering disabled",
+  "rows": [
+    {
+      "type": "baseline",
+      "income": 210.90800000000004,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 0,
+      "incomeRatio": 1,
+      "rateRatio": 1
+    },
+    {
+      "type": "value",
+      "income": 233.39079279999996,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 50,
+      "incomeRatio": 1.1065999999999996,
+      "rateRatio": 1.1065999999999996
+    },
+    {
+      "type": "radius",
+      "income": 213.82127599999998,
+      "captures": 25.45,
+      "seconds": 15.00833333333333,
+      "price": 267,
+      "incomeRatio": 1.0138130179983686,
+      "rateRatio": 1.0138130179983686
+    },
+    {
+      "type": "strength",
+      "income": 234.78028000000003,
+      "captures": 26.95,
+      "seconds": 15.00833333333333,
+      "price": 3191,
+      "incomeRatio": 1.1131881199385514,
+      "rateRatio": 1.1131881199385512
+    },
+    {
+      "type": "density",
+      "income": 276.77072,
+      "captures": 26.55,
+      "seconds": 15.00833333333333,
+      "price": 20917,
+      "incomeRatio": 1.3122817531814817,
+      "rateRatio": 1.3122817531814814
+    },
+    {
+      "type": "luck",
+      "income": 245.25877599999998,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 91,
+      "incomeRatio": 1.1628709010563845,
+      "rateRatio": 1.1628709010563845
+    },
+    {
+      "type": "drone_power",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 12132,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "build",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 1208129,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "energy",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 62081,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "regen",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 191,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "efficiency",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 58,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "time",
+      "income": 271.772912,
+      "captures": 28.55,
+      "seconds": 17.00833333333333,
+      "price": 1346755,
+      "incomeRatio": 1.2885851271644506,
+      "rateRatio": 1.137061153367553
+    },
+    {
+      "type": "storage",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 236089,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "gridpoint",
+      "income": 276.77072,
+      "captures": 26.55,
+      "seconds": 15.00833333333333,
+      "price": 328,
+      "incomeRatio": 1.3122817531814817,
+      "rateRatio": 1.3122817531814814
+    },
+    {
+      "type": "repopfast",
+      "income": 226.37816800000004,
+      "captures": 25.2,
+      "seconds": 15.00833333333333,
+      "price": 34287,
+      "incomeRatio": 1.073350313880934,
+      "rateRatio": 1.073350313880934
+    },
+    {
+      "type": "value_n",
+      "income": 328.86884440000006,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 2321992,
+      "incomeRatio": 1.5593,
+      "rateRatio": 1.5593
+    },
+    {
+      "type": "dronebay",
+      "income": 298.401732,
+      "captures": 31.35,
+      "seconds": 15.00833333333333,
+      "price": 316,
+      "incomeRatio": 1.4148431164299122,
+      "rateRatio": 1.4148431164299122
+    },
+    {
+      "type": "magnitude",
+      "income": 367.98876399999995,
+      "captures": 30.65,
+      "seconds": 15.00833333333333,
+      "price": 708267,
+      "incomeRatio": 1.7447833368103622,
+      "rateRatio": 1.7447833368103622
+    },
+    {
+      "type": "fortune",
+      "income": 277.187204,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 768,
+      "incomeRatio": 1.3142564720162344,
+      "rateRatio": 1.3142564720162342
+    },
+    {
+      "type": "refinery",
+      "income": 275.8254824,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 65898,
+      "incomeRatio": 1.3077999999999996,
+      "rateRatio": 1.3077999999999996
+    },
+    {
+      "type": "battery",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 571,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "warehouse",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 119317,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "chrono",
+      "income": 370.07923199999993,
+      "captures": 38.7,
+      "seconds": 23.00833333333333,
+      "price": 1390,
+      "incomeRatio": 1.754695089802188,
+      "rateRatio": 1.1445874164193193
+    },
+    {
+      "type": "resonance",
+      "income": 212.173448,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 235,
+      "incomeRatio": 1.0059999999999998,
+      "rateRatio": 1.0059999999999998
+    },
+    {
+      "type": "overload",
+      "income": 290.67685919999997,
+      "captures": 17.8,
+      "seconds": 15.00833333333333,
+      "price": 36755740,
+      "incomeRatio": 1.3782163749122835,
+      "rateRatio": 1.3782163749122835
+    },
+    {
+      "type": "swarm",
+      "income": 361.6066195200001,
+      "captures": 42.6,
+      "seconds": 15.00833333333333,
+      "price": 36755740,
+      "incomeRatio": 1.7145230124983406,
+      "rateRatio": 1.7145230124983404
+    },
+    {
+      "type": "nova",
+      "income": 518.7098891520001,
+      "captures": 28.4,
+      "seconds": 15.00833333333333,
+      "price": 1131,
+      "incomeRatio": 2.4594130575985735,
+      "rateRatio": 2.4594130575985735
+    },
+    {
+      "type": "perpetual",
+      "income": 229.14732383999996,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 1131,
+      "incomeRatio": 1.0864799999999997,
+      "rateRatio": 1.0864799999999994
+    },
+    {
+      "type": "stockpile",
+      "income": 229.14732383999996,
+      "captures": 25.1,
+      "seconds": 15.00833333333333,
+      "price": 1131,
+      "incomeRatio": 1.0864799999999997,
+      "rateRatio": 1.0864799999999994
+    },
+    {
+      "type": "overdrive",
+      "income": 373.79909807999996,
+      "captures": 36.35,
+      "seconds": 21.00833333333333,
+      "price": 16350,
+      "incomeRatio": 1.772332477099019,
+      "rateRatio": 1.2661526343733966
+    },
+    {
+      "type": "hypergrid",
+      "income": 432.64502783999995,
+      "captures": 33.25,
+      "seconds": 15.00833333333333,
+      "price": 775207,
+      "incomeRatio": 2.0513447941282448,
+      "rateRatio": 2.0513447941282448
+    }
+  ]
+}

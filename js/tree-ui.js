@@ -20,6 +20,12 @@
       this.theme = "#22d3ee";
       this.selected = null;
       this.info = document.getElementById("node-info");
+      const branchSelect=document.getElementById('tree-branch');
+      AFK.tree.BRANCHES.forEach((b,i)=>{const option=document.createElement('option');option.value=i;option.textContent=b.name;branchSelect.append(option);});
+      branchSelect.onchange=()=>this.focusBranch(Number(branchSelect.value));
+      document.getElementById('tree-home').onclick=()=>{this.cam={x:0,y:0,zoom:.9};this.hideInfo();};
+      document.getElementById('tree-plus').onclick=()=>this.zoomAt(1.25,this.W/2,this.H/2);
+      document.getElementById('tree-minus').onclick=()=>this.zoomAt(.8,this.W/2,this.H/2);
       this.bind();
       this.bindInfo();
     }
@@ -97,11 +103,12 @@
     }
 
     show() {
+      document.getElementById('tree-tools').classList.remove('hidden');
       this.open = true;
       this.canvas.style.display = "block";
       this.resize();
     }
-    hide() { this.open = false; this.canvas.style.display = "none"; this.hideInfo(); }
+    hide() { document.getElementById('tree-tools').classList.add('hidden');this.pointers.clear();this.last=null;this.pinchDist=0;this.open = false; this.canvas.style.display = "none"; this.hideInfo(); }
 
     resize() {
       this.dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -121,56 +128,59 @@
       return [(sx - this.W / 2) / this.cam.zoom + this.cam.x, (sy - this.H / 2) / this.cam.zoom + this.cam.y];
     }
 
-    bind() {
-      const cv = this.canvas;
-      cv.addEventListener("pointerdown", (e) => {
-        this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-        this.last = { x: e.clientX, y: e.clientY };
-        this.moved = 0;
-        this.dragging = false;
-        cv.setPointerCapture(e.pointerId);
-      });
-      cv.addEventListener("pointermove", (e) => {
-        if (!this.pointers.has(e.pointerId)) return;
-        this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-        if (this.pointers.size >= 2) { this.handlePinch(); return; }
-        if (this.last) {
-          const dx = e.clientX - this.last.x, dy = e.clientY - this.last.y;
-          this.moved += Math.abs(dx) + Math.abs(dy);
-          if (this.moved > 8) this.dragging = true;
-          if (this.dragging) { this.cam.x -= dx / this.cam.zoom; this.cam.y -= dy / this.cam.zoom; }
-          this.last = { x: e.clientX, y: e.clientY };
-        }
-      });
-      const end = (e) => {
-        if (!this.dragging && this.pointers.size === 1) this.tap(e.clientX, e.clientY);
-        this.pointers.delete(e.pointerId);
-        if (this.pointers.size < 2) this.pinchDist = 0;
-        if (this.pointers.size === 0) { this.last = null; this.dragging = false; }
-      };
-      cv.addEventListener("pointerup", end);
-      cv.addEventListener("pointercancel", (e) => this.pointers.delete(e.pointerId));
-      cv.addEventListener("wheel", (e) => {
-        e.preventDefault();
-        const [wx, wy] = this.s2w(e.clientX, e.clientY);
-        this.cam.zoom = AFK.util.clamp(this.cam.zoom * (e.deltaY < 0 ? 1.12 : 0.89), 0.35, 2.4);
-        const [nx, ny] = this.s2w(e.clientX, e.clientY);
-        this.cam.x += wx - nx; this.cam.y += wy - ny;
-      }, { passive: false });
+    zoomAt(factor,x,y) {
+      const [wx,wy]=this.s2w(x,y);
+      this.cam.zoom=AFK.util.clamp(this.cam.zoom*factor,.22,2.4);
+      const [nx,ny]=this.s2w(x,y);this.cam.x+=wx-nx;this.cam.y+=wy-ny;
     }
-
-    handlePinch() {
-      const pts = [...this.pointers.values()];
-      const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-      if (this.pinchDist) {
-        const mx = (pts[0].x + pts[1].x) / 2, my = (pts[0].y + pts[1].y) / 2;
-        const [wx, wy] = this.s2w(mx, my);
-        this.cam.zoom = AFK.util.clamp(this.cam.zoom * (d / this.pinchDist), 0.35, 2.4);
-        const [nx, ny] = this.s2w(mx, my);
-        this.cam.x += wx - nx; this.cam.y += wy - ny;
-      }
-      this.pinchDist = d;
-      this.dragging = true;
+    focusBranch(arm) {
+      const g=this.game, candidates=g.tree.list.filter(n=>n.arm===arm&&n.id!=='core'&&AFK.tree.canAllocate(g.tree,g.state.nodes,n.id)).sort((a,b)=>a.ring-b.ring);
+      const n=candidates[0]||g.tree.byId.get('a'+arm+'_0');if(!n)return;
+      this.cam.zoom=1.1;this.cam.x=n.x;this.cam.y=n.y+this.H*.08/this.cam.zoom;
+      this.selected=n;this.showInfo();
+    }
+    bind() {
+      const cv=this.canvas;
+      const beginPinch=()=>{
+        const [a,b]=[...this.pointers.values()];
+        this.pinchDist=Math.hypot(a.x-b.x,a.y-b.y);
+        this.pinchMid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};this.dragging=true;this.moved=Infinity;
+      };
+      cv.addEventListener('pointerdown',e=>{
+        this.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});cv.setPointerCapture(e.pointerId);
+        if(this.pointers.size===1){this.last={x:e.clientX,y:e.clientY};this.moved=0;this.dragging=false;}
+        else beginPinch();
+      });
+      cv.addEventListener('pointermove',e=>{
+        if(!this.pointers.has(e.pointerId))return;
+        this.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+        if(this.pointers.size>=2){
+          const [a,b]=[...this.pointers.values()],d=Math.hypot(a.x-b.x,a.y-b.y),mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+          if(this.pinchDist>0){
+            const [wx,wy]=this.s2w(this.pinchMid.x,this.pinchMid.y);
+            this.cam.zoom=AFK.util.clamp(this.cam.zoom*d/this.pinchDist,.22,2.4);
+            const [nx,ny]=this.s2w(mid.x,mid.y);this.cam.x+=wx-nx;this.cam.y+=wy-ny;
+          }
+          this.pinchDist=d;this.pinchMid=mid;return;
+        }
+        if(this.last){const dx=e.clientX-this.last.x,dy=e.clientY-this.last.y;
+          this.moved+=Math.hypot(dx,dy);if(this.moved>8)this.dragging=true;
+          if(this.dragging){this.cam.x-=dx/this.cam.zoom;this.cam.y-=dy/this.cam.zoom;}
+        }
+        this.last={x:e.clientX,y:e.clientY};
+      });
+      const end=(e,cancelled=false)=>{
+        if(!this.pointers.has(e.pointerId))return;
+        if(!cancelled&&!this.dragging&&this.pointers.size===1)this.tap(e.clientX,e.clientY);
+        this.pointers.delete(e.pointerId);this.pinchDist=0;
+        if(this.pointers.size){this.last={...[...this.pointers.values()][0]};this.dragging=true;this.moved=Infinity;}
+        else {this.last=null;this.dragging=false;this.moved=0;}
+      };
+      cv.addEventListener('pointerup',e=>end(e));
+      cv.addEventListener('pointercancel',e=>end(e,true));
+      cv.addEventListener('lostpointercapture',e=>end(e,true));
+      for(const name of ['touchstart','touchmove'])cv.addEventListener(name,e=>{if(e.cancelable)e.preventDefault();},{passive:false});
+      cv.addEventListener('wheel',e=>{e.preventDefault();this.zoomAt(Math.exp(-e.deltaY*.0015),e.clientX,e.clientY);},{passive:false});
     }
 
     tap(sx, sy) {
@@ -179,7 +189,7 @@
       for (const n of this.game.tree.list) {
         const r = n.keystone ? 30 : n.notable ? 22 : 16;
         const dx = n.x - wx, dy = n.y - wy, d = Math.hypot(dx, dy);
-        if (d < r + 9 && d < hd) { hd = d; hit = n; }
+        if (d < Math.max(r + 6,24 / this.cam.zoom) && d < hd) { hd = d; hit = n; }
       }
       this.selected = hit;
       if (hit) { this.showInfo(); if (AFK.audio) AFK.audio.tap && AFK.audio.tap(); }

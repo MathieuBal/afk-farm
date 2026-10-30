@@ -10,7 +10,20 @@
     }
     setTheme(accent) { this.accent=accent; }
     resize(w,h) {
-      if(this.model)return; // Screen changes must not reroll live lumens/cooldowns.
+      if(this.model){
+        const m=this.model;if(Math.abs(m.width-w)<.01&&Math.abs(m.height-h)<.01)return;
+        const sx=w/m.width,sy=h/m.height;m.width=w;m.height=h;
+        for(const n of m.nodes){n.x*=sx;n.y*=sy;n.ax*=sx;n.ay*=sy;n.vx*=sx;n.vy*=sy;}
+        // Retain rarity and cooldowns; only relocate colliding anchors after aspect changes.
+        for(let i=0;i<m.nodes.length;i++){
+          const n=m.nodes[i];
+          if(n.ax<14||n.ax>w-14||n.ay<14||n.ay>h-14||m.nodes.slice(0,i).some(o=>Math.hypot(o.ax-n.ax,o.ay-n.ay)<m.options.spacing)){
+            const p=m.position(n);if(p){n.ax=p.x;n.ay=p.y;n.x=p.x;n.y=p.y;n.vx=n.vy=0;}
+          }
+        }
+        this.grains=[];for(let y=12;y<h;y+=24)for(let x=12;x<w;x+=24)this.grains.push({x,y,px:x,py:y});
+        this.sync();return;
+      }
       this.model=new HarvestLab.Experiment(w,h,{spacing:72*C.FIELD_SCALE,radius:120*C.FIELD_SCALE,speed:210*C.FIELD_SCALE,manualCapture:true,seed:Math.floor(Math.random()*0xffffffff)});
       this.model.nodes=[];this.requested=-1;
       for(let y=12;y<h;y+=24)for(let x=12;x<w;x+=24)this.grains.push({x,y,px:x,py:y});

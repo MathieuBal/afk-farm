@@ -29,72 +29,72 @@
 
   const TYPES = {
     value:       { label: "Affinité",       icon: "✦",  apply: (s) => (s.value += 0.10) },
-    radius:      { label: "Portée",         icon: "🧲", apply: (s) => (s.radius += 0.08) },
+    radius:      { label: "Portée",         icon: "🧲", apply: (s) => (s.radius += 0.04) },
     strength:    { label: "Force",          icon: "💪", apply: (s) => (s.strength += 0.10) },
-    density:     { label: "Conductivité",   icon: "✺",  apply: (s) => (s.density += 1) },
+    density:     { label: "Conductivité",   icon: "✺",  apply: (s) => (s.density += 0.5) },
     luck:        { label: "Polarité",       icon: "🎲", apply: (s) => (s.luck += 1) },
     drone_power: { label: "Servomoteur",    icon: "🛰️", apply: (s) => (s.dronePower += 0.15) },
     build:       { label: "Ingénierie",     icon: "🔧", apply: (s) => (s.build += 0.12) },
     energy:      { label: "Capacité",       icon: "⚡", apply: (s) => (s.energy += 25) },
     regen:       { label: "Régénération",   icon: "🔋", apply: (s) => (s.regen += 1.5) },
     efficiency:  { label: "Efficience",     icon: "♻️", apply: (s) => (s.efficiency += 0.15) },
-    time:        { label: "Chronométrie",   icon: "⏱️", apply: (s) => (s.time += 3) },
-    storage:     { label: "Soute",          icon: "📦", apply: (s) => (s.storage += 20) },
-    gridpoint:   { label: "Maillage",       icon: "🕸️", apply: (s) => (s.lumenPoints += 2) },
+    time:        { label: "Chronométrie",   icon: "⏱️", apply: (s) => (s.time += 2) },
+    storage:     { label: "Soute",          icon: "📦", apply: (s) => (s.storage += 15) },
+    gridpoint:   { label: "Maillage",       icon: "🕸️", apply: (s) => (s.lumenPoints += 1) },
     repopfast:   { label: "Résonateur",     icon: "🔆", apply: (s) => (s.repop += 1) },
     // notables
     value_n:     { label: "Cœur d'ambre",   icon: "💠", notable: true, apply: (s) => (s.value += 0.55) },
     dronebay:    { label: "Baie de drones", icon: "🚀", notable: true, apply: (s) => { s.drones += 1; s.dronePower += 0.3; } },
-    magnitude:   { label: "Magnétar",       icon: "🌀", notable: true, apply: (s) => { s.radius += 0.30; s.strength += 0.30; } },
+    magnitude:   { label: "Magnétar",       icon: "🌀", notable: true, apply: (s) => { s.radius += 0.15; s.strength += 0.20; } },
     fortune:     { label: "Étoile chanceuse", icon: "🍀", notable: true, apply: (s) => (s.luck += 4) },
     refinery:    { label: "Raffinerie",     icon: "⚗️", notable: true, apply: (s) => { s.value += 0.30; s.build += 0.30; } },
     battery:     { label: "Réacteur",       icon: "🔌", notable: true, apply: (s) => { s.energy += 70; s.regen += 2; } },
-    warehouse:   { label: "Entrepôt",       icon: "🏭", notable: true, apply: (s) => (s.storage += 80) },
+    warehouse:   { label: "Entrepôt",       icon: "🏭", notable: true, apply: (s) => (s.storage += 50) },
     chrono:      { label: "Dilatateur",     icon: "🕰️", notable: true, apply: (s) => (s.time += 8) },
     resonance:   { label: "Résonance",      icon: "〰️", notable: true, apply: (s) => (s.comboCap += 1) },
     // keystones : effet de spécialité + multiplicateur de revenu global (gmult)
     // — c'est la source du « snowball mesuré » (rares et chers).
-    overload:    { label: "Surcharge",      icon: "💥", keystone: true, gmult: 1.20, apply: (s) => { s.value += 1.0; s.radius -= 0.35; } },
-    swarm:       { label: "Essaim",         icon: "🐝", keystone: true, gmult: 1.18, apply: (s) => { s.drones += 2; s.dronePower += 0.6; } },
-    nova:        { label: "Nova",           icon: "🌟", keystone: true, gmult: 1.20, apply: (s) => { s.value += 0.6; s.density += 8; } },
-    perpetual:   { label: "Perpétuel",      icon: "♾️", keystone: true, gmult: 1.16, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
-    stockpile:   { label: "Cale béante",    icon: "🛢️", keystone: true, gmult: 1.16, apply: (s) => { s.storage += 280; s.build += 0.5; } },
-    overdrive:   { label: "Surrégime",      icon: "🏁", keystone: true, gmult: 1.16, apply: (s) => { s.time += 12; s.energy += 120; } },
-    hypergrid:   { label: "Hypergrille",    icon: "🌐", keystone: true, gmult: 1.18, apply: (s) => { s.lumenPoints += 24; s.repop += 5; s.density += 3; } },
+    overload:    { label: "Surcharge",      icon: "💥", keystone: true, gmult: 1.08, apply: (s) => { s.value += 1.0; s.radius -= 0.35; } },
+    swarm:       { label: "Essaim",         icon: "🐝", keystone: true, gmult: 1.08, apply: (s) => { s.drones += 2; s.dronePower += 0.6; } },
+    nova:        { label: "Nova",           icon: "🌟", keystone: true, gmult: 1.08, apply: (s) => { s.value += 0.30; s.density += 1; } },
+    perpetual:   { label: "Perpétuel",      icon: "♾️", keystone: true, gmult: 1.08, apply: (s) => { s.regen += 7; s.efficiency += 0.5; } },
+    stockpile:   { label: "Cale béante",    icon: "🛢️", keystone: true, gmult: 1.08, apply: (s) => { s.storage += 100; s.build += 0.35; } },
+    overdrive:   { label: "Surrégime",      icon: "🏁", keystone: true, gmult: 1.08, apply: (s) => { s.time += 6; s.energy += 60; } },
+    hypergrid:   { label: "Hypergrille",    icon: "🌐", keystone: true, gmult: 1.08, apply: (s) => { s.lumenPoints += 4; s.repop += 2; } },
   };
 
   const DESC = {
-    core: "Cœur de l'arbre : +10 % de revenu global. Toutes les branches en partent.",
+    core: "Cœur de l’arbre : point de départ commun à toutes les branches.",
     value: "+10 % valeur de récolte",
-    radius: "+8 % portée d'attraction",
+    radius: "+4 % portée d'attraction",
     strength: "+10 % force d'attraction",
-    density: "+2 points-Lumens sur la grille et repop plus rapide",
+    density: "+1 point-Lumen sur la grille",
     luck: "+1 polarité (grains plus rares)",
     drone_power: "+15 % puissance des drones",
     build: "+12 % vitesse de construction",
     energy: "+25 énergie maximale",
     regen: "+1,5 énergie / s",
     efficiency: "+15 % efficience (moins d'énergie consommée)",
-    time: "+3 s de durée de session",
-    storage: "+20 capacité de soute",
-    gridpoint: "+2 points-Lumens sur la grille",
-    repopfast: "−150 ms de délai de repop",
+    time: "+2 s de durée de session",
+    storage: "+15 capacité de soute",
+    gridpoint: "+1 point-Lumen sur la grille",
+    repopfast: "Réduit le délai de repop : 2,4 s ÷ (1 + 0,06 par point), plancher 0,6 s",
     value_n: "+55 % valeur de récolte",
     dronebay: "+1 drone et +30 % de puissance",
-    magnitude: "+30 % portée et +30 % force",
+    magnitude: "+15 % portée et +20 % force",
     fortune: "+4 polarité",
     refinery: "+30 % valeur et +30 % construction",
     battery: "+70 énergie max et +2 régénération",
-    warehouse: "+80 capacité de soute",
+    warehouse: "+50 capacité de soute",
     chrono: "+8 s de durée de session",
     resonance: "+1 au plafond de combo (multiplicateur max plus élevé)",
-    overload: "KEYSTONE — ×1,20 revenu global, +100 % valeur, mais −35 % portée",
-    swarm: "KEYSTONE — ×1,18 revenu global, +2 drones et +60 % puissance",
-    nova: "KEYSTONE — ×1,20 revenu global, +60 % valeur et +16 points-Lumens",
-    perpetual: "KEYSTONE — ×1,16 revenu global, +7 régénération et +50 % efficience",
-    stockpile: "KEYSTONE — ×1,16 revenu global, +280 soute et +50 % construction",
-    overdrive: "KEYSTONE — ×1,16 revenu global, +12 s de session et +120 énergie max",
-    hypergrid: "KEYSTONE — ×1,18 revenu global, +24 points-Lumens et repop très rapide",
+    overload: "KEYSTONE — +8 % au bonus global des keystones, +100 % valeur, mais −35 % portée",
+    swarm: "KEYSTONE — +8 % au bonus global des keystones, +2 drones et +60 % puissance",
+    nova: "KEYSTONE — +8 % au bonus global des keystones, +30 % valeur et +2 points-Lumens",
+    perpetual: "KEYSTONE — +8 % au bonus global des keystones, +7 régénération et +50 % efficience",
+    stockpile: "KEYSTONE — +8 % au bonus global des keystones, +100 soute et +35 % construction",
+    overdrive: "KEYSTONE — +8 % au bonus global des keystones, +6 s de session et +60 énergie max",
+    hypergrid: "KEYSTONE — +8 % au bonus global des keystones, +4 points-Lumens et +2 résonateurs",
   };
   function effectText(node) { return DESC[node.type] || ""; }
 
@@ -123,7 +123,7 @@
       id, x, y, ring, arm, type,
       label: def.label, icon: def.icon, branch: br.name, bcol: br.color,
       notable: !!def.notable, keystone: !!def.keystone,
-      costMult: def.keystone ? 28 : def.notable ? 6 : 1,
+      costMult: def.keystone ? 8 : def.notable ? 3 : ({radius:1.4,density:2,gridpoint:2,time:1.5}[type] || 1),
       links: [],
     };
   }
@@ -173,19 +173,19 @@
           if (i % NOTABLE_EVERY !== 0 && ring !== KEYSTONE_RING) {
             fn.type = pick(rng, NOTABLES);
             const d = TYPES[fn.type];
-            fn.label = d.label; fn.icon = d.icon; fn.notable = true; fn.keystone = false; fn.costMult = 6;
+            fn.label = d.label; fn.icon = d.icon; fn.notable = true; fn.keystone = false; fn.costMult = 3;
           }
           add(fn);
           link(id, fid);
         }
 
-        if (i > 0 && i % CROSS_EVERY === 0) {
-          const nextArm = (a + 1) % ARMS;
-          link(id, "a" + nextArm + "_" + i);
-        }
+
       }
     }
 
+    // Connect only after all arms exist (the old single pass missed six joins).
+    for(let a=0;a<ARMS;a++)for(let i=CROSS_EVERY;i<NODES_PER_ARM;i+=CROSS_EVERY)
+      link('a'+a+'_'+i,'a'+((a+1)%ARMS)+'_'+i);
     let minX = 0, minY = 0, maxX = 0, maxY = 0;
     for (const n of list) {
       if (n.x < minX) minX = n.x; if (n.x > maxX) maxX = n.x;
@@ -204,7 +204,7 @@
       if (!n) continue;
       const def = TYPES[n.type];
       if (def && def.apply) def.apply(s);
-      if (def && def.gmult) s.keyMult *= def.gmult;   // keystones = snowball multiplicatif
+      if (def && def.gmult) s.keyMult += def.gmult - 1;   // keystones = snowball multiplicatif
       s.count += 1;
     }
     return s;
