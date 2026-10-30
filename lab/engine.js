@@ -27,17 +27,17 @@
       if (pointer.active) out.unshift({ ...pointer, radius: this.options.radius * (this.time < this.surgeUntil ? 2.4 : 1), speed: this.options.speed * (this.time < this.surgeUntil ? 2.4 : 1) });
       return out;
     }
-    step(dt, pointer) {
+    step(dt, pointer, sourcesOverride) {
       this.events = [];
       if (!Number.isFinite(dt) || dt <= 0) return;
       if (pointer.active) { if (this.lastPointer) this.distance += Math.hypot(pointer.x - this.lastPointer.x, pointer.y - this.lastPointer.y); this.lastPointer = { ...pointer }; } else this.lastPointer = null;
       // Fixed upper substep for comparable 30/60/120 Hz physics.
       let remaining = Math.min(dt, .25);
-      while (remaining > 1e-8) { const h = Math.min(remaining, 1 / 120); this.integrate(h, pointer); remaining -= h; }
+      while (remaining > 1e-8) { const h = Math.min(remaining, 1 / 120); this.integrate(h, pointer, sourcesOverride); remaining -= h; }
     }
-    integrate(dt, pointer) {
+    integrate(dt, pointer, sourcesOverride) {
       this.time += dt; this.poles = this.poles.filter(p => p.until > this.time);
-      const sources = this.sources(pointer);
+      const sources = sourcesOverride || this.sources(pointer);
       for (const n of this.nodes) {
         if (n.cooldown > 0) {
           n.cooldown -= dt;
@@ -52,6 +52,7 @@
         let target = null, best = Infinity;
         for (const s of sources) { const d = Math.hypot(s.x - n.x, s.y - n.y); if (d < s.radius && d < best) { best = d; target = s; } }
         if (target && best <= 12) {
+          if (this.options.manualCapture) continue;
           this.captures++; if (this.firstCapture === null) this.firstCapture = this.time;
           this.events.push({ x: n.x, y: n.y, rarity: n.rarity }); n.cooldown = this.options.respawn; n.vx = n.vy = 0; continue;
         }

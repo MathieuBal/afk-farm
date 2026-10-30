@@ -4,10 +4,13 @@
 
   const CONST = {
     DRONE_EFF: 0.5,          // lumens/s estimés par drone (récolte auto)
-    LUMEN_COUNT: 40,         // nombre de points-Lumens ancrés dans la grille
-    REPOP_BASE: 2600,        // délai de repop d'un lumen récolté (ms)
+    FIELD_WIDTH: 364,
+    FIELD_HEIGHT: 347,
+    FIELD_SCALE: 347 / 360,
+    LUMEN_COUNT: 13,         // nombre de points-Lumens ancrés dans la grille
+    REPOP_BASE: 2400,        // délai de repop d'un lumen récolté (ms)
     OFFLINE_CAP_BASE: 8 * 3600,
-    COLLECT_DIST: 14,
+    COLLECT_DIST: 12,
     BIOME_MULT: 12,          // multiplicateur de revenu par biome
     TREE_BASE_COST: 25,      // coût de base d'un nœud d'arbre
     TREE_GROWTH: 1.12,       // croissance par nœud alloué
